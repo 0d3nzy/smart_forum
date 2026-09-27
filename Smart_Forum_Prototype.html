@@ -1,0 +1,2368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Smart Forum — Farm to Consumer, One Fair Price</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ============ TOKENS ============ */
+:root{
+  --ink:#182019;
+  --ink-soft:#4a544c;
+  --paper:#f5f7f1;
+  --paper-raised:#ffffff;
+  --line:#dfe4d8;
+  --green-900:#16301f;
+  --green-800:#1f4a2e;
+  --green-700:#276139;
+  --green-600:#357f49;
+  --green-100:#e3ede2;
+  --marigold:#e2a33d;
+  --marigold-dark:#b97e22;
+  --clay:#a6522f;
+  --clay-soft:#f1e0d6;
+  --wheat:#f6e6b8;
+  --danger:#a63a2f;
+  --ok:#2f7a4d;
+  --radius-s:6px;
+  --radius-m:12px;
+  --radius-l:22px;
+  --shadow: 0 1px 2px rgba(24,32,25,.06), 0 8px 24px rgba(24,32,25,.06);
+  --serif: "Fraunces", Georgia, serif;
+  --sans: "Work Sans", -apple-system, BlinkMacSystemFont, sans-serif;
+  --heading:#16301f;
+  --brand-text:#1f4a2e;
+  --topnav-bg:rgba(245,247,241,.92);
+}
+html[data-theme="dark"]{
+  --ink:#eef2ec;
+  --ink-soft:#aab6ac;
+  --paper:#111a13;
+  --paper-raised:#182119;
+  --line:#2a352c;
+  --green-900:#0d1a10;
+  --green-800:#1c3925;
+  --green-700:#2f5a3d;
+  --green-600:#3f7a52;
+  --green-100:#1e2f22;
+  --clay-soft:#2c2018;
+  --wheat:#3a3218;
+  --shadow: 0 1px 2px rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.4);
+  --heading:#dcead6;
+  --brand-text:#7fd394;
+  --topnav-bg:rgba(13,20,14,.88);
+}
+*{box-sizing:border-box; transition:background-color .25s ease, border-color .25s ease, color .25s ease;}
+html{scroll-behavior:smooth;}
+body{
+  margin:0; font-family:var(--sans); color:var(--ink); background:var(--paper);
+  -webkit-font-smoothing:antialiased; transition:background .2s ease, color .2s ease;
+}
+img{max-width:100%;display:block;}
+a{color:inherit;}
+button{font-family:inherit;}
+:focus-visible{outline:3px solid var(--marigold); outline-offset:2px;}
+h1,h2,h3,h4{font-family:var(--serif); font-weight:600; margin:0; line-height:1.08; letter-spacing:-.01em; color:var(--heading);}
+p{margin:0; line-height:1.6; color:var(--ink-soft);}
+.container{max-width:1180px; margin:0 auto; padding:0 28px;}
+.hide{display:none !important;}
+
+/* ============ APP SHELL ============ */
+#app{min-height:100vh; display:flex; flex-direction:column;}
+
+/* Top nav */
+.topnav{position:sticky; top:0; z-index:50; background:var(--topnav-bg); backdrop-filter:blur(8px); border-bottom:1px solid var(--line);}
+.topnav-row{display:flex; align-items:center; justify-content:space-between; padding:14px 28px; max-width:1180px; margin:0 auto;}
+.brand{display:flex; align-items:center; gap:10px; cursor:pointer; border:none; background:none; padding:0;}
+.brand-mark{width:36px; height:36px; border-radius:10px; background:var(--green-800); display:flex; align-items:center; justify-content:center; flex-shrink:0;}
+.brand-mark svg{width:20px; height:20px;}
+.brand-name{font-family:var(--serif); font-weight:600; font-size:1.28rem; color:var(--heading);}
+.brand-sub{font-size:.68rem; color:var(--ink-soft); margin-top:-2px; letter-spacing:.02em;}
+
+/* ============ HERO ============ */
+.hero{padding:76px 0 64px;}
+.hero-grid{display:grid; grid-template-columns:1.15fr .85fr; gap:56px; align-items:end;}
+.eyebrow-badge{display:inline-flex; align-items:center; gap:8px; background:var(--green-100); color:var(--brand-text); padding:6px 14px; border-radius:999px; font-size:.8rem; font-weight:600; margin-bottom:22px;}
+.eyebrow-badge .dot{width:7px;height:7px;border-radius:50%;background:var(--marigold);}
+.hero h1{font-size:clamp(2.5rem, 5vw, 4rem); max-width:13ch;}
+.hero h1 em{font-style:normal; color:var(--marigold-dark);}
+.hero-lede{font-size:1.15rem; max-width:44ch; margin-top:22px;}
+.hero-ctas{display:flex; gap:12px; margin-top:32px; flex-wrap:wrap;}
+.btn{display:inline-flex; align-items:center; gap:8px; padding:13px 24px; border-radius:999px; font-weight:600; font-size:.95rem; border:1.5px solid transparent; cursor:pointer; transition:transform .12s ease, box-shadow .12s ease;}
+.btn:active{transform:scale(.97);}
+.btn-primary{background:var(--green-800); color:#fff;}
+.btn-primary:hover{background:var(--green-900); box-shadow:var(--shadow);}
+.btn-ghost{background:transparent; color:var(--brand-text); border-color:var(--brand-text);}
+.btn-ghost:hover{background:var(--green-100);}
+.btn-marigold{background:var(--marigold); color:var(--green-900);}
+.btn-marigold:hover{background:var(--marigold-dark); color:#fff;}
+.btn-sm{padding:9px 16px; font-size:.83rem;}
+.btn-block{width:100%; justify-content:center;}
+.btn[disabled]{opacity:.45; cursor:not-allowed;}
+
+.hero-panel{background:var(--green-900); border-radius:var(--radius-l); padding:30px; color:#fff; position:relative; overflow:hidden;}
+.hero-panel::before{content:""; position:absolute; inset:0; background:
+  radial-gradient(circle at 85% 12%, rgba(226,163,61,.28), transparent 45%);}
+.hero-panel-label{font-size:.78rem; color:#b9ccb9; margin-bottom:4px; position:relative;}
+.hero-flow{display:flex; flex-direction:column; gap:0; position:relative;}
+.flow-step{display:flex; gap:14px; padding:13px 0; border-bottom:1px solid rgba(255,255,255,.12);}
+.flow-step:last-child{border-bottom:none; padding-bottom:0;}
+.flow-num{width:26px; height:26px; border-radius:50%; background:rgba(255,255,255,.12); color:#fff; display:flex; align-items:center; justify-content:center; font-size:.78rem; font-weight:600; flex-shrink:0;}
+.flow-text b{display:block; font-size:.92rem; font-weight:600; color:#fff;}
+.flow-text span{font-size:.8rem; color:#c7d6c7;}
+
+/* ============ SECTION WRAPPERS ============ */
+section.block{padding:70px 0;}
+.block-head{display:flex; align-items:flex-end; justify-content:space-between; gap:20px; margin-bottom:38px; flex-wrap:wrap;}
+.block-head h2{font-size:clamp(1.7rem,3vw,2.3rem); max-width:20ch;}
+.block-head p{max-width:42ch; margin-top:8px;}
+.divider-weave{height:34px; width:100%;}
+
+/* ideals */
+.ideals-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:18px;}
+.ideal-card{background:var(--paper-raised); border:1px solid var(--line); border-radius:var(--radius-m); padding:24px; display:flex; flex-direction:column; gap:14px;}
+.ideal-icon{width:40px;height:40px;}
+.ideal-card h3{font-size:1.08rem;}
+.ideal-card p{font-size:.89rem;}
+
+/* transparency / stats */
+.transparency{background:var(--green-900); border-radius:var(--radius-l); padding:44px; color:#fff;}
+.transparency .block-head h2, .transparency .block-head p{color:#fff;}
+.transparency .block-head p{color:#c7d6c7;}
+.stat-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:24px; margin-top:8px;}
+.stat b{display:block; font-family:var(--serif); font-size:2.4rem; color:var(--marigold); font-weight:600;}
+.stat span{font-size:.85rem; color:#c7d6c7;}
+.price-glass{margin-top:38px; background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.14); border-radius:var(--radius-m); padding:22px;}
+.price-glass-head{display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; flex-wrap:wrap; gap:10px;}
+.price-glass-head h4{color:#fff; font-size:1rem;}
+.price-bar{display:flex; width:100%; height:14px; border-radius:999px; overflow:hidden; background:rgba(255,255,255,.1);}
+.price-bar span{height:100%;}
+.price-legend{display:flex; flex-wrap:wrap; gap:14px; margin-top:14px;}
+.price-legend-item{display:flex; align-items:center; gap:7px; font-size:.78rem; color:#dbe6db;}
+.price-legend-item i{width:10px;height:10px;border-radius:3px;display:inline-block;}
+
+/* logistics dept */
+.logi-grid{display:grid; grid-template-columns:1fr 1fr; gap:18px;}
+.logi-card{background:var(--paper-raised); border:1px solid var(--line); border-radius:var(--radius-m); padding:22px;}
+.logi-stat-row{display:flex; justify-content:space-between; padding:11px 0; border-bottom:1px dashed var(--line); font-size:.9rem;}
+.logi-stat-row:last-child{border-bottom:none;}
+.logi-stat-row b{color:var(--heading);}
+.route-illustration{display:flex; align-items:center; justify-content:space-between; margin-top:6px;}
+.route-node{width:12px;height:12px;border-radius:50%;background:var(--green-700); flex-shrink:0;}
+.route-node.end{background:var(--marigold);}
+.route-line{flex:1; height:2px; background:repeating-linear-gradient(90deg,var(--green-700) 0 6px, transparent 6px 12px); margin:0 6px;}
+
+/* farmers near */
+.farmer-filter{display:flex; gap:10px; align-items:center; margin-bottom:22px; flex-wrap:wrap;}
+select, input[type=text], input[type=number], input[type=tel], input[type=email], input[type=date], textarea{
+  font-family:inherit; padding:10px 13px; border-radius:var(--radius-s); border:1.5px solid var(--line); background:var(--paper-raised); font-size:.9rem; color:var(--ink);
+}
+select:focus, input:focus, textarea:focus{border-color:var(--green-700);}
+.farmers-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:16px;}
+.farmer-card{background:var(--paper-raised); border:1px solid var(--line); border-radius:var(--radius-m); padding:18px; display:flex; gap:13px;}
+.avatar{width:46px;height:46px;border-radius:50%; background:var(--green-100); color:var(--brand-text); display:flex;align-items:center;justify-content:center; font-weight:700; font-size:.95rem; flex-shrink:0;}
+.farmer-card h4{font-size:.98rem;}
+.farmer-card .meta{font-size:.8rem; color:var(--ink-soft); margin-top:2px;}
+.tag{display:inline-block; font-size:.72rem; font-weight:600; padding:3px 9px; border-radius:999px; background:var(--green-100); color:var(--brand-text); margin-top:8px;}
+.tag.gold{background:var(--wheat); color:var(--marigold-dark);}
+.tag.clay{background:var(--clay-soft); color:var(--clay);}
+.tag.red{background:#fbe1dd; color:var(--danger);}
+
+/* products */
+.products-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:16px;}
+.product-card{background:var(--paper-raised); border:1px solid var(--line); border-radius:var(--radius-m); overflow:hidden;}
+.product-top{padding:18px; border-bottom:1px solid var(--line);}
+.product-top h4{font-size:1.02rem; display:flex; justify-content:space-between; align-items:baseline;}
+.product-top .hi{font-size:.78rem; color:var(--ink-soft); font-weight:400;}
+.price-row{display:flex; justify-content:space-between; padding:9px 18px; font-size:.82rem;}
+.price-row span:last-child{font-weight:600; color:var(--heading);}
+.product-foot{padding:12px 18px 16px; background:var(--green-100);}
+.product-foot .save{font-size:.76rem; color:var(--brand-text); font-weight:600;}
+
+/* customer overview */
+.overview-grid{display:grid; grid-template-columns:.9fr 1.1fr; gap:24px;}
+.testi-card{background:var(--paper-raised); border:1px solid var(--line); border-radius:var(--radius-m); padding:18px; margin-bottom:14px;}
+.testi-card p{font-size:.92rem; color:var(--ink); font-style:italic;}
+.testi-card .who{margin-top:10px; font-size:.78rem; color:var(--ink-soft); font-style:normal;}
+
+/* footer */
+footer{background:var(--green-900); color:#dbe6db; margin-top:40px;}
+.footer-top{padding:54px 0 34px; border-bottom:1px solid rgba(255,255,255,.12);}
+.footer-thanks{max-width:62ch;}
+.footer-thanks h3{color:#fff; font-size:1.5rem;}
+.footer-thanks p{color:#c7d6c7; margin-top:12px; font-size:.95rem;}
+.footer-thanks .sign{margin-top:18px; font-family:var(--serif); font-size:1.05rem; color:var(--marigold);}
+.footer-cols{display:grid; grid-template-columns:repeat(4,1fr); gap:24px; padding:38px 0;}
+.footer-col h5{color:#fff; font-size:.85rem; margin-bottom:14px; font-weight:600;}
+.footer-col a, .footer-col button.linklike{display:block; background:none; border:none; padding:0; text-align:left; color:#b9ccb9; font-size:.85rem; text-decoration:none; margin-bottom:10px; cursor:pointer;}
+.footer-col a:hover, .footer-col button.linklike:hover{color:#fff;}
+.footer-bottom{display:flex; justify-content:space-between; align-items:center; padding:20px 0; font-size:.78rem; color:#93a893; flex-wrap:wrap; gap:10px;}
+.footer-bottom .legal-links{display:flex; gap:16px;}
+.footer-bottom button.linklike{background:none;border:none;color:#93a893;font-size:.78rem;cursor:pointer;padding:0;}
+.footer-bottom button.linklike:hover{color:#fff;}
+.cookie-bar{position:fixed; left:20px; right:20px; bottom:20px; max-width:520px; margin:0 auto; background:var(--green-900); color:#fff; border-radius:var(--radius-m); padding:18px 20px; box-shadow:0 10px 40px rgba(0,0,0,.25); z-index:200; display:flex; gap:14px; align-items:center; flex-wrap:wrap;}
+.cookie-bar p{color:#dbe6db; font-size:.83rem; flex:1;}
+
+/* modal */
+.modal-overlay{position:fixed; inset:0; background:rgba(15,20,16,.55); display:flex; align-items:center; justify-content:center; z-index:300; padding:20px;}
+.modal-box{background:var(--paper-raised); border-radius:var(--radius-m); max-width:560px; width:100%; max-height:80vh; overflow-y:auto; padding:30px;}
+.modal-box h3{margin-bottom:14px;}
+.modal-box p, .modal-box li{font-size:.88rem; margin-bottom:10px;}
+.modal-close{float:right; background:none; border:none; font-size:1.3rem; cursor:pointer; color:var(--ink-soft);}
+
+/* ============ DASHBOARD SHELL ============ */
+.dash{display:flex; flex:1; min-height:calc(100vh - 68px);}
+.dash-sidebar{width:250px; flex-shrink:0; background:var(--green-900); color:#fff; padding:26px 16px; display:flex; flex-direction:column; gap:4px;}
+.dash-sidebar .role-head{padding:0 10px 20px; border-bottom:1px solid rgba(255,255,255,.14); margin-bottom:14px;}
+.dash-sidebar .role-head .avatar{background:rgba(255,255,255,.15); color:#fff;}
+.dash-sidebar .role-head .who{display:flex; gap:10px; align-items:center;}
+.dash-sidebar .role-head h4{color:#fff; font-size:.95rem;}
+.dash-sidebar .role-head span{font-size:.76rem; color:#9fb59f;}
+.dash-tab-btn{display:flex; align-items:center; gap:10px; text-align:left; background:none; border:none; color:#c7d6c7; padding:11px 12px; border-radius:var(--radius-s); font-size:.88rem; cursor:pointer; font-weight:500;}
+.dash-tab-btn:hover{background:rgba(255,255,255,.07); color:#fff;}
+.dash-tab-btn.active{background:var(--marigold); color:var(--green-900); font-weight:600;}
+.dash-main{flex:1; padding:34px 40px; max-width:1080px;}
+.dash-main-head{margin-bottom:28px;}
+.dash-main-head h2{font-size:1.6rem;}
+.dash-main-head p{margin-top:6px;}
+
+.card{background:var(--paper-raised); border:1px solid var(--line); border-radius:var(--radius-m); padding:22px;}
+.card + .card{margin-top:16px;}
+.card h3{font-size:1.05rem; margin-bottom:16px;}
+.two-col{display:grid; grid-template-columns:1fr 1fr; gap:16px;}
+.field{display:flex; flex-direction:column; gap:6px; margin-bottom:14px;}
+.field label{font-size:.78rem; font-weight:600; color:var(--ink-soft);}
+.form-grid{display:grid; grid-template-columns:1fr 1fr; gap:0 16px;}
+
+table{width:100%; border-collapse:collapse; font-size:.87rem;}
+th{text-align:left; padding:10px 12px; background:var(--paper); color:var(--ink-soft); font-weight:600; font-size:.76rem; text-transform:none; border-bottom:1px solid var(--line);}
+td{padding:11px 12px; border-bottom:1px solid var(--line); color:var(--ink);}
+tr:last-child td{border-bottom:none;}
+.status-pill{display:inline-block; padding:3px 10px; border-radius:999px; font-size:.74rem; font-weight:600;}
+.status-pill.ok{background:#e2f1e6; color:var(--ok);}
+.status-pill.pending{background:var(--wheat); color:var(--marigold-dark);}
+.status-pill.bad{background:#fbe1dd; color:var(--danger);}
+.status-pill.info{background:var(--green-100); color:var(--brand-text);}
+
+.kpi-row{display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-bottom:20px;}
+.kpi{background:var(--paper-raised); border:1px solid var(--line); border-radius:var(--radius-m); padding:16px 18px;}
+.kpi b{display:block; font-family:var(--serif); font-size:1.5rem; color:var(--heading);}
+.kpi span{font-size:.78rem; color:var(--ink-soft);}
+
+.tabbar{display:flex; gap:6px; margin-bottom:20px; border-bottom:1px solid var(--line); flex-wrap:wrap;}
+.tabbar button{background:none; border:none; padding:10px 4px; margin-right:20px; font-size:.88rem; font-weight:600; color:var(--ink-soft); cursor:pointer; border-bottom:2px solid transparent;}
+.tabbar button.active{color:var(--brand-text); border-bottom-color:var(--brand-text);}
+
+.breakdown{display:flex; flex-direction:column; gap:0;}
+.bd-row{display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px dashed var(--line); font-size:.86rem;}
+.bd-row.total{border-bottom:none; border-top:1.5px solid var(--ink); padding-top:12px; margin-top:4px; font-weight:700; font-size:.95rem;}
+.bd-row span:last-child{font-weight:600;}
+
+.stepper{display:flex; justify-content:space-between; position:relative; margin:30px 0 10px;}
+.stepper::before{content:""; position:absolute; top:13px; left:20px; right:20px; height:2px; background:var(--line); z-index:0;}
+.step{display:flex; flex-direction:column; align-items:center; gap:8px; position:relative; z-index:1; flex:1;}
+.step .dot{width:28px;height:28px;border-radius:50%; background:var(--paper-raised); border:2px solid var(--line); display:flex; align-items:center; justify-content:center; font-size:.75rem; color:var(--ink-soft); font-weight:700;}
+.step.done .dot{background:var(--green-700); border-color:var(--green-700); color:#fff;}
+.step.current .dot{background:var(--marigold); border-color:var(--marigold); color:var(--green-900);}
+.step span{font-size:.73rem; text-align:center; color:var(--ink-soft); max-width:84px;}
+.step.done span, .step.current span{color:var(--ink); font-weight:600;}
+
+/* ============ LANGUAGE SWITCHER ============ */
+.lang-switch{position:relative;}
+.lang-switch-btn{display:flex; align-items:center; gap:5px; border:1.5px solid var(--line); background:var(--paper-raised); color:var(--ink); padding:7px 12px; border-radius:999px; font-size:.82rem; font-weight:600; cursor:pointer;}
+.lang-switch-btn:hover{border-color:var(--brand-text);}
+.lang-menu{position:absolute; top:calc(100% + 8px); right:0; background:var(--paper-raised); border:1px solid var(--line); border-radius:var(--radius-m); box-shadow:var(--shadow); min-width:160px; z-index:120; overflow:hidden;}
+.lang-menu button{display:block; width:100%; text-align:left; padding:10px 16px; border:none; background:none; color:var(--ink); font-size:.87rem; cursor:pointer;}
+.lang-menu button:hover{background:var(--green-100);}
+.lang-menu button.active{font-weight:700; color:var(--brand-text);}
+
+/* ============ TRACKING (Delhivery-style checkpoint timeline) ============ */
+.track-header{display:flex; flex-wrap:wrap; justify-content:space-between; gap:14px; align-items:flex-start; padding:18px 20px; background:var(--paper-raised); border:1px solid var(--line); border-radius:var(--radius-m); margin-bottom:22px;}
+.track-header .track-id{font-family:var(--serif); font-size:1.15rem; font-weight:600; color:var(--heading);}
+.track-header .track-meta{font-size:.82rem; color:var(--ink-soft); margin-top:4px;}
+.track-header .track-right{text-align:right;}
+.track-header .track-eta{font-size:.82rem; color:var(--ink-soft); margin-top:6px;}
+.track-divider{border:none; border-top:1px solid var(--line); margin:22px 0;}
+.track-timeline{border-left:2px solid var(--line); margin-left:15px; padding-left:24px;}
+.track-timeline .tl-item{position:relative; padding-bottom:24px;}
+.track-timeline .tl-item:last-child{padding-bottom:2px;}
+.track-timeline .tl-item::before{content:''; position:absolute; left:-31px; top:3px; width:13px; height:13px; border-radius:50%; background:var(--paper); border:2px solid var(--line);}
+.track-timeline .tl-item.done::before{background:var(--green-700); border-color:var(--green-700);}
+.track-timeline .tl-item.current::before{background:var(--marigold); border-color:var(--marigold); box-shadow:0 0 0 5px rgba(226,163,61,.2);}
+.track-timeline .tl-time{font-size:.76rem; color:var(--ink-soft); font-weight:600; letter-spacing:.02em;}
+.track-timeline .tl-title{font-size:.92rem; font-weight:600; margin:2px 0; color:var(--ink);}
+.track-timeline .tl-item.upcoming .tl-title{color:var(--ink-soft); font-weight:500;}
+.track-timeline .tl-desc{font-size:.82rem; color:var(--ink-soft);}
+
+.route-modes{display:flex; gap:10px; margin-bottom:18px;}
+.mode-btn{flex:1; padding:14px; border-radius:var(--radius-m); border:1.5px solid var(--line); background:var(--paper-raised); cursor:pointer; text-align:left;}
+.mode-btn.active{border-color:var(--brand-text); background:var(--green-100);}
+.mode-btn b{display:block; font-size:.9rem; color:var(--heading);}
+.mode-btn span{font-size:.76rem;}
+
+.chip-list{display:flex; gap:8px; flex-wrap:wrap;}
+.chip{background:var(--paper); border:1px solid var(--line); padding:6px 12px; border-radius:999px; font-size:.8rem;}
+
+.assoc-grid{display:grid; grid-template-columns:220px 1fr; gap:0;}
+.assoc-side{background:var(--paper-raised); border-right:1px solid var(--line); padding:6px;}
+.assoc-side button{width:100%; text-align:left; background:none; border:none; padding:11px 14px; font-size:.85rem; color:var(--ink-soft); border-radius:var(--radius-s); cursor:pointer; font-weight:500;}
+.assoc-side button:hover{background:var(--green-100); color:var(--brand-text);}
+.assoc-side button.active{background:var(--green-800); color:#fff; font-weight:600;}
+.assoc-content{padding:26px 30px;}
+
+.empty-note{font-size:.85rem; color:var(--ink-soft); padding:14px 0;}
+.small-note{font-size:.78rem; color:var(--ink-soft); margin-top:10px;}
+.hr{height:1px; background:var(--line); margin:18px 0; border:none;}
+
+/* ============ AUTH (login / register) ============ */
+.nav-guest{display:flex; gap:10px; align-items:center;}
+.nav-user{display:flex; gap:10px; align-items:center; background:var(--paper-raised); border:1px solid var(--line); padding:5px 6px 5px 14px; border-radius:999px;}
+.nav-user .role-badge{font-size:.72rem; color:var(--ink-soft);}
+.nav-user .avatar{width:30px;height:30px; font-size:.75rem;}
+.nav-user button{border:none; background:var(--paper); color:var(--ink-soft); font-size:.78rem; padding:7px 13px; border-radius:999px; cursor:pointer; font-weight:600;}
+.nav-user button:hover{background:var(--clay-soft); color:var(--danger);}
+.nav-dash-link{padding:8px 16px; border-radius:999px; font-size:.87rem; font-weight:500; border:none; cursor:pointer; background:var(--green-800); color:#fff;}
+
+.auth-wrap{min-height:calc(100vh - 68px); display:grid; grid-template-columns:1fr 1fr; align-items:stretch;}
+.auth-brand{background:var(--green-900); color:#fff; padding:54px; display:flex; flex-direction:column; justify-content:space-between; position:relative; overflow:hidden;}
+.auth-brand::before{content:""; position:absolute; inset:0; background:radial-gradient(circle at 80% 15%, rgba(226,163,61,.22), transparent 45%);}
+.auth-brand-top{position:relative;}
+.auth-brand-top h2{color:#fff; font-size:1.9rem; max-width:14ch;}
+.auth-brand-top p{color:#c7d6c7; margin-top:14px; max-width:34ch;}
+.auth-role-facts{position:relative; display:flex; flex-direction:column; gap:14px; margin-top:30px;}
+.auth-role-fact{display:flex; gap:12px; align-items:flex-start; background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.12); border-radius:var(--radius-m); padding:14px 16px;}
+.auth-role-fact b{display:block; color:#fff; font-size:.9rem;}
+.auth-role-fact span{color:#c7d6c7; font-size:.8rem;}
+.auth-quote{position:relative; font-family:var(--serif); font-size:1.1rem; color:#fff; max-width:32ch; margin-top:20px;}
+.auth-quote span{display:block; margin-top:10px; font-family:var(--sans); font-size:.78rem; color:#9fb59f;}
+
+.auth-panel{padding:54px; display:flex; align-items:center; justify-content:center;}
+.auth-card{width:100%; max-width:420px;}
+.auth-tabs{display:flex; gap:6px; background:var(--paper); border:1px solid var(--line); padding:4px; border-radius:999px; margin-bottom:28px;}
+.auth-tabs button{flex:1; border:none; background:none; padding:10px; border-radius:999px; font-weight:600; font-size:.87rem; color:var(--ink-soft); cursor:pointer;}
+.auth-tabs button.active{background:var(--green-800); color:#fff;}
+.role-pills{display:grid; grid-template-columns:repeat(4,1fr); gap:8px; margin-bottom:22px;}
+.role-pill{border:1.5px solid var(--line); background:var(--paper-raised); border-radius:var(--radius-s); padding:10px 6px; text-align:center; cursor:pointer; font-size:.78rem; font-weight:600; color:var(--ink-soft);}
+.role-pill.active{border-color:var(--brand-text); background:var(--green-100); color:var(--brand-text);}
+.auth-error{background:#fbe1dd; color:var(--danger); border-radius:var(--radius-s); padding:10px 13px; font-size:.83rem; margin-bottom:16px;}
+.auth-hint{background:var(--green-100); border-radius:var(--radius-s); padding:12px 14px; font-size:.8rem; color:var(--brand-text); margin-top:18px;}
+.auth-hint b{display:block; margin-bottom:3px;}
+.auth-switch{text-align:center; font-size:.85rem; color:var(--ink-soft); margin-top:18px;}
+.auth-switch button{background:none; border:none; color:var(--brand-text); font-weight:600; cursor:pointer; padding:0;}
+.auth-denied{max-width:460px; margin:80px auto; text-align:center; padding:0 20px;}
+.auth-denied h2{margin-bottom:12px;}
+.auth-denied p{margin-bottom:22px;}
+@media (max-width: 900px){
+  .auth-wrap{grid-template-columns:1fr;}
+  .auth-brand{padding:34px 26px;}
+  .auth-panel{padding:34px 26px;}
+}
+
+@media (max-width: 980px){
+  .hero-grid{grid-template-columns:1fr;}
+  .ideals-grid{grid-template-columns:repeat(2,1fr);}
+  .stat-grid{grid-template-columns:repeat(2,1fr);}
+  .logi-grid{grid-template-columns:1fr;}
+  .farmers-grid{grid-template-columns:repeat(2,1fr);}
+  .products-grid{grid-template-columns:repeat(2,1fr);}
+  .overview-grid{grid-template-columns:1fr;}
+  .footer-cols{grid-template-columns:repeat(2,1fr);}
+  .impact-grid{grid-template-columns:1fr !important;}
+  .nav-roles{display:none;}
+  .dash{flex-direction:column;}
+  .dash-sidebar{width:100%; flex-direction:row; overflow-x:auto;}
+  .assoc-grid{grid-template-columns:1fr;}
+  .assoc-side{display:flex; overflow-x:auto; border-right:none; border-bottom:1px solid var(--line);}
+  .market-grid{grid-template-columns:1fr !important;}
+  .chat-panel{width:calc(100vw - 32px) !important; right:16px !important; bottom:82px !important;}
+}
+
+@media (max-width: 640px){
+  .kpi-row{grid-template-columns:1fr 1fr;}
+  .form-grid{grid-template-columns:1fr;}
+  .two-col{grid-template-columns:1fr;}
+  .role-pills{grid-template-columns:repeat(2,1fr);}
+  .dash-main{padding:24px 18px;}
+  .footer-cols{grid-template-columns:1fr !important;}
+}
+
+/* ============ TOAST ============ */
+.toast{position:fixed; left:22px; bottom:22px; z-index:260; background:var(--green-800); color:#fff; padding:13px 20px; border-radius:var(--radius-m); font-size:.87rem; font-weight:600; box-shadow:0 10px 30px rgba(0,0,0,.25); max-width:min(340px, calc(100vw - 44px));}
+
+/* ============ PRODUCT IMAGES ============ */
+.product-img{display:inline-flex; align-items:center; justify-content:center; flex-shrink:0; background:linear-gradient(135deg, var(--green-100), var(--paper-raised)); border:1px solid var(--line); border-radius:12px; font-size:1.4rem; width:44px; height:44px; line-height:1;}
+.product-img.sm{width:32px; height:32px; font-size:1rem; border-radius:8px;}
+.product-img.lg{width:80px; height:80px; font-size:2.4rem; border-radius:16px;}
+.td-img{width:44px;}
+.market-card-top{display:flex; align-items:flex-start; gap:12px;}
+.market-card-top .market-card-head{flex:1; display:flex; justify-content:space-between; align-items:flex-start; gap:8px;}
+
+/* ============ AGMARKNET LIVE PRICE ============ */
+.agm-badge{display:inline-flex; align-items:center; gap:6px; font-size:.78rem; color:var(--ink-soft); margin-top:6px;}
+.agm-badge.live{color:var(--green-800); font-weight:600;}
+.agm-panel{margin-top:14px; padding:14px; border:1px dashed var(--line); border-radius:var(--radius-m); background:var(--paper-raised);}
+.agm-panel h5{font-size:.82rem; text-transform:uppercase; letter-spacing:.04em; color:var(--ink-soft); margin-bottom:8px;}
+.agm-panel .agm-key-row{display:flex; gap:8px; flex-wrap:wrap; margin-top:10px; align-items:center;}
+.agm-panel .agm-key-row input{flex:1; min-width:200px;}
+@media (max-width: 640px){ .toast{left:16px; right:16px; max-width:none; bottom:16px;} }
+
+/* ============ IMMERSIVE TRANSITIONS ============ */
+@keyframes pageIn{ from{opacity:0; transform:translateY(14px);} to{opacity:1; transform:translateY(0);} }
+@keyframes modalOverlayIn{ from{opacity:0;} to{opacity:1;} }
+@keyframes modalBoxIn{ from{opacity:0; transform:translateY(14px) scale(.96);} to{opacity:1; transform:translateY(0) scale(1);} }
+@keyframes chatPanelIn{ from{opacity:0; transform:translateY(18px) scale(.97);} to{opacity:1; transform:translateY(0) scale(1);} }
+@keyframes chatMsgIn{ from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:translateY(0);} }
+@media (prefers-reduced-motion: no-preference){
+  main, .dash, .auth-wrap, .auth-denied, .market-locked{ animation: pageIn .5s cubic-bezier(.22,.61,.36,1) both; }
+  .modal-overlay{ animation: modalOverlayIn .2s ease both; }
+  .modal-box{ animation: modalBoxIn .32s cubic-bezier(.22,.61,.36,1) both; }
+  .chat-panel{ animation: chatPanelIn .3s cubic-bezier(.22,.61,.36,1) both; }
+  .chat-msg{ animation: chatMsgIn .25s ease both; }
+  .card, .ideal-card, .farmer-card, .product-card, .market-card, .testi-card, .kpi, .stat, .logi-card, .assoc-grid{
+    transition: transform .28s cubic-bezier(.22,.61,.36,1), box-shadow .28s ease;
+  }
+  .card:hover, .ideal-card:hover, .farmer-card:hover, .product-card:hover, .market-card:hover{
+    transform: translateY(-4px); box-shadow: var(--shadow);
+  }
+  .btn, .dash-tab-btn, .remove-btn, .theme-toggle, .assoc-side button, .role-pill, .mode-btn, .auth-tabs button{
+    transition: transform .18s ease, background-color .2s ease, color .2s ease, border-color .2s ease, box-shadow .2s ease;
+  }
+  .btn:hover{ transform: translateY(-1px); }
+  .chat-fab{ transition: transform .22s cubic-bezier(.34,1.56,.64,1), background-color .2s ease; }
+  .chat-fab:hover{ transform: scale(1.08) rotate(-4deg); }
+  .theme-toggle{ transition: transform .35s cubic-bezier(.34,1.56,.64,1), background-color .2s ease, color .2s ease; }
+  .theme-toggle:hover{ transform: rotate(18deg); }
+}
+
+/* ============ THEME TOGGLE ============ */
+.theme-toggle{border:1.5px solid var(--line); background:var(--paper-raised); color:var(--ink-soft); width:36px; height:36px; border-radius:50%; cursor:pointer; display:flex; align-items:center; justify-content:center; flex-shrink:0; font-size:1rem;}
+.theme-toggle:hover{border-color:var(--green-700); color:var(--green-700);}
+
+/* ============ MARKETPLACE ============ */
+.impact-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:18px;}
+.market-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:16px;}
+.market-card{background:var(--paper-raised); border:1px solid var(--line); border-radius:var(--radius-m); padding:18px; display:flex; flex-direction:column; gap:8px;}
+.market-card-top{display:flex; justify-content:space-between; align-items:flex-start; gap:10px;}
+.market-card-top h4{font-size:1rem;}
+.market-card .meta{font-size:.8rem; color:var(--ink-soft);}
+.market-card .desc{font-size:.85rem; color:var(--ink); margin-top:2px;}
+.market-price{font-family:var(--serif); font-size:1.3rem; color:var(--brand-text); font-weight:600;}
+.market-locked{max-width:440px; margin:60px auto; text-align:center; padding:0 20px;}
+.market-locked h2{margin-bottom:12px;}
+.market-locked p{margin-bottom:22px;}
+
+/* ============ REMOVE BUTTON ============ */
+.remove-btn{border:1.5px solid var(--line); background:none; color:var(--danger); width:30px; height:30px; border-radius:8px; cursor:pointer; font-size:.9rem; line-height:1; display:inline-flex; align-items:center; justify-content:center;}
+.remove-btn:hover{background:#fbe1dd; border-color:var(--danger);}
+th.th-actions, td.td-actions{text-align:right; width:56px;}
+
+/* ============ AI CHATBOT ============ */
+.chat-fab{position:fixed; right:22px; bottom:22px; z-index:250; width:56px; height:56px; border-radius:50%; background:var(--green-800); color:#fff; border:none; cursor:pointer; box-shadow:0 8px 24px rgba(0,0,0,.25); display:flex; align-items:center; justify-content:center; font-size:1.4rem;}
+.chat-fab:hover{background:var(--green-900);}
+.chat-panel{position:fixed; right:22px; bottom:90px; z-index:250; width:340px; max-height:min(520px, 70vh); background:var(--paper-raised); border:1px solid var(--line); border-radius:var(--radius-m); box-shadow:0 14px 44px rgba(0,0,0,.28); display:flex; flex-direction:column; overflow:hidden;}
+.chat-head{background:var(--green-900); color:#fff; padding:14px 16px; display:flex; justify-content:space-between; align-items:center;}
+.chat-head h4{color:#fff; font-size:.95rem;}
+.chat-head span{font-size:.72rem; color:#b9ccb9;}
+.chat-head button{background:none; border:none; color:#c7d6c7; font-size:1.1rem; cursor:pointer;}
+.chat-body{flex:1; overflow-y:auto; padding:14px 16px; display:flex; flex-direction:column; gap:10px; background:var(--paper);}
+.chat-msg{max-width:84%; padding:9px 12px; border-radius:12px; font-size:.85rem; line-height:1.45;}
+.chat-msg.bot{background:var(--green-100); color:var(--ink); align-self:flex-start; border-bottom-left-radius:3px;}
+.chat-msg.user{background:var(--green-800); color:#fff; align-self:flex-end; border-bottom-right-radius:3px;}
+.chat-suggest{display:flex; flex-wrap:wrap; gap:6px; padding:0 16px 10px;}
+.chat-suggest button{background:var(--paper-raised); border:1px solid var(--line); color:var(--brand-text); font-size:.74rem; padding:6px 10px; border-radius:999px; cursor:pointer;}
+.chat-suggest button:hover{background:var(--green-100);}
+.chat-input-row{display:flex; gap:8px; padding:12px; border-top:1px solid var(--line);}
+.chat-input-row input{flex:1; margin:0;}
+.chat-input-row button{border:none; background:var(--green-800); color:#fff; width:38px; border-radius:var(--radius-s); cursor:pointer; font-size:.9rem;}
+.chat-input-row button:hover{background:var(--green-900);}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+/* =====================================================================
+   SMART FORUM — prototype SPA
+   All data below is representative/mock content for demo purposes.
+   AGMARKNET reference prices are illustrative figures based on typical
+   mandi modal-price ranges reported for these commodities in 2026.
+===================================================================== */
+
+/* ---------- AGMARKNET reference price data (₹ per quintal, mandi modal price) ---------- */
+const CROPS = [
+  { id:'tomato',  name:'Tomato',   hi:'टमाटर',  modal:2450, min:1400, max:3500, unit:'kg', img:'🍅' },
+  { id:'onion',   name:'Onion',    hi:'प्याज',   modal:3200, min:1600, max:4600, unit:'kg', img:'🧅' },
+  { id:'potato',  name:'Potato',   hi:'आलू',    modal:1400, min:900,  max:2000, unit:'kg', img:'🥔' },
+  { id:'wheat',   name:'Wheat',    hi:'गेहूं',    modal:2614, min:2350, max:2900, unit:'kg', img:'🌾' },
+  { id:'rice',    name:'Rice',     hi:'चावल',   modal:3789, min:3200, max:4300, unit:'kg', img:'🍚' },
+  { id:'garlic',  name:'Garlic',   hi:'लहसुन',  modal:7500, min:5500, max:10000,unit:'kg', img:'🧄' },
+  { id:'soybean', name:'Soybean',  hi:'सोयाबीन', modal:5740, min:4900, max:6200, unit:'kg', img:'🫘' },
+  { id:'maize',   name:'Maize',    hi:'मक्का',   modal:2300, min:1900, max:2600, unit:'kg', img:'🌽' },
+];
+
+/* ---------- Product images ----------
+   Self-contained (no hotlinked photos) so listings still render with no internet —
+   important for a hackathon demo on unreliable venue wifi. */
+function cropImg(cropName, size){
+  const c = CROPS.find(x=>x.name===cropName);
+  const emoji = c ? c.img : '🌿';
+  return `<span class="product-img ${size||''}" aria-hidden="true">${emoji}</span>`;
+}
+
+/* ---------- Live AGMARKNET integration ----------
+   Real Government of India open-data API: "Current Daily Price of Various Commodities
+   from Various Markets (Mandi)" — the actual AGMARKNET dataset, resource id below.
+   Docs: https://www.data.gov.in/apis/9ef84268-d588-465a-a308-a864a43d0070
+   Uses data.gov.in's own publicly documented sample key by default (shared + rate
+   limited) — paste a free personal key (from data.gov.in, one-minute signup) below
+   for reliable results. If the live call fails for any reason (offline, no key quota
+   left, CORS in some browsers, no record for that commodity today) this always falls
+   back to the demo reference price already in CROPS — never a broken UI. */
+const AGMARKNET_RESOURCE = '9ef84268-d588-465a-a308-a864a43d0070';
+const AGMARKNET_DEFAULT_KEY = '579b464db66ec23bdd000001cdd3946e44ce4aad7209ff7b23ac571b';
+const AGMARKNET_CACHE_MS = 15 * 60 * 1000;
+async function fetchAgmarknetPrice(cropId){
+  const crop = CROPS.find(c=>c.id===cropId);
+  if (!crop) return;
+  const cached = S.agmarknetCache[cropId];
+  if (cached && (Date.now()-cached.ts) < AGMARKNET_CACHE_MS){ S.agmarknetStatus[cropId]='live'; render(); return; }
+  S.agmarknetStatus[cropId] = 'loading'; render();
+  try{
+    const key = (S.agmarknetApiKey || AGMARKNET_DEFAULT_KEY).trim();
+    const url = `https://api.data.gov.in/resource/${AGMARKNET_RESOURCE}`
+      + `?api-key=${encodeURIComponent(key)}&format=json&limit=5&offset=0`
+      + `&filters[commodity]=${encodeURIComponent(crop.name)}`
+      + `&filters[state]=${encodeURIComponent(S.agmarknetState||'Maharashtra')}`;
+    const res = await fetch(url);
+    if (!res.ok) throw new Error('HTTP '+res.status);
+    const data = await res.json();
+    const rec = data && Array.isArray(data.records) ? data.records[0] : null;
+    if (!rec || !rec.modal_price) throw new Error('No live record returned for today');
+    S.agmarknetCache[cropId] = {
+      modal:Number(rec.modal_price), min:Number(rec.min_price), max:Number(rec.max_price),
+      market:rec.market, district:rec.district, arrivalDate:rec.arrival_date, ts:Date.now(),
+    };
+    S.agmarknetStatus[cropId] = 'live';
+  }catch(e){
+    S.agmarknetStatus[cropId] = 'fallback';
+    S.agmarknetError = (e && e.message) || 'Live fetch failed';
+  }
+  render();
+}
+function agmarknetBadge(cropName){
+  const crop = CROPS.find(c=>c.name===cropName);
+  if (!crop) return '';
+  const st = S.agmarknetStatus[crop.id];
+  const cached = S.agmarknetCache[crop.id];
+  if (st==='loading') return `<div class="agm-badge">⏳ ${L('Checking AGMARKNET…','AGMARKNET जांचा जा रहा है…')}</div>`;
+  if (st==='live' && cached){
+    const per = inr((cached.modal/100).toFixed(2));
+    return `<div class="agm-badge live" title="${esc(cached.market||'')}, ${esc(cached.district||'')} · ${L('arrival','आगमन')} ${esc(cached.arrivalDate||'')}">🟢 ${L('Live AGMARKNET','लाइव AGMARKNET')}: ${per}/kg <button class="linklike" style="font-size:.75rem;" data-agmfetch="${crop.id}">${L('refresh','रीफ़्रेश')}</button></div>`;
+  }
+  if (st==='fallback') return `<div class="agm-badge">🟡 ${L('Live price unavailable — showing demo reference','लाइव कीमत उपलब्ध नहीं — डेमो संदर्भ दिखाया जा रहा है')} · <button class="linklike" style="font-size:.75rem;" data-agmfetch="${crop.id}">${L('retry','पुनः प्रयास')}</button></div>`;
+  return `<div class="agm-badge"><button class="linklike" style="font-size:.78rem;" data-agmfetch="${crop.id}">${L("Check today's live AGMARKNET price",'आज की लाइव AGMARKNET कीमत देखें')}</button></div>`;
+}
+function agmarknetPanel(cropId, applyToInputId, selectId){
+  const crop = CROPS.find(c=>c.id===cropId) || CROPS[0];
+  const st = S.agmarknetStatus[crop.id];
+  const cached = S.agmarknetCache[crop.id];
+  const srcAttr = selectId ? ` data-agmselectsrc="${selectId}"` : '';
+  let body;
+  if (st==='loading'){
+    body = `<p class="small-note">⏳ ${L(`Checking AGMARKNET for ${crop.name}…`,`${crop.name} के लिए AGMARKNET जांचा जा रहा है…`)}</p>`;
+  } else if (st==='live' && cached){
+    const perKg = cached.modal/100;
+    body = `<p class="small-note">🟢 <b>${L('Live','लाइव')}</b> — ${L(`modal price ₹${cached.modal}/quintal (${inr(perKg.toFixed(2))}/kg) at ${esc(cached.market||'a nearby mandi')}, ${esc(cached.district||'')} · arrival ${esc(cached.arrivalDate||'today')}.`, `मोडल कीमत ₹${cached.modal}/क्विंटल (${inr(perKg.toFixed(2))}/किलो), ${esc(cached.market||'नज़दीकी मंडी')}, ${esc(cached.district||'')} · आगमन ${esc(cached.arrivalDate||'आज')}।`)}</p>
+      ${applyToInputId ? `<button class="btn btn-ghost btn-sm" style="margin-top:6px;" data-agmapply="${crop.id}" data-agmtarget="${applyToInputId}">${L('Use this price','यह कीमत उपयोग करें')}</button>` : ''}
+      <button class="linklike" style="font-size:.78rem;margin-left:10px;" data-agmfetch="${crop.id}"${srcAttr}>${L('Refresh','रीफ़्रेश')}</button>`;
+  } else if (st==='fallback'){
+    body = `<p class="small-note">🟡 ${L(`Live AGMARKNET fetch didn't return data (no internet, the shared demo key is rate-limited, or no record for today) — showing the demo reference price of ₹${crop.modal}/quintal instead.`, `लाइव AGMARKNET डेटा नहीं मिला (इंटरनेट नहीं, शेयर्ड डेमो कुंजी सीमित है, या आज का कोई रिकॉर्ड नहीं) — इसके बजाय ₹${crop.modal}/क्विंटल का डेमो संदर्भ मूल्य दिखाया जा रहा है।`)} <button class="linklike" style="font-size:.78rem;" data-agmfetch="${crop.id}"${srcAttr}>${L('Try again','दोबारा प्रयास करें')}</button></p>`;
+  } else {
+    body = `<p class="small-note">${L(`Pull today's real mandi price for ${crop.name} from the Government of India's open-data AGMARKNET feed.`, `भारत सरकार के ओपन-डेटा AGMARKNET फ़ीड से ${crop.name} की आज की वास्तविक मंडी कीमत प्राप्त करें।`)}</p>
+      <button class="btn btn-ghost btn-sm" data-agmfetch="${crop.id}"${srcAttr}>${L('Check live AGMARKNET price','लाइव AGMARKNET कीमत देखें')}</button>`;
+  }
+  return `<div class="agm-panel">
+    <h5>${L('Live market data','लाइव बाज़ार डेटा')}</h5>
+    ${body}
+    <div class="agm-key-row"><label for="agmApiKey_${crop.id}" style="font-size:.75rem;color:var(--ink-soft);">${L('Personal data.gov.in key (optional — the built-in demo key is shared &amp; rate-limited)','व्यक्तिगत data.gov.in कुंजी (वैकल्पिक — बिल्ट-इन डेमो कुंजी साझा और सीमित है)')}</label></div>
+    <div class="agm-key-row"><input type="text" id="agmApiKey_${crop.id}" data-agmkeyfor="${crop.id}" placeholder="${L('Paste your free key from data.gov.in','data.gov.in से अपनी मुफ़्त कुंजी पेस्ट करें')}" value="${S.agmarknetApiKey && S.agmarknetApiKey!==AGMARKNET_DEFAULT_KEY ? esc(S.agmarknetApiKey) : ''}"><button class="btn btn-ghost btn-sm" data-agmsavekey="${crop.id}">${L('Save key','कुंजी सहेजें')}</button></div>
+  </div>`;
+}
+
+/* ---------- Pricing model (from ELysian business-model design) ----------
+   Consumer price = farmer procurement + quality/handling + aggregation/
+   warehouse + logistics/delivery + technology/payment/manpower + company
+   margin (+ optional expedited-logistics charge for early/bulk delivery) */
+const PRICE_FACTORS = {
+  qualityHandling: 0.06,
+  aggregationWarehouse: 0.05,
+  logisticsDelivery: 0.09,
+  techPaymentManpower: 0.04,
+  companyMargin: 0.08,
+  expedited: 0.03,
+};
+function calcBreakdown(farmerPricePerKg, expedited){
+  const f = farmerPricePerKg;
+  const rows = [
+    { label:'Farmer procurement (AGMARKNET base)', labelHi:'किसान खरीद (AGMARKNET आधार)', key:'farmer', value: f, color:'#357f49' },
+    { label:'Quality & handling', labelHi:'गुणवत्ता व हैंडलिंग', key:'qh', value: f*PRICE_FACTORS.qualityHandling, color:'#7fae60' },
+    { label:'Aggregation & warehouse', labelHi:'एकत्रीकरण व वेयरहाउस', key:'aw', value: f*PRICE_FACTORS.aggregationWarehouse, color:'#e2a33d' },
+    { label:'Logistics & delivery', labelHi:'लॉजिस्टिक्स व डिलीवरी', key:'ld', value: f*PRICE_FACTORS.logisticsDelivery, color:'#a6522f' },
+    { label:'Technology, payments & manpower', labelHi:'तकनीक, भुगतान व मानव संसाधन', key:'tp', value: f*PRICE_FACTORS.techPaymentManpower, color:'#6b7fb0' },
+    { label:'Company margin', labelHi:'कंपनी मार्जिन', key:'cm', value: f*PRICE_FACTORS.companyMargin, color:'#16301f' },
+  ];
+  if (expedited) rows.push({ label:'Expedited / bulk logistics', labelHi:'शीघ्र / थोक लॉजिस्टिक्स', key:'ex', value: f*PRICE_FACTORS.expedited, color:'#b23b3b' });
+  const total = rows.reduce((s,r)=>s+r.value,0);
+  return { rows, total };
+}
+function inr(n){ return '₹' + Number(n).toLocaleString('en-IN', {maximumFractionDigits:2}); }
+function inr0(n){ return '₹' + Number(n).toLocaleString('en-IN', {maximumFractionDigits:0}); }
+
+/* ---------- Mock database ---------- */
+const DB = {
+  farmer: {
+    name:'Ramesh Patil', phone:'+91 98230 xxxxx', village:'Niphad', district:'Nashik', state:'Maharashtra',
+    land:'3.2 acres', crops:'Tomato, Onion', bank:'IDBI Bank •• 4021', joined:'Feb 2025', rating:4.6,
+  },
+  produces: [
+    { crop:'Tomato', qty:420, unit:'kg', grade:'A', harvest:'2026-09-10', status:'Listed' },
+    { crop:'Onion',  qty:900, unit:'kg', grade:'A', harvest:'2026-09-05', status:'Aggregated' },
+    { crop:'Tomato', qty:180, unit:'kg', grade:'B', harvest:'2026-09-12', status:'Pending QC' },
+  ],
+  payments: {
+    dueAmount: 8420, dueFor:'Onion — 900kg (order #SF-11042)',
+    history:[
+      { date:'2026-09-08', ref:'SF-11039', crop:'Tomato', qty:'260 kg', amount:6890, status:'Paid' },
+      { date:'2026-08-27', ref:'SF-11021', crop:'Onion',  qty:'640 kg', amount:20480, status:'Paid' },
+      { date:'2026-08-14', ref:'SF-10988', crop:'Tomato', qty:'310 kg', amount:7595, status:'Paid' },
+      { date:'2026-08-02', ref:'SF-10940', crop:'Potato', qty:'500 kg', amount:7000, status:'Paid' },
+    ]
+  },
+  consumer: {
+    name:'Ananya Sharma', phone:'+91 90040 xxxxx', address:'Flat 4B, Lake View Apartments, Kolkata, WB 700091',
+    since:'Jan 2026', preferred:'Organic-tagged produce',
+  },
+  orders: [
+    { id:'SF-88213', items:'Tomato 5kg, Onion 3kg', placed:'2026-09-13', status:'Out for delivery', eta:'2026-09-15, 6–8 PM', total:462 },
+    { id:'SF-87990', items:'Wheat 10kg', placed:'2026-09-08', status:'Delivered', eta:'2026-09-09', total:298 },
+    { id:'SF-87711', items:'Potato 4kg, Garlic 0.5kg', placed:'2026-08-30', status:'Delivered', eta:'2026-08-31', total:135 },
+  ],
+  feedback: [
+    { order:'SF-87990', rating:5, text:'Wheat quality was excellent, and delivery was right on time.' },
+    { order:'SF-87711', rating:4, text:'Fresh produce, packaging could be a touch sturdier.' },
+  ],
+  logisticsPartner: {
+    name:'Suresh Transport Co.', contact:'Vikram Rao', phone:'+91 98765 xxxxx', vehicles:4, area:'Nashik ↔ Mumbai corridor', rating:4.7,
+  },
+  inventory: [
+    { crop:'Tomato', qty:'1,240 kg', vehicle:'MH-15 AT 4021', dest:'Kalyan Hub' },
+    { crop:'Onion',  qty:'2,600 kg', vehicle:'MH-15 AT 4021', dest:'Kalyan Hub' },
+    { crop:'Potato', qty:'980 kg',   vehicle:'MH-04 BF 7790', dest:'Thane Hub' },
+  ],
+  associate: {
+    name:'Priya Deshmukh', role:'Regional Operations Associate', hub:'Nashik Aggregation Hub', joined:'Nov 2024', id:'ELY-A-0142',
+  },
+  qcQueue: [
+    { lot:'LOT-2291', crop:'Tomato', farmer:'Ramesh Patil', qty:'420 kg', grade:'Pending' },
+    { lot:'LOT-2292', crop:'Onion',  farmer:'Sunita Jadhav', qty:'610 kg', grade:'Pending' },
+    { lot:'LOT-2287', crop:'Garlic', farmer:'Devendra More',  qty:'85 kg',  grade:'Pending' },
+  ],
+  coldStorage: [
+    { unit:'CS-01 Nashik', temp:'4°C', capacity:'50T', occupied:'38T', status:'Normal' },
+    { unit:'CS-02 Kalyan', temp:'6°C', capacity:'30T', occupied:'27T', status:'Near full' },
+    { unit:'CS-03 Thane',  temp:'3°C', capacity:'40T', occupied:'12T', status:'Normal' },
+  ],
+  localExecs: [
+    { name:'Anil Kumar', zone:'Kolkata South', orders:8, status:'On route' },
+    { name:'Farida Khatun', zone:'Kolkata East', orders:6, status:'On route' },
+    { name:'Rohit Sen', zone:'Kolkata Central', orders:5, status:'Idle' },
+  ],
+  marketplace: [
+    { id:'MK-001', farmer:'Ramesh Patil', crop:'Tomato', qty:420, unit:'kg', price:26, grade:'A', desc:'Fresh vine-ripened tomatoes, harvested this week.' },
+    { id:'MK-002', farmer:'Sunita Jadhav', crop:'Onion', qty:900, unit:'kg', price:32, grade:'A', desc:'Storage-grade red onions, low moisture.' },
+    { id:'MK-003', farmer:'Devendra More', crop:'Garlic', qty:85, unit:'kg', price:78, grade:'A', desc:'Aromatic Lasalgaon garlic, hand-cleaned.' },
+    { id:'MK-004', farmer:'Bijoy Mondal', crop:'Rice', qty:600, unit:'kg', price:39, grade:'B', desc:'Locally milled short-grain rice.' },
+  ],
+  warehouse: [
+    { hub:'Nashik Aggregation Hub', capacity:'80T', occupied:'61T', status:'Normal' },
+    { hub:'Kalyan Hub', capacity:'55T', occupied:'49T', status:'Near full' },
+    { hub:'Thane Hub', capacity:'60T', occupied:'22T', status:'Normal' },
+  ],
+  team: [
+    { partner:'Suresh Transport Co.', corridor:'Nashik ↔ Mumbai corridor', vehicles:4, rating:4.7 },
+    { partner:'Kalyan Fleet Services', corridor:'Kalyan ↔ Thane', vehicles:6, rating:4.5 },
+  ],
+  custServiceTickets: [
+    { ticket:'CS-4021', consumer:'Ananya Sharma', issue:'Late delivery', status:'Open' },
+    { ticket:'CS-4018', consumer:'Farhan Khan', issue:'Damaged packaging', status:'Resolved' },
+  ],
+  farmServiceRequests: [
+    { request:'FS-2201', farmer:'Sunita Jadhav', type:'Cold storage slot', status:'Pending' },
+    { request:'FS-2196', farmer:'Devendra More', type:'Soil testing', status:'Scheduled' },
+  ],
+  farmersNear: [
+    { name:'Ramesh Patil', village:'Niphad', district:'Nashik', state:'Maharashtra', crop:'Tomato, Onion', dist:'4 km', rating:4.6 },
+    { name:'Sunita Jadhav', village:'Sinnar', district:'Nashik', state:'Maharashtra', crop:'Onion', dist:'11 km', rating:4.4 },
+    { name:'Devendra More', village:'Lasalgaon', district:'Nashik', state:'Maharashtra', crop:'Garlic, Onion', dist:'18 km', rating:4.8 },
+    { name:'Manoj Singh', village:'Barnala', district:'Ludhiana', state:'Punjab', crop:'Wheat, Maize', dist:'2 km', rating:4.5 },
+    { name:'Kavita Reddy', village:'Kurnool Rural', district:'Kurnool', state:'Andhra Pradesh', crop:'Tomato', dist:'6 km', rating:4.3 },
+    { name:'Bijoy Mondal', village:'Memari', district:'Purba Bardhaman', state:'West Bengal', crop:'Rice, Potato', dist:'9 km', rating:4.7 },
+    { name:'Harpreet Kaur', village:'Khanna', district:'Ludhiana', state:'Punjab', crop:'Wheat', dist:'14 km', rating:4.6 },
+    { name:'Lakshmi Iyer', village:'Pollachi', district:'Coimbatore', state:'Tamil Nadu', crop:'Maize, Soybean', dist:'7 km', rating:4.5 },
+    { name:'Ashok Yadav', village:'Malwa', district:'Indore', state:'Madhya Pradesh', crop:'Soybean, Wheat', dist:'12 km', rating:4.4 },
+  ],
+};
+const STATES = ['All areas', ...Array.from(new Set(DB.farmersNear.map(f=>f.state)))];
+
+/* ---------- Language (i18n) ---------- */
+const I18N = {
+  en: {
+    nav_home:'Home', nav_marketplace:'Marketplace', nav_login:'Log in', nav_register:'Register', nav_logout:'Log out',
+    nav_dash_suffix:'dashboard',
+    lang_label:'Language',
+    // Sidebar tabs
+    sb_details:'My details', sb_produces:'My produces', sb_mymarket:'My marketplace', sb_stock:'My stock',
+    sb_payments:'My payments', sb_services:'Services', sb_market:'Marketplace', sb_orders:'My orders',
+    sb_tracking:'Delivery tracking', sb_feedback:'Feedback', sb_inventory:'Inventory', sb_route:'Optimal route',
+    sb_realtime:'Real-time tracking', sb_assoccontact:'Associate contact',
+    at_details:'My details', at_quality:'Quality inspector', at_ai:'AI handling', at_warehouse:'Warehouse handling',
+    at_calc:'Calculation charts', at_team:'Logistics & team', at_custserv:'Customer services', at_farmserv:'Farmer services',
+    at_cold:'Cold storage', at_localexec:'Local delivery execs',
+    // Page headings (h/p pairs)
+    dh_farmerDetails_h:'My details', dh_farmerDetails_p:"Keep your profile accurate — it's what buyers and our AI matching engine see.",
+    dh_farmerProduces_h:'My produces', dh_farmerProduces_p:"List what's ready for harvest — Smart Forum aggregates it with nearby farmers automatically.",
+    dh_farmerMarket_h:'My marketplace', dh_farmerMarket_p:'Post produce directly for consumers to browse and buy — visible only to signed-in consumers.',
+    dh_farmerStock_h:'My stock', dh_farmerStock_p:'Live stock levels with the AGMARKNET base price and the expected consumer price after our calculation.',
+    dh_farmerPayments_h:'My payments', dh_farmerPayments_p:"Track what's owed and review your full payout history.",
+    dh_farmerServices_h:'Services', dh_farmerServices_p:'Everything Smart Forum offers beyond buying and selling.',
+    dh_consumerDetails_h:'My details', dh_consumerDetails_p:'Your delivery information and preferences.',
+    dh_consumerMarket_h:'Marketplace', dh_consumerMarket_p:'Produce posted directly by farmers, ready to buy — exclusive to signed-in consumers.',
+    dh_consumerOrders_h:'My orders', dh_consumerOrders_p:'Full price transparency on every order — expand to see the processing breakdown.',
+    dh_consumerTracking_h:'Delivery tracking', dh_consumerTracking_p:'Full checkpoint history for your order, the way a courier tracking page shows it.',
+    dh_consumerFeedback_h:'Feedback', dh_consumerFeedback_p:'Tell us how an order went — it feeds directly into farmer and logistics ratings.',
+    dh_consumerServices_h:'Services', dh_consumerServices_p:'More ways to use Smart Forum.',
+    dh_logiInventory_h:'Inventory', dh_logiInventory_p:"What's currently loaded and where it's headed.",
+    dh_logiDetails_h:'My details', dh_logiDetails_p:'Your partner profile with Smart Forum.',
+    dh_logiRoute_h:'Optimal route', dh_logiRoute_p:'Choose how the route-optimisation AI should prioritise this delivery.',
+    dh_logiTracking_h:'Real-time tracking', dh_logiTracking_p:'Consignment-level view for your active delivery, with a full checkpoint history.',
+    dh_logiContacts_h:'Associate contact', dh_logiContacts_p:'Reach the right person quickly for any inconvenience.',
+    dh_associateOps_h:'Associate operations',
+    // Common buttons / words
+    btn_save:'Save changes', btn_post_listing:'Post listing', btn_add_listing:'Add to listings', btn_buy_now:'Buy now',
+    btn_confirm_route:'Confirm route', btn_update_location:'Update location', btn_raise_issue:'Raise an issue',
+    btn_request:'Request', btn_check_price:'Check live AGMARKNET price', btn_simulate:'Simulate next update',
+    btn_submit_feedback:'Submit feedback', btn_reset_demo:'Reset demo data',
+    th_crop:'Crop', th_qty:'Quantity', th_grade:'Grade', th_status:'Status', th_harvest:'Harvest date',
+    th_vehicle:'Vehicle', th_destination:'Destination', th_price_kg:'Price/kg', th_description:'Description',
+    // Homepage
+    hero_h:'One fair price, from the <em>mandi</em> to your doorstep.', hero_p:'Smart Forum removes exploitative middlemen pricing. Farmers get AGMARKNET-backed fair prices, and every rupee a consumer pays is broken down and shown in the open.',
+    hero_eyebrow:'AI-powered farm-to-consumer platform', hero_cta_farmer:"I'm a Farmer", hero_cta_consumer:"I'm a Consumer", hero_cta_explore:'Explore the platform', hero_panel_label:'How Smart Forum works',
+  },
+  hi: {
+    nav_home:'होम', nav_marketplace:'बाज़ार', nav_login:'लॉग इन', nav_register:'रजिस्टर करें', nav_logout:'लॉग आउट',
+    nav_dash_suffix:'डैशबोर्ड',
+    lang_label:'भाषा',
+    sb_details:'मेरी जानकारी', sb_produces:'मेरी उपज', sb_mymarket:'मेरा बाज़ार', sb_stock:'मेरा स्टॉक',
+    sb_payments:'मेरा भुगतान', sb_services:'सेवाएं', sb_market:'बाज़ार', sb_orders:'मेरे ऑर्डर',
+    sb_tracking:'डिलीवरी ट्रैकिंग', sb_feedback:'प्रतिक्रिया', sb_inventory:'इन्वेंटरी', sb_route:'सर्वोत्तम मार्ग',
+    sb_realtime:'रीयल-टाइम ट्रैकिंग', sb_assoccontact:'एसोसिएट संपर्क',
+    at_details:'मेरी जानकारी', at_quality:'गुणवत्ता निरीक्षक', at_ai:'एआई हैंडलिंग', at_warehouse:'वेयरहाउस हैंडलिंग',
+    at_calc:'गणना चार्ट', at_team:'लॉजिस्टिक्स और टीम', at_custserv:'ग्राहक सेवाएं', at_farmserv:'किसान सेवाएं',
+    at_cold:'कोल्ड स्टोरेज', at_localexec:'लोकल डिलीवरी एक्ज़िक्यूटिव',
+    dh_farmerDetails_h:'मेरी जानकारी', dh_farmerDetails_p:'अपनी प्रोफ़ाइल सही रखें — यही खरीदार और हमारा एआई मैचिंग इंजन देखता है।',
+    dh_farmerProduces_h:'मेरी उपज', dh_farmerProduces_p:'जो फसल कटाई के लिए तैयार है उसे सूचीबद्ध करें — Smart Forum इसे आस-पास के किसानों के साथ स्वचालित रूप से एकत्र करता है।',
+    dh_farmerMarket_h:'मेरा बाज़ार', dh_farmerMarket_p:'उपभोक्ताओं के देखने और खरीदने के लिए सीधे उपज पोस्ट करें — केवल साइन-इन उपभोक्ताओं को दिखाई देता है।',
+    dh_farmerStock_h:'मेरा स्टॉक', dh_farmerStock_p:'AGMARKNET आधार मूल्य और हमारी गणना के बाद अपेक्षित उपभोक्ता मूल्य के साथ लाइव स्टॉक स्तर।',
+    dh_farmerPayments_h:'मेरा भुगतान', dh_farmerPayments_p:'बकाया राशि ट्रैक करें और अपना पूरा भुगतान इतिहास देखें।',
+    dh_farmerServices_h:'सेवाएं', dh_farmerServices_p:'खरीद-बिक्री के अलावा Smart Forum जो कुछ भी प्रदान करता है।',
+    dh_consumerDetails_h:'मेरी जानकारी', dh_consumerDetails_p:'आपकी डिलीवरी जानकारी और प्राथमिकताएं।',
+    dh_consumerMarket_h:'बाज़ार', dh_consumerMarket_p:'किसानों द्वारा सीधे पोस्ट की गई उपज, खरीदने के लिए तैयार — केवल साइन-इन उपभोक्ताओं के लिए।',
+    dh_consumerOrders_h:'मेरे ऑर्डर', dh_consumerOrders_p:'हर ऑर्डर पर पूरी कीमत पारदर्शिता — प्रोसेसिंग विवरण देखने के लिए विस्तार करें।',
+    dh_consumerTracking_h:'डिलीवरी ट्रैकिंग', dh_consumerTracking_p:'आपके ऑर्डर का पूरा चेकपॉइंट इतिहास, जैसा एक कोरियर ट्रैकिंग पेज दिखाता है।',
+    dh_consumerFeedback_h:'प्रतिक्रिया', dh_consumerFeedback_p:'हमें बताएं कि ऑर्डर कैसा रहा — यह सीधे किसान और लॉजिस्टिक्स रेटिंग में जाता है।',
+    dh_consumerServices_h:'सेवाएं', dh_consumerServices_p:'Smart Forum का उपयोग करने के और तरीके।',
+    dh_logiInventory_h:'इन्वेंटरी', dh_logiInventory_p:'अभी क्या लोड है और कहाँ जा रहा है।',
+    dh_logiDetails_h:'मेरी जानकारी', dh_logiDetails_p:'Smart Forum के साथ आपकी पार्टनर प्रोफ़ाइल।',
+    dh_logiRoute_h:'सर्वोत्तम मार्ग', dh_logiRoute_p:'चुनें कि रूट-ऑप्टिमाइज़ेशन एआई को इस डिलीवरी को कैसे प्राथमिकता देनी चाहिए।',
+    dh_logiTracking_h:'रीयल-टाइम ट्रैकिंग', dh_logiTracking_p:'आपकी सक्रिय डिलीवरी का पूरा चेकपॉइंट इतिहास सहित कंसाइनमेंट-स्तर का दृश्य।',
+    dh_logiContacts_h:'एसोसिएट संपर्क', dh_logiContacts_p:'किसी भी असुविधा के लिए सही व्यक्ति से जल्दी संपर्क करें।',
+    dh_associateOps_h:'एसोसिएट ऑपरेशंस',
+    btn_save:'बदलाव सहेजें', btn_post_listing:'लिस्टिंग पोस्ट करें', btn_add_listing:'सूची में जोड़ें', btn_buy_now:'अभी खरीदें',
+    btn_confirm_route:'मार्ग की पुष्टि करें', btn_update_location:'लोकेशन अपडेट करें', btn_raise_issue:'शिकायत दर्ज करें',
+    btn_request:'रिक्वेस्ट करें', btn_check_price:'लाइव AGMARKNET कीमत देखें', btn_simulate:'अगला अपडेट देखें',
+    btn_submit_feedback:'प्रतिक्रिया सबमिट करें', btn_reset_demo:'डेमो डेटा रीसेट करें',
+    th_crop:'फसल', th_qty:'मात्रा', th_grade:'ग्रेड', th_status:'स्थिति', th_harvest:'कटाई की तारीख',
+    th_vehicle:'वाहन', th_destination:'गंतव्य', th_price_kg:'कीमत/किलो', th_description:'विवरण',
+    hero_h:'खेत की <em>मंडी</em> से लेकर आपके दरवाज़े तक, एक उचित कीमत।', hero_p:'Smart Forum बिचौलियों की शोषणकारी कीमतों को खत्म करता है। किसानों को AGMARKNET-समर्थित उचित मूल्य मिलता है, और उपभोक्ता जो भी रुपया चुकाता है उसका पूरा विवरण खुलेआम दिखाया जाता है।',
+    hero_eyebrow:'एआई-संचालित फार्म-टू-कंज़्यूमर प्लेटफ़ॉर्म', hero_cta_farmer:'मैं एक किसान हूं', hero_cta_consumer:'मैं एक उपभोक्ता हूं', hero_cta_explore:'प्लेटफ़ॉर्म देखें', hero_panel_label:'Smart Forum कैसे काम करता है',
+  },
+};
+function tr(key){
+  const d = I18N[S.language] || I18N.en;
+  return d[key] != null ? d[key] : (I18N.en[key] != null ? I18N.en[key] : key);
+}
+function L(en, hi){ return S.language==='hi' ? hi : en; }
+function mainHead(key, extraHtml){
+  return `<div class="dash-main-head">${extraHtml||''}<h2>${tr('dh_'+key+'_h')}</h2>${I18N.en['dh_'+key+'_p'] ? `<p>${tr('dh_'+key+'_p')}</p>` : ''}</div>`;
+}
+
+/* ---------- Registered accounts (in-memory) ---------- */
+const ROLE_LABEL = { farmer:'Farmer', consumer:'Consumer', logistics:'Logistics partner', associate:'Associate' };
+const ROLE_LABEL_HI = { farmer:'किसान', consumer:'उपभोक्ता', logistics:'लॉजिस्टिक्स पार्टनर', associate:'एसोसिएट' };
+function roleLabel(r){ return L(ROLE_LABEL[r], ROLE_LABEL_HI[r]) || r; }
+const ROLE_FIELDS = {
+  farmer: [
+    ['name','Full name','text'], ['identifier','Phone number','tel'], ['password','Password','password'],
+    ['village','Village','text'], ['district','District','text'], ['state','State','text'],
+    ['land','Land holding (e.g. 3 acres)','text'], ['crops','Primary crops','text'], ['bank','Bank account (masked)','text'],
+  ],
+  consumer: [
+    ['name','Full name','text'], ['identifier','Email or phone','text'], ['password','Password','password'],
+    ['address','Delivery address','text'], ['preferred','Preference (optional)','text'],
+  ],
+  logistics: [
+    ['name','Company name','text'], ['identifier','Contact phone','tel'], ['password','Password','password'],
+    ['contact','Primary contact person','text'], ['area','Service corridor','text'], ['vehicles','Fleet size','number'],
+  ],
+  associate: [
+    ['name','Full name','text'], ['identifier','Work email','text'], ['password','Password','password'],
+    ['role','Designation','text'], ['hub','Assigned hub','text'], ['id','Associate ID','text'],
+  ],
+};
+const FIELD_LABEL_HI = {
+  'Full name':'पूरा नाम', 'Phone number':'फ़ोन नंबर', 'Password':'पासवर्ड', 'Village':'गांव', 'District':'ज़िला', 'State':'राज्य',
+  'Land holding (e.g. 3 acres)':'भूमि (जैसे 3 एकड़)', 'Primary crops':'मुख्य फसलें', 'Bank account (masked)':'बैंक खाता (मास्क्ड)',
+  'Email or phone':'ईमेल या फ़ोन', 'Delivery address':'डिलीवरी पता', 'Preference (optional)':'प्राथमिकता (वैकल्पिक)',
+  'Company name':'कंपनी का नाम', 'Contact phone':'संपर्क फ़ोन', 'Primary contact person':'मुख्य संपर्क व्यक्ति',
+  'Service corridor':'सेवा क्षेत्र', 'Fleet size':'फ्लीट आकार', 'Work email':'कार्य ईमेल', 'Designation':'पदनाम',
+  'Assigned hub':'नियुक्त हब', 'Associate ID':'एसोसिएट आईडी',
+  'Phone / email':'फ़ोन / ईमेल', 'Fleet size (vehicles)':'फ्लीट आकार (वाहन)', 'Partner rating':'पार्टनर रेटिंग',
+  'Linked bank account':'लिंक्ड बैंक खाता', 'Joined':'शामिल हुए', 'Name':'नाम', 'Role':'भूमिका', 'Hub':'हब',
+};
+const USERS = [
+  { role:'farmer', identifier:'ramesh@smartforum.demo', password:'demo123',
+    profile:{ ...DB.farmer, identifier:'ramesh@smartforum.demo' } },
+  { role:'consumer', identifier:'ananya@smartforum.demo', password:'demo123',
+    profile:{ ...DB.consumer, identifier:'ananya@smartforum.demo' } },
+  { role:'logistics', identifier:'suresh@smartforum.demo', password:'demo123',
+    profile:{ ...DB.logisticsPartner, identifier:'suresh@smartforum.demo' } },
+  { role:'associate', identifier:'priya@smartforum.demo', password:'demo123',
+    profile:{ ...DB.associate, identifier:'priya@smartforum.demo' } },
+];
+
+/* ---------- App state ---------- */
+const S = {
+  role:'home',
+  farmerTab:'details',
+  consumerTab:'details',
+  logisticsTab:'inventory',
+  assocTab:'quality',
+  routeMode:'fastest',
+  areaFilter:'All areas',
+  activeOrder: DB.orders[0],
+  modal:null,
+  expedited:false,
+  selectedCrop: CROPS[0].id,
+  currentUser:null,
+  authView:'login',
+  authRole:'farmer',
+  authError:'',
+  theme:'light',
+  language:'en',
+  langMenuOpen:false,
+  chatOpen:false,
+  chatMessages:[
+    { from:'bot', text:'Hi! I\'m the Smart Forum assistant. Ask me about pricing, orders, listings or delivery.' }
+  ],
+  logiStopIndex:2,
+  routeConfirmed:null,
+  agmarknetApiKey: null, // null = use the shared public demo key
+  agmarknetState: 'Maharashtra',
+  agmarknetCache: {},
+  agmarknetStatus: {},
+  agmarknetError: null,
+  agmarknetLastFarmerCrop: null,
+  mkPriceOverride: null,
+  _toast:null,
+  _toastTimer:null,
+  _navKey:null,
+};
+
+/* ---------- Persistence (so an accidental refresh doesn't wipe a live demo) ---------- */
+const PERSIST_KEY = 'smartforum_demo_state_v1';
+function persistState(){
+  try{
+    const snapshot = {
+      db: DB,
+      users: USERS,
+      ui: {
+        role:S.role, theme:S.theme, language:S.language, farmerTab:S.farmerTab, consumerTab:S.consumerTab,
+        logisticsTab:S.logisticsTab, assocTab:S.assocTab, routeMode:S.routeMode,
+        areaFilter:S.areaFilter, selectedCrop:S.selectedCrop, chatMessages:S.chatMessages,
+        logiStopIndex:S.logiStopIndex, routeConfirmed:S.routeConfirmed,
+        agmarknetApiKey:S.agmarknetApiKey,
+        currentUser: S.currentUser ? { role:S.currentUser.role, identifier:S.currentUser.identifier } : null,
+        activeOrderId: S.activeOrder ? S.activeOrder.id : null,
+      }
+    };
+    localStorage.setItem(PERSIST_KEY, JSON.stringify(snapshot));
+  }catch(e){ /* storage unavailable or full — demo still works, just won't survive a refresh */ }
+}
+function loadPersistedState(){
+  try{
+    const raw = localStorage.getItem(PERSIST_KEY);
+    if (!raw) return;
+    const saved = JSON.parse(raw);
+    if (!saved || !saved.db || !saved.users) return;
+    Object.keys(saved.db).forEach(k=>{ if (k in DB) DB[k] = saved.db[k]; });
+    USERS.length = 0; saved.users.forEach(u=>USERS.push(u));
+    const ui = saved.ui || {};
+    Object.assign(S, {
+      theme: ui.theme || S.theme, language: ui.language || S.language, farmerTab: ui.farmerTab || S.farmerTab,
+      consumerTab: ui.consumerTab || S.consumerTab, logisticsTab: ui.logisticsTab || S.logisticsTab,
+      assocTab: ui.assocTab || S.assocTab, routeMode: ui.routeMode || S.routeMode,
+      areaFilter: ui.areaFilter || S.areaFilter, selectedCrop: ui.selectedCrop || S.selectedCrop,
+      chatMessages: ui.chatMessages || S.chatMessages,
+      logiStopIndex: ui.logiStopIndex!=null ? ui.logiStopIndex : S.logiStopIndex,
+      routeConfirmed: ui.routeConfirmed || null,
+      agmarknetApiKey: ui.agmarknetApiKey || null,
+    });
+    if (ui.currentUser){
+      const u = USERS.find(x=>x.role===ui.currentUser.role && x.identifier===ui.currentUser.identifier);
+      if (u){ S.currentUser = u; S.role = ui.role || u.role; }
+    }
+    if (ui.activeOrderId){
+      const o = DB.orders.find(x=>x.id===ui.activeOrderId);
+      if (o) S.activeOrder = o;
+    }
+  }catch(e){ /* corrupted/unavailable storage — fall back to fresh demo data */ }
+}
+function resetDemoData(){
+  try{ localStorage.removeItem(PERSIST_KEY); }catch(e){}
+  location.reload();
+}
+
+const PROTECTED_ROLES = ['farmer','consumer','logistics','associate'];
+function render(){
+  const app = document.getElementById('app');
+  let main;
+  if (S.role==='home') main = homePage();
+  else if (S.role==='auth') main = authPage();
+  else if (PROTECTED_ROLES.includes(S.role)){
+    if (S.currentUser && S.currentUser.role===S.role) main = dashPage();
+    else if (S.currentUser) main = accessDeniedPage();
+    else { S.authRole = S.role; S.authView = 'login'; main = authPage(); }
+  } else main = homePage();
+  document.documentElement.setAttribute('data-theme', S.theme);
+  const toastHtml = S._toast ? `<div class="toast" role="status">${esc(S._toast)}</div>` : '';
+  app.innerHTML = topNav() + main + (S.modal ? modalHtml(S.modal) : '') + cookieBar() + chatWidget() + toastHtml;
+  bindEvents();
+  // Only reset scroll position on genuine navigation (role/tab/auth-view changes) —
+  // not on every state mutation (adding a listing, sending a chat message, etc.)
+  const navKey = [S.role, S.farmerTab, S.consumerTab, S.logisticsTab, S.assocTab, S.authView].join('|');
+  if (navKey !== S._navKey){ window.scrollTo({top:0}); S._navKey = navKey; }
+  persistState();
+}
+function showToast(msg){
+  S._toast = msg;
+  clearTimeout(S._toastTimer);
+  render();
+  S._toastTimer = setTimeout(()=>{ S._toast = null; render(); }, 2600);
+}
+function esc(str){
+  return String(str==null?'':str).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+function goToRole(role){
+  if (S.currentUser && S.currentUser.role===role){ S.role = role; }
+  else { S.role = role; }
+  render();
+}
+
+/* ---------------- TOP NAV ---------------- */
+function langSwitcher(){
+  const names = { en:'EN', hi:'हिं' };
+  const full = { en:'English', hi:'हिंदी (Hindi)' };
+  return `<div class="lang-switch">
+    <button class="lang-switch-btn" id="langSwitchBtn" title="${tr('lang_label')}">🌐 ${names[S.language]}</button>
+    ${S.langMenuOpen ? `<div class="lang-menu">
+      ${Object.keys(names).map(code=>`<button class="${S.language===code?'active':''}" data-setlang="${code}">${full[code]}</button>`).join('')}
+    </div>` : ''}
+  </div>`;
+}
+function topNav(){
+  const u = S.currentUser;
+  const themeBtn = `<button class="theme-toggle" id="themeToggle" title="Toggle dark / light mode">${S.theme==='dark'?'☀️':'🌙'}</button>`;
+  const marketplaceBtn = (u && u.role==='consumer') ? `<button class="btn-ghost btn btn-sm" id="marketplaceNav">${tr('nav_marketplace')}</button>` : '';
+  const right = u ? `
+    <div class="nav-guest">
+      <button class="btn-ghost btn btn-sm" data-nav="home">${tr('nav_home')}</button>
+      ${marketplaceBtn}
+      <button class="nav-dash-link" data-nav="${u.role}">${roleLabel(u.role)} ${tr('nav_dash_suffix')}</button>
+      ${langSwitcher()}
+      ${themeBtn}
+      <div class="nav-user">
+        <span class="avatar">${initials(u.profile.name)}</span>
+        <span><span style="display:block;font-size:.82rem;font-weight:600;">${u.profile.name}</span><span class="role-badge">${roleLabel(u.role)}</span></span>
+        <button id="logoutBtn">${tr('nav_logout')}</button>
+      </div>
+    </div>` : `
+    <div class="nav-guest">
+      <button class="btn-ghost btn btn-sm" data-nav="home">${tr('nav_home')}</button>
+      ${langSwitcher()}
+      ${themeBtn}
+      <button class="btn btn-ghost btn-sm" data-authopen="login">${tr('nav_login')}</button>
+      <button class="btn btn-primary btn-sm" data-authopen="register">${tr('nav_register')}</button>
+    </div>`;
+  return `
+  <div class="topnav">
+    <div class="topnav-row">
+      <button class="brand" data-nav="home">
+        <span class="brand-mark">${leafIcon()}</span>
+        <span>
+          <span class="brand-name">Smart Forum</span>
+          <span class="brand-sub" style="display:block;">by Team ELysian</span>
+        </span>
+      </button>
+      ${right}
+    </div>
+  </div>`;
+}
+
+function leafIcon(){
+  return `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 19C5 11 11 5 19 5C19 13 13 19 5 19Z" stroke="#e2a33d" stroke-width="1.6" stroke-linejoin="round"/><path d="M5 19C8 15 11 12 15 9" stroke="#e2a33d" stroke-width="1.6" stroke-linecap="round"/></svg>`;
+}
+
+/* ---------------- HOME PAGE ---------------- */
+function homePage(){
+  return `
+  <main>
+    ${heroSection()}
+    <div class="container">
+      ${idealsSection()}
+      ${transparencySection()}
+      ${logisticsSection()}
+      ${farmersSection()}
+      ${productsSection()}
+      ${overviewSection()}
+      ${impactSection()}
+      ${techStackSection()}
+    </div>
+    ${footerSection()}
+  </main>`;
+}
+function impactSection(){
+  const groups = [
+    [L('Economic','आर्थिक'), '📈', [L('Higher, more predictable farmer earnings through fair-price analysis and better farmer selection.','उचित-मूल्य विश्लेषण और बेहतर किसान चयन के माध्यम से अधिक, अनुमानित किसान आय।'), L('Reduced post-harvest losses through AI-based cold storage decisions and efficient movement of produce.','एआई-आधारित कोल्ड स्टोरेज निर्णयों और उपज की कुशल आवाजाही से कटाई-बाद के नुकसान में कमी।')]],
+    [L('Social','सामाजिक'), '🤝', [L('Strengthens rural livelihoods and trust between farmers and buyers by cutting out unnecessary intermediaries.','अनावश्यक बिचौलियों को हटाकर ग्रामीण आजीविका और किसानों व खरीदारों के बीच विश्वास को मजबूत करता है।'), L('A transparent, organised marketplace for every stakeholder — farmer, consumer, logistics partner and associate.','हर हितधारक — किसान, उपभोक्ता, लॉजिस्टिक्स पार्टनर और एसोसिएट — के लिए एक पारदर्शी, संगठित बाज़ार।')]],
+    [L('Environmental','पर्यावरणीय'), '🌍', [L('Less food wastage through better storage and supply coordination.','बेहतर भंडारण और आपूर्ति समन्वय से कम खाद्य बर्बादी।'), L('AI-optimised delivery routes cut unnecessary travel, transport cost and emissions.','एआई-अनुकूलित डिलीवरी मार्ग अनावश्यक यात्रा, परिवहन लागत और उत्सर्जन को कम करते हैं।')]],
+  ];
+  return `
+  <section class="block" id="impact">
+    <div class="block-head"><div><h2>${L('Impact and benefits','प्रभाव और लाभ')}</h2><p>${L("What removing exploitative middlemen pricing actually changes, across three dimensions.",'शोषणकारी बिचौलिया मूल्य निर्धारण को हटाने से वास्तव में क्या बदलता है, तीन आयामों में।')}</p></div></div>
+    <div class="ideals-grid impact-grid">
+      ${groups.map(([t,icon,pts])=>`<div class="ideal-card"><span style="font-size:1.6rem;">${icon}</span><h3>${t}</h3>${pts.map(p=>`<p>${p}</p>`).join('')}</div>`).join('')}
+    </div>
+  </section>`;
+}
+function techStackSection(){
+  const stack = [
+    ['Python · Django / FastAPI + PostgreSQL', L('Backend, database and platform operations','बैकएंड, डेटाबेस और प्लेटफ़ॉर्म संचालन')],
+    ['React Web / Flutter Mobile', L('User interfaces across web and mobile','वेब और मोबाइल पर उपयोगकर्ता इंटरफ़ेस')],
+    ['AI / ML', L('AGMARKNET price analysis, fair-price calculation, farmer ranking, cold-storage decisions','AGMARKNET मूल्य विश्लेषण, उचित-मूल्य गणना, किसान रैंकिंग, कोल्ड-स्टोरेज निर्णय')],
+    ['OR-Tools', L('Route and logistics optimisation','मार्ग और लॉजिस्टिक्स अनुकूलन')],
+    ['AGMARKNET API', L('Real-time mandi market price data','रीयल-टाइम मंडी बाज़ार मूल्य डेटा')],
+    [L('Secure payment gateway APIs','सुरक्षित भुगतान गेटवे एपीआई'), L('Fast, reliable, fraud-resistant payments','तेज़, भरोसेमंद, धोखाधड़ी-रोधी भुगतान')],
+    ['AWS / GCP + Maps API', L('Scalable cloud hosting, location services and route mapping','स्केलेबल क्लाउड होस्टिंग, लोकेशन सेवाएं और रूट मैपिंग')],
+  ];
+  return `
+  <section class="block" id="tech">
+    <div class="block-head"><div><h2>${L('Built on proven technology','सिद्ध तकनीक पर निर्मित')}</h2><p>${L("The stack behind Smart Forum's AI-powered decision engine and marketplace.",'Smart Forum के एआई-संचालित निर्णय इंजन और बाज़ार के पीछे की तकनीक।')}</p></div></div>
+    <div class="chip-list">
+      ${stack.map(([t,d])=>`<span class="tag" style="margin:0;" title="${d}">${t}</span>`).join('')}
+    </div>
+    <p class="small-note" style="margin-top:16px;">${L('Reference research: AGMARKNET (Ministry of Agriculture &amp; Farmers Welfare) for mandi price data · ARIMA / Prophet / LSTM approaches for demand &amp; price forecasting · Google OR-Tools for vehicle-routing optimisation · NABARD / ICAR reports on post-harvest losses.','संदर्भ शोध: मंडी मूल्य डेटा के लिए AGMARKNET (कृषि एवं किसान कल्याण मंत्रालय) · मांग व मूल्य पूर्वानुमान के लिए ARIMA / Prophet / LSTM तरीके · वाहन-रूटिंग अनुकूलन के लिए Google OR-Tools · कटाई-बाद के नुकसान पर NABARD / ICAR रिपोर्ट।')}</p>
+  </section>`;
+}
+
+function heroSection(){
+  return `
+  <section class="hero">
+    <div class="container hero-grid">
+      <div>
+        <div class="eyebrow-badge"><span class="dot"></span> ${tr('hero_eyebrow')}</div>
+        <h1>${tr('hero_h')}</h1>
+        <p class="hero-lede">${tr('hero_p')}</p>
+        <div class="hero-ctas">
+          <button class="btn btn-primary" data-nav="farmer">${tr('hero_cta_farmer')}</button>
+          <button class="btn btn-marigold" data-nav="consumer">${tr('hero_cta_consumer')}</button>
+          <button class="btn btn-ghost" data-scroll="ideals">${tr('hero_cta_explore')}</button>
+        </div>
+      </div>
+      <div class="hero-panel">
+        <div class="hero-panel-label">${tr('hero_panel_label')}</div>
+        <div class="hero-flow">
+          ${[
+            [L('Farmers list produce','किसान उपज सूचीबद्ध करते हैं'),L('Quantity, quality & location, straight from the field.','मात्रा, गुणवत्ता और स्थान, सीधे खेत से।')],
+            [L('We aggregate supply','हम आपूर्ति को एकत्र करते हैं'),L('Combining lots from multiple nearby farmers.','आस-पास के कई किसानों के लॉट को मिलाकर।')],
+            [L('AI matches & prices','एआई मिलान और कीमत तय करता है'),L('Ranks farmers by quality, cost & feasibility using AGMARKNET data.','AGMARKNET डेटा का उपयोग करके गुणवत्ता, लागत और व्यवहार्यता के आधार पर किसानों को रैंक करता है।')],
+            [L('AI plans storage & delivery','एआई भंडारण और डिलीवरी की योजना बनाता है'),L('Cold-storage selection plus the shortest, lowest-cost route.','कोल्ड-स्टोरेज चयन के साथ सबसे छोटा, सबसे किफायती मार्ग।')],
+          ].map((s,i)=>`<div class="flow-step"><span class="flow-num">${i+1}</span><span class="flow-text"><b>${s[0]}</b><span>${s[1]}</span></span></div>`).join('')}
+        </div>
+      </div>
+    </div>
+  </section>`;
+}
+
+function idealsSection(){
+  const ideals = [
+    [L('Fair price first','उचित मूल्य सबसे पहले'), L("Farmer payouts are calculated from real AGMARKNET mandi data — never guesswork, never a middleman's word.",'किसान भुगतान वास्तविक AGMARKNET मंडी डेटा से तय होता है — कभी अनुमान नहीं, कभी बिचौलिये की बात पर नहीं।')],
+    [L('Radical transparency','पूर्ण पारदर्शिता'), L('Every consumer order shows exactly what was paid to the farmer, and what covered handling, logistics and our margin.','हर उपभोक्ता ऑर्डर में ठीक-ठीक दिखता है कि किसान को क्या मिला, और हैंडलिंग, लॉजिस्टिक्स व हमारे मार्जिन में क्या गया।')],
+    [L('Nothing goes to waste','कुछ भी बर्बाद नहीं होता'), L('AI evaluates seasonal surplus and cold-storage feasibility before a single crate leaves the farm.','एक भी क्रेट खेत से निकलने से पहले एआई मौसमी अधिशेष और कोल्ड-स्टोरेज व्यवहार्यता का मूल्यांकन करता है।')],
+    [L('Dignity for every farmer','हर किसान के लिए सम्मान'), L('Simple, voice-friendly onboarding and reliable payments — built for the way farmers actually work.','सरल, आवाज़-अनुकूल ऑनबोर्डिंग और भरोसेमंद भुगतान — किसानों के वास्तविक कामकाज के तरीके के लिए बनाया गया।')],
+  ];
+  return `
+  <section class="block" id="ideals">
+    <div class="block-head"><div><h2>${L('What Smart Forum stands for','Smart Forum किस लिए खड़ा है')}</h2><p>${L("Four ideas we don't compromise on, whichever side of the supply chain you're on.",'चार सिद्धांत जिनसे हम कभी समझौता नहीं करते, चाहे आप सप्लाई चेन के किसी भी पक्ष में हों।')}</p></div></div>
+    <div class="ideals-grid">
+      ${ideals.map(([t,d])=>`<div class="ideal-card"><svg class="ideal-icon" viewBox="0 0 40 40" fill="none"><circle cx="20" cy="20" r="19" stroke="#357f49" stroke-width="1.4"/><path d="M13 20l5 5 9-11" stroke="#e2a33d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><h3>${t}</h3><p>${d}</p></div>`).join('')}
+    </div>
+  </section>`;
+}
+
+function transparencySection(){
+  const sample = CROPS[0];
+  const base = sample.modal/100;
+  const bd = calcBreakdown(base, false);
+  return `
+  <section class="block">
+    <div class="transparency">
+      <div class="block-head"><div><h2>${L('Transparency on every transaction','हर लेन-देन पर पारदर्शिता')}</h2><p>${L('Live figures across the Smart Forum network — updated as orders move through the platform.','Smart Forum नेटवर्क के लाइव आंकड़े — ऑर्डर के प्लेटफ़ॉर्म से गुज़रते ही अपडेट होते हैं।')}</p></div></div>
+      <div class="stat-grid">
+        <div class="stat"><b data-count="18400000" data-prefix="₹">₹0</b><span>${L('Total transaction value settled','कुल निपटाया गया लेन-देन मूल्य')}</span></div>
+        <div class="stat"><b data-count="1284">0</b><span>${L('Farmers onboarded','जुड़े हुए किसान')}</span></div>
+        <div class="stat"><b data-count="960" data-suffix=" T">0 T</b><span>${L('Produce moved this year','इस वर्ष भेजी गई उपज')}</span></div>
+        <div class="stat"><b data-count="21" data-suffix="%">0%</b><span>${L('Avg. farmer price uplift vs. traditional mandi chain','पारंपरिक मंडी चेन की तुलना में औसत किसान मूल्य वृद्धि')}</span></div>
+      </div>
+      <div class="price-glass">
+        <div class="price-glass-head">
+          <h4>${L('Where a rupee goes','एक रुपया कहां जाता है')} — ${sample.name} (${sample.img}) ${L('today','आज')}</h4>
+          <span class="tag gold">${L('AGMARKNET base','AGMARKNET आधार')}: ${inr(base.toFixed(2))}/kg</span>
+        </div>
+        <div class="price-bar">${bd.rows.map(r=>`<span style="width:${(r.value/bd.total*100).toFixed(1)}%; background:${r.color}"></span>`).join('')}</div>
+        <div class="price-legend">${bd.rows.map(r=>`<span class="price-legend-item"><i style="background:${r.color}"></i>${L(r.label,r.labelHi||r.label)} — ${inr(r.value.toFixed(2))}</span>`).join('')}</div>
+        <p class="small-note" style="color:#c7d6c7;">${L('Consumer pays','उपभोक्ता चुकाता है')} ${inr(bd.total.toFixed(2))}/kg — ${L('see the full calculator on any product below.','नीचे किसी भी उत्पाद पर पूरा कैलकुलेटर देखें।')}</p>
+      </div>
+    </div>
+  </section>`;
+}
+
+function logisticsSection(){
+  return `
+  <section class="block">
+    <div class="block-head"><div><h2>${L('Our logistics department','हमारा लॉजिस्टिक्स विभाग')}</h2><p>${L('A dedicated cold-chain and delivery network optimised by our route-planning AI.','हमारे रूट-प्लानिंग एआई द्वारा अनुकूलित एक समर्पित कोल्ड-चेन और डिलीवरी नेटवर्क।')}</p></div></div>
+    <div class="logi-grid">
+      <div class="logi-card">
+        <div class="logi-stat-row"><span>${L('Active vehicles on the road','सड़क पर सक्रिय वाहन')}</span><b>146</b></div>
+        <div class="logi-stat-row"><span>${L('Cities &amp; districts covered','कवर किए गए शहर और ज़िले')}</span><b>38</b></div>
+        <div class="logi-stat-row"><span>${L('Cold-chain coverage','कोल्ड-चेन कवरेज')}</span><b>92%</b></div>
+        <div class="logi-stat-row"><span>${L('Avg. farm-to-doorstep time','औसत खेत-से-दरवाज़ा समय')}</span><b>19 hrs</b></div>
+        <div class="logi-stat-row"><span>${L('On-time delivery rate','समय पर डिलीवरी दर')}</span><b>96.4%</b></div>
+      </div>
+      <div class="logi-card">
+        <h3 style="margin-bottom:14px;">${L('A typical route','एक सामान्य मार्ग')}</h3>
+        <div class="route-illustration">
+          <span class="route-node"></span><span class="route-line"></span>
+          <span class="route-node"></span><span class="route-line"></span>
+          <span class="route-node"></span><span class="route-line"></span>
+          <span class="route-node end"></span>
+        </div>
+        <div class="route-illustration" style="margin-top:6px;">
+          <span style="font-size:.75rem;color:var(--ink-soft);width:60px;">${L('Farm','खेत')}</span>
+          <span style="font-size:.75rem;color:var(--ink-soft);width:80px;text-align:center;">${L('Aggregation hub','एकत्रीकरण हब')}</span>
+          <span style="font-size:.75rem;color:var(--ink-soft);width:80px;text-align:center;">${L('Cold storage','कोल्ड स्टोरेज')}</span>
+          <span style="font-size:.75rem;color:var(--ink-soft);width:70px;text-align:right;">${L('Doorstep','दरवाज़ा')}</span>
+        </div>
+        <p class="small-note">${L('Every route is chosen by our AI across fastest, safest and most cost-effective options — see it live in the Logistics dashboard.','हर मार्ग हमारे एआई द्वारा सबसे तेज़, सबसे सुरक्षित और सबसे किफायती विकल्पों में से चुना जाता है — इसे लॉजिस्टिक्स डैशबोर्ड में लाइव देखें।')}</p>
+      </div>
+    </div>
+  </section>`;
+}
+
+function farmersSection(){
+  const list = DB.farmersNear.filter(f => S.areaFilter==='All areas' || f.state===S.areaFilter).sort((a,b)=>parseFloat(a.dist)-parseFloat(b.dist));
+  return `
+  <section class="block">
+    <div class="block-head"><div><h2>${L('Our farmers','हमारे किसान')}</h2><p>${L('Real people behind every listing, sorted by distance from your selected area.','हर लिस्टिंग के पीछे असली लोग, आपके चुने हुए क्षेत्र से दूरी के अनुसार क्रमबद्ध।')}</p></div></div>
+    <div class="farmer-filter">
+      <label for="areaSelect" style="font-size:.85rem;color:var(--ink-soft);">${L('Show farmers near','किसान दिखाएं यहां के पास')}</label>
+      <select id="areaSelect">${STATES.map(s=>`<option ${s===S.areaFilter?'selected':''}>${s}</option>`).join('')}</select>
+    </div>
+    <div class="farmers-grid">
+      ${list.map(f=>`
+        <div class="farmer-card">
+          <div class="avatar">${initials(f.name)}</div>
+          <div>
+            <h4>${f.name}</h4>
+            <div class="meta">${f.village}, ${f.district} · ${f.dist} ${L('away','दूर')}</div>
+            <div class="meta">${L('Grows','उगाता है')}: ${f.crop}</div>
+            <span class="tag">★ ${f.rating}</span>
+          </div>
+        </div>`).join('')}
+    </div>
+  </section>`;
+}
+
+function productsSection(){
+  return `
+  <section class="block">
+    <div class="block-head"><div><h2>${L('Most selling produce','सबसे ज़्यादा बिकने वाली उपज')}</h2><p>${L('Live AGMARKNET base price against our calculated consumer price.','हमारे गणना किए गए उपभोक्ता मूल्य के मुकाबले लाइव AGMARKNET आधार मूल्य।')}</p></div></div>
+    <div class="products-grid">
+      ${CROPS.slice(0,4).map(c=>{
+        const base = c.modal/100; const bd = calcBreakdown(base,false);
+        return `<div class="product-card">
+          <div class="product-top">${cropImg(c.name,'sm')}<h4>${c.name} <span class="hi">${c.hi}</span></h4></div>
+          <div class="price-row"><span>${L('Mandi (AGMARKNET) price','मंडी (AGMARKNET) मूल्य')}</span><span>${inr(base.toFixed(2))}/kg</span></div>
+          <div class="price-row"><span>${L('Consumer price on Smart Forum','Smart Forum पर उपभोक्ता मूल्य')}</span><span>${inr(bd.total.toFixed(2))}/kg</span></div>
+          <div class="product-foot"><span class="save">${L('Farmer keeps','किसान को मिलता है')} ${(base/bd.total*100).toFixed(0)}% ${L('of the consumer price','उपभोक्ता मूल्य का')}</span></div>
+        </div>`;
+      }).join('')}
+    </div>
+  </section>`;
+}
+
+function overviewSection(){
+  const testis = [
+    [L("The price breakdown is the first time I've seen exactly what I'm paying for. It changed how I shop for vegetables.",'मूल्य विवरण पहली बार है जब मैंने बिल्कुल देखा कि मैं किस लिए भुगतान कर रहा हूं। इससे मेरी सब्ज़ी खरीदने की आदत बदल गई।'), 'Ananya S., Kolkata'],
+    [L('Payment for my onion lot came in three days, and it matched what the app showed before pickup.','मेरे प्याज़ के लॉट का भुगतान तीन दिन में आ गया, और यह उतना ही था जितना ऐप ने पिकअप से पहले दिखाया था।'), 'Ramesh P., Nashik'],
+    [L('Delivery tracking actually tells me something useful, not just "out for delivery" for six hours straight.','डिलीवरी ट्रैकिंग वाकई कुछ काम की जानकारी देती है, सिर्फ छह घंटे तक "डिलीवरी के लिए निकला" नहीं दिखाती।'), 'Farhan K., Pune'],
+  ];
+  return `
+  <section class="block">
+    <div class="block-head"><div><h2>${L('Customer overview','ग्राहक विवरण')}</h2><p>${L('How consumers are using Smart Forum this quarter.','इस तिमाही में उपभोक्ता Smart Forum का उपयोग कैसे कर रहे हैं।')}</p></div></div>
+    <div class="overview-grid">
+      <div class="kpi-row" style="grid-template-columns:1fr 1fr;">
+        <div class="kpi"><b>36,800+</b><span>${L('Active consumer accounts','सक्रिय उपभोक्ता खाते')}</span></div>
+        <div class="kpi"><b>4.7 / 5</b><span>${L('Average delivery rating','औसत डिलीवरी रेटिंग')}</span></div>
+        <div class="kpi"><b>68%</b><span>${L('Consumers who reorder within 30 days','30 दिनों में दोबारा ऑर्डर करने वाले उपभोक्ता')}</span></div>
+        <div class="kpi"><b>11%</b><span>${L('Avg. saving vs. retail market price','खुदरा बाज़ार मूल्य की तुलना में औसत बचत')}</span></div>
+      </div>
+      <div>${testis.map(([q,w])=>`<div class="testi-card"><p>"${q}"</p><div class="who">— ${w}</div></div>`).join('')}</div>
+    </div>
+  </section>`;
+}
+
+function footerSection(){
+  return `
+  <footer>
+    <div class="container footer-top">
+      <div class="footer-thanks">
+        <h3>${L('Thank you for being part of this.','इसका हिस्सा बनने के लिए धन्यवाद।')}</h3>
+        <p>${L("To every farmer who trusted us with their harvest, every logistics partner who kept produce moving safely, every associate who checked, stored and shipped each lot with care, and every consumer who chose a fairer plate — Smart Forum exists because of you. We built this to shorten the distance between the people who grow food and the people who eat it, and we're just getting started.",'हर उस किसान के लिए जिसने अपनी फसल पर हम पर भरोसा किया, हर लॉजिस्टिक्स पार्टनर के लिए जिसने उपज को सुरक्षित रूप से आगे बढ़ाया, हर एसोसिएट के लिए जिसने हर लॉट की जांच, भंडारण और शिपिंग सावधानी से की, और हर उपभोक्ता के लिए जिसने एक ज़्यादा उचित थाली चुनी — Smart Forum आपकी वजह से है। हमने इसे खाना उगाने वालों और खाने वालों के बीच की दूरी कम करने के लिए बनाया है, और अभी तो शुरुआत है।')}</p>
+        <div class="sign">${L('With gratitude, Team ELysian','आभार सहित, टीम ELysian')}</div>
+      </div>
+    </div>
+    <div class="container footer-cols">
+      <div class="footer-col">
+        <h5>${L('Company','कंपनी')}</h5>
+        <button class="linklike" data-scroll="ideals">${L('Our ideals','हमारे सिद्धांत')}</button>
+        <button class="linklike" data-nav="home">${tr('nav_home')}</button>
+        <button class="linklike" data-modal="about">${L('About Smart Forum','Smart Forum के बारे में')}</button>
+      </div>
+      <div class="footer-col">
+        <h5>${L('For farmers','किसानों के लिए')}</h5>
+        <button class="linklike" data-nav="farmer">${L('Farmer dashboard','किसान डैशबोर्ड')}</button>
+        <button class="linklike" data-modal="farmerServices">${L('Farmer services','किसान सेवाएं')}</button>
+      </div>
+      <div class="footer-col">
+        <h5>${L('For consumers','उपभोक्ताओं के लिए')}</h5>
+        <button class="linklike" data-nav="consumer">${L('Consumer dashboard','उपभोक्ता डैशबोर्ड')}</button>
+        <button class="linklike" data-modal="consumerServices">${L('Consumer services','उपभोक्ता सेवाएं')}</button>
+      </div>
+      <div class="footer-col">
+        <h5>${L('Partners','पार्टनर')}</h5>
+        <button class="linklike" data-nav="logistics">${L('Logistics partners','लॉजिस्टिक्स पार्टनर')}</button>
+        <button class="linklike" data-nav="associate">${L('Associate portal','एसोसिएट पोर्टल')}</button>
+      </div>
+    </div>
+    <div class="container footer-bottom">
+      <span>${L('© 2026 Smart Forum, built by Team ELysian. All rights reserved.','© 2026 Smart Forum, टीम ELysian द्वारा निर्मित। सर्वाधिकार सुरक्षित।')}</span>
+      <div class="legal-links">
+        <button class="linklike" data-modal="cookies">${L('Cookies','कुकीज़')}</button>
+        <button class="linklike" data-modal="privacy">${L('Privacy Policy','गोपनीयता नीति')}</button>
+        <button class="linklike" data-modal="terms">${L('Terms &amp; Conditions','नियम एवं शर्तें')}</button>
+        <button class="linklike" id="resetDemoBtn" title="${L('Clears saved demo accounts, listings and orders, and reloads fresh sample data','सहेजे गए डेमो खाते, लिस्टिंग और ऑर्डर हटाता है, और नया नमूना डेटा लोड करता है')}">${tr('btn_reset_demo')}</button>
+      </div>
+    </div>
+  </footer>`;
+}
+
+function cookieBar(){
+  if (cookieBarDismissed()) return '';
+  return `
+  <div class="cookie-bar" id="cookieBar">
+    <p>${L('We use cookies and local storage to keep your dashboard session running between visits and to understand how Smart Forum is used.','हम कुकीज़ और लोकल स्टोरेज का उपयोग करते हैं ताकि आपका डैशबोर्ड सत्र विज़िट के बीच चलता रहे और हम समझ सकें कि Smart Forum का उपयोग कैसे किया जा रहा है।')} ${L('See our','हमारी')} <button class="linklike" style="display:inline;color:#e2a33d;" data-modal="cookies">${L('Cookie Policy','कुकी नीति देखें')}</button>.</p>
+    <button class="btn btn-marigold btn-sm" id="cookieAccept">${L('Got it','ठीक है')}</button>
+  </div>`;
+}
+function cookieBarDismissed(){ return S._cookieDismissed === true; }
+
+/* ---------------- AI CHATBOT ---------------- */
+const CHAT_SUGGESTIONS = [
+  ['How is the price calculated?','कीमत की गणना कैसे होती है?'],
+  ['Track my order','मेरा ऑर्डर ट्रैक करें'],
+  ['How do I list produce?','मैं उपज कैसे सूचीबद्ध करूं?'],
+  ['Talk to a human','किसी व्यक्ति से बात करें'],
+];
+function chatWidget(){
+  if (!S.chatOpen){
+    return `<button class="chat-fab" id="chatFab" title="${L('Chat with Smart Forum AI','Smart Forum एआई से चैट करें')}">💬</button>`;
+  }
+  return `
+  <button class="chat-fab" id="chatFab" title="${L('Close chat','चैट बंद करें')}">✕</button>
+  <div class="chat-panel">
+    <div class="chat-head">
+      <div><h4>${L('Smart Forum Assistant','Smart Forum सहायक')}</h4><span>${L('Guided answers · usually instant','सटीक जवाब · आमतौर पर तुरंत')}</span></div>
+      <button id="chatClose">✕</button>
+    </div>
+    <div class="chat-body" id="chatBody">
+      ${S.chatMessages.map(m=>`<div class="chat-msg ${m.from}">${m.text}</div>`).join('')}
+    </div>
+    <div class="chat-suggest">${CHAT_SUGGESTIONS.map(s=>`<button data-chatquick="${L(s[0],s[1])}">${L(s[0],s[1])}</button>`).join('')}</div>
+    <div class="chat-input-row">
+      <input type="text" id="chatInput" placeholder="${L('Type a message…','संदेश लिखें…')}">
+      <button id="chatSend">➤</button>
+    </div>
+  </div>`;
+}
+function botReply(msg){
+  const m = msg.toLowerCase();
+  const has = (...keys) => keys.some(k=>m.includes(k));
+  if (has('price','cost','₹','कीमत','दाम','मूल्य')) return L('Every price is built from the AGMARKNET mandi rate plus quality, aggregation, logistics, tech and margin costs — you can see the full breakdown on any product, or in "My stock" if you\'re a farmer.','हर कीमत AGMARKNET मंडी दर के साथ गुणवत्ता, एकत्रीकरण, लॉजिस्टिक्स, तकनीक और मार्जिन लागत से बनती है — आप किसी भी उत्पाद पर या किसान होने पर "मेरा स्टॉक" में पूरा विवरण देख सकते हैं।');
+  if (has('track','deliver','order','ट्रैक','डिलीवरी','ऑर्डर')) return L('You can follow an order step-by-step under Consumer dashboard → Delivery tracking. Want me to open it for you?','आप उपभोक्ता डैशबोर्ड → डिलीवरी ट्रैकिंग में ऑर्डर को चरण-दर-चरण देख सकते हैं। क्या मैं इसे आपके लिए खोलूं?');
+  if (has('list','sell','produce','crop','सूचीबद्ध','बेचना','उपज','फसल')) return L('Farmers can add produce under Farmer dashboard → My produces, or post directly for sale under My marketplace.','किसान, किसान डैशबोर्ड → मेरी उपज में उपज जोड़ सकते हैं, या मेरा बाज़ार में सीधे बिक्री के लिए पोस्ट कर सकते हैं।');
+  if (has('market','बाज़ार','मंडी')) return L("The Marketplace lets consumers browse and buy produce posted by farmers directly. Log in (or register) as a Consumer and you'll see a Marketplace link appear in the top navigation.",'बाज़ार में उपभोक्ता किसानों द्वारा पोस्ट की गई उपज को सीधे देख और खरीद सकते हैं। उपभोक्ता के रूप में लॉग इन (या पंजीकरण) करें और आपको ऊपर नेविगेशन में बाज़ार लिंक दिखेगा।');
+  if (has('payment','pay','भुगतान','पैसा')) return L('Farmers can check pending and past payouts under Farmer dashboard → My payments.','किसान, किसान डैशबोर्ड → मेरा भुगतान में लंबित और पिछले भुगतान देख सकते हैं।');
+  if (has('logistic','route','vehicle','लॉजिस्टिक्स','मार्ग','वाहन')) return L('Logistics partners can view inventory, plan the optimal route and track deliveries live from their dashboard.','लॉजिस्टिक्स पार्टनर अपने डैशबोर्ड से इन्वेंटरी देख सकते हैं, सर्वोत्तम मार्ग की योजना बना सकते हैं और डिलीवरी लाइव ट्रैक कर सकते हैं।');
+  if (has('human','agent','support','सहायता','व्यक्ति')) return L("For anything I can't help with, reach our support team via Services → Customer support chat, or the Associate contact section if you're a logistics partner.",'जिसमें मैं मदद नहीं कर सकता, उसके लिए सेवाएं → ग्राहक सहायता चैट के ज़रिए हमारी टीम से संपर्क करें, या लॉजिस्टिक्स पार्टनर होने पर एसोसिएट संपर्क अनुभाग देखें।');
+  if (has('dark','light','theme','डार्क','लाइट','थीम')) return L('You can switch between dark and light mode using the 🌙/☀️ toggle in the top navigation.','आप ऊपर नेविगेशन में 🌙/☀️ टॉगल का उपयोग करके डार्क और लाइट मोड के बीच स्विच कर सकते हैं।');
+  if (has('impact','benefit','environment','प्रभाव','लाभ','पर्यावरण')) return L('Smart Forum\'s impact spans three areas — higher, more predictable farmer earnings; a transparent marketplace that strengthens trust; and lower food wastage plus fewer emissions from AI-optimised delivery routes. See the "Impact and benefits" section on the home page.','Smart Forum का प्रभाव तीन क्षेत्रों में है — अधिक, अनुमानित किसान आय; एक पारदर्शी बाज़ार जो विश्वास मज़बूत करता है; और एआई-अनुकूलित डिलीवरी मार्गों से कम खाद्य बर्बादी व उत्सर्जन। होमपेज पर "प्रभाव और लाभ" अनुभाग देखें।');
+  if (has('tech','stack','built','तकनीक','निर्मित')) return L('Smart Forum runs on Python (Django/FastAPI) with PostgreSQL, React/Flutter interfaces, an AI/ML engine for pricing and matching, OR-Tools for route optimisation, and the AGMARKNET API for real-time mandi prices — see "Built on proven technology" on the home page.','Smart Forum, PostgreSQL के साथ Python (Django/FastAPI), React/Flutter इंटरफ़ेस, मूल्य निर्धारण व मिलान के लिए एआई/एमएल इंजन, मार्ग अनुकूलन के लिए OR-Tools, और रीयल-टाइम मंडी कीमतों के लिए AGMARKNET एपीआई पर चलता है — होमपेज पर "सिद्ध तकनीक पर निर्मित" देखें।');
+  if (has('hi','hello','hey','नमस्ते','हैलो')) return L('Hello! Ask me about pricing, orders, farmer listings, logistics or the marketplace.','नमस्ते! मुझसे कीमत, ऑर्डर, किसान लिस्टिंग, लॉजिस्टिक्स या बाज़ार के बारे में पूछें।');
+  return L("Good question — I don't have a specific answer for that yet, but you can explore the dashboards above, or ask me about pricing, orders, listings, delivery or the marketplace.",'अच्छा सवाल — अभी इसका कोई विशेष उत्तर मेरे पास नहीं है, लेकिन आप ऊपर के डैशबोर्ड देख सकते हैं, या मुझसे कीमत, ऑर्डर, लिस्टिंग, डिलीवरी या बाज़ार के बारे में पूछ सकते हैं।');
+}
+
+/* ---------------- MODALS ---------------- */
+const MODAL_CONTENT = {
+  cookies: ['Cookie Policy','कुकी नीति', `<p>Smart Forum uses a small number of cookies to keep you signed in to your dashboard, remember your role (farmer, consumer, logistics or associate) and understand how people move through the platform.</p><p>We do not sell cookie data to advertisers. You can clear cookies at any time from your browser settings.</p>`,
+    `<p>Smart Forum आपको डैशबोर्ड में साइन-इन रखने, आपकी भूमिका (किसान, उपभोक्ता, लॉजिस्टिक्स या एसोसिएट) याद रखने और यह समझने के लिए कि लोग प्लेटफ़ॉर्म का उपयोग कैसे करते हैं, कुछ कुकीज़ का उपयोग करता है।</p><p>हम कुकी डेटा विज्ञापनदाताओं को नहीं बेचते। आप अपने ब्राउज़र सेटिंग्स से कभी भी कुकीज़ साफ़ कर सकते हैं।</p>`],
+  privacy: ['Privacy Policy','गोपनीयता नीति', `<p>We collect the details you give us — contact information, produce listings, order history and delivery addresses — to run the Smart Forum marketplace.</p><p>Farmer bank details are used only to process payouts. Consumer addresses are used only to plan delivery. We never share personal data with third parties beyond what's needed to fulfil an order (for example, our logistics partners).</p><p>You can request a copy or deletion of your data from Services in your dashboard.</p>`,
+    `<p>हम Smart Forum बाज़ार चलाने के लिए आपके द्वारा दी गई जानकारी — संपर्क विवरण, उपज लिस्टिंग, ऑर्डर इतिहास और डिलीवरी पते — एकत्र करते हैं।</p><p>किसान के बैंक विवरण का उपयोग केवल भुगतान संसाधित करने के लिए किया जाता है। उपभोक्ता के पते का उपयोग केवल डिलीवरी योजना के लिए किया जाता है। हम व्यक्तिगत डेटा तीसरे पक्षों के साथ तभी साझा करते हैं जब ऑर्डर पूरा करने के लिए ज़रूरी हो (जैसे हमारे लॉजिस्टिक्स पार्टनर)।</p><p>आप अपने डैशबोर्ड में सेवाएं से अपने डेटा की प्रति या हटाने का अनुरोध कर सकते हैं।</p>`],
+  terms: ['Terms & Conditions','नियम एवं शर्तें', `<p>By using Smart Forum, farmers agree to list produce accurately and consumers agree to provide correct delivery information. Prices shown are calculated from AGMARKNET mandi data plus the published cost breakdown, and may change with market conditions.</p><p>Smart Forum is not liable for delays caused by events outside our logistics network's control (weather, road closures). Payment disputes are resolved through the Payments section of the Farmer dashboard or the Services section of the Consumer dashboard.</p>`,
+    `<p>Smart Forum का उपयोग करके, किसान सटीक रूप से उपज सूचीबद्ध करने और उपभोक्ता सही डिलीवरी जानकारी देने के लिए सहमत होते हैं। दिखाई गई कीमतें AGMARKNET मंडी डेटा और प्रकाशित लागत विवरण से गणना की जाती हैं, और बाज़ार स्थितियों के साथ बदल सकती हैं।</p><p>Smart Forum हमारे लॉजिस्टिक्स नेटवर्क के नियंत्रण से बाहर की घटनाओं (मौसम, सड़क बंद होना) के कारण होने वाली देरी के लिए ज़िम्मेदार नहीं है। भुगतान विवाद किसान डैशबोर्ड के भुगतान अनुभाग या उपभोक्ता डैशबोर्ड के सेवाएं अनुभाग के माध्यम से हल किए जाते हैं।</p>`],
+  about: ['About Smart Forum','Smart Forum के बारे में', `<p>Smart Forum is an AI-powered farm-to-consumer supply chain platform built by Team ELysian for Smart India Hackathon 2026 (Problem Statement SIH26033 — multiple intermediaries reduce farmers' earnings and increase consumer prices).</p><p>We remove exploitative middlemen pricing by aggregating farmer produce, matching it to demand with AI, calculating fair prices from AGMARKNET data, and optimising storage and delivery — so farmers earn more and consumers pay a transparent price. AI acts as a decision-support layer, not blanket automation: procurement and logistics only trigger once a batch clears a contribution-margin check.</p><p><b>Reference research:</b> AGMARKNET (Ministry of Agriculture &amp; Farmers Welfare) for real-time mandi price data; ARIMA / Facebook Prophet / LSTM approaches for demand &amp; price forecasting; Google OR-Tools for vehicle-routing and logistics optimisation; NABARD / ICAR reports on post-harvest losses in Indian agriculture.</p>`,
+    `<p>Smart Forum एक एआई-संचालित फार्म-टू-कंज़्यूमर सप्लाई चेन प्लेटफ़ॉर्म है जिसे टीम ELysian ने Smart India Hackathon 2026 (समस्या कथन SIH26033 — कई बिचौलिये किसानों की आय घटाते हैं और उपभोक्ता कीमतें बढ़ाते हैं) के लिए बनाया है।</p><p>हम किसान उपज को एकत्रित करके, एआई से मांग के साथ मिलान करके, AGMARKNET डेटा से उचित कीमतें तय करके, और भंडारण व डिलीवरी को अनुकूलित करके शोषणकारी बिचौलिया मूल्य निर्धारण को हटाते हैं — ताकि किसान अधिक कमाएं और उपभोक्ता पारदर्शी कीमत चुकाएं। एआई एक निर्णय-सहायता परत के रूप में काम करता है, संपूर्ण स्वचालन के रूप में नहीं: खरीद और लॉजिस्टिक्स तभी ट्रिगर होते हैं जब कोई लॉट योगदान-मार्जिन जांच पास करे।</p><p><b>संदर्भ शोध:</b> रीयल-टाइम मंडी मूल्य डेटा के लिए AGMARKNET (कृषि एवं किसान कल्याण मंत्रालय); मांग व मूल्य पूर्वानुमान के लिए ARIMA / Facebook Prophet / LSTM तरीके; वाहन-रूटिंग व लॉजिस्टिक्स अनुकूलन के लिए Google OR-Tools; भारतीय कृषि में कटाई-बाद के नुकसान पर NABARD / ICAR रिपोर्ट।</p>`],
+  farmerServices: ['Farmer services','किसान सेवाएं', `<ul><li>Soil testing and crop advisory booking</li><li>Cold storage slot requests</li><li>Logistics pickup scheduling</li><li>24x7 farmer helpline (voice-first, multilingual)</li></ul>`,
+    `<ul><li>मिट्टी परीक्षण और फसल सलाह बुकिंग</li><li>कोल्ड स्टोरेज स्लॉट अनुरोध</li><li>लॉजिस्टिक्स पिकअप शेड्यूलिंग</li><li>24x7 किसान हेल्पलाइन (आवाज़-आधारित, बहुभाषी)</li></ul>`],
+  consumerServices: ['Consumer services','उपभोक्ता सेवाएं', `<ul><li>Bulk and subscription orders</li><li>Festival produce boxes</li><li>Request a specific farmer's produce</li><li>Customer support chat</li></ul>`,
+    `<ul><li>थोक और सब्सक्रिप्शन ऑर्डर</li><li>त्योहार उपज बॉक्स</li><li>किसी खास किसान की उपज का अनुरोध</li><li>ग्राहक सहायता चैट</li></ul>`],
+  svcBulk: ['Bulk & subscription orders','थोक और सब्सक्रिप्शन ऑर्डर', `<p>Set up a recurring weekly or monthly box of produce and it's delivered automatically at the same fair, transparent price every cycle — no need to reorder each time.</p><p>This is on our near-term roadmap; for now, our <button class="linklike" style="display:inline;color:var(--brand-text);font-weight:600;" data-openchat="1">assistant</button> can note your interest, or reach the Farmer/Consumer helpline from Services.</p>`,
+    `<p>उपज का साप्ताहिक या मासिक बॉक्स सेट करें जो हर बार उसी उचित, पारदर्शी कीमत पर अपने आप डिलीवर होता है — हर बार दोबारा ऑर्डर करने की ज़रूरत नहीं।</p><p>यह हमारे निकट-भविष्य के रोडमैप पर है; फ़िलहाल, हमारा <button class="linklike" style="display:inline;color:var(--brand-text);font-weight:600;" data-openchat="1">सहायक</button> आपकी रुचि नोट कर सकता है, या सेवाएं से किसान/उपभोक्ता हेल्पलाइन से संपर्क करें।</p>`],
+  svcFestival: ['Festival produce box','त्योहार उपज बॉक्स', `<p>Curated seasonal boxes — a mix of fresh, in-demand produce for festivals and celebrations — sourced from multiple partner farms and priced with the same AGMARKNET-based transparency as everything else on Smart Forum.</p><p>This is on our near-term roadmap. Let us know what you'd like included via the support chat.</p>`,
+    `<p>चुनिंदा मौसमी बॉक्स — त्योहारों और उत्सवों के लिए ताज़ी, मांग वाली उपज का मिश्रण — कई पार्टनर फार्मों से प्राप्त और Smart Forum की बाकी हर चीज़ की तरह AGMARKNET-आधारित पारदर्शिता के साथ मूल्य निर्धारित।</p><p>यह हमारे निकट-भविष्य के रोडमैप पर है। सहायता चैट के ज़रिए बताएं कि आप इसमें क्या शामिल देखना चाहेंगे।</p>`],
+};
+function modalHtml(key){
+  const entry = MODAL_CONTENT[key];
+  const title = entry ? L(entry[0],entry[1]) : L('Notice','सूचना');
+  const body = entry ? L(entry[2],entry[3]) : `<p>${L('Content unavailable.','सामग्री उपलब्ध नहीं है।')}</p>`;
+  return `
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="modal-box">
+      <button class="modal-close" id="modalClose">&times;</button>
+      <h3>${title}</h3>
+      ${body}
+    </div>
+  </div>`;
+}
+
+function initials(name){ return name.split(' ').map(p=>p[0]).slice(0,2).join('').toUpperCase(); }
+
+/* =====================================================================
+   AUTH — login / register
+===================================================================== */
+const ROLE_BRAND = {
+  farmer:{ title:'List your harvest, get a fair price.', titleHi:'अपनी फसल सूचीबद्ध करें, उचित मूल्य पाएं।', body:'Sign in to add produce, track stock value and follow every payment.', bodyHi:'उपज जोड़ने, स्टॉक मूल्य ट्रैक करने और हर भुगतान का पालन करने के लिए साइन इन करें।', fact:['AGMARKNET-backed pricing','No hidden deductions from what our calculator shows you.'], factHi:['AGMARKNET-समर्थित मूल्य निर्धारण','हमारा कैलकुलेटर जो दिखाता है उसमें कोई छिपी कटौती नहीं।'], quote:['"Payment for my onion lot came in three days, matching exactly what the app showed."','— Ramesh P., Nashik'], quoteHi:['"मेरे प्याज़ के लॉट का भुगतान तीन दिन में आ गया, ठीक वैसा ही जैसा ऐप ने दिखाया था।"','— रमेश पी., नासिक'] },
+  consumer:{ title:'Know exactly what you\'re paying for.', titleHi:'बिल्कुल जानें कि आप किस लिए भुगतान कर रहे हैं।', body:'Sign in to order, track delivery in real time and see the full price breakdown.', bodyHi:'ऑर्डर करने, रीयल टाइम में डिलीवरी ट्रैक करने और पूरा मूल्य विवरण देखने के लिए साइन इन करें।', fact:['Full price transparency','Every order shows farmer price, handling, logistics and our margin.'], factHi:['पूरी कीमत पारदर्शिता','हर ऑर्डर में किसान मूल्य, हैंडलिंग, लॉजिस्टिक्स और हमारा मार्जिन दिखता है।'], quote:['"The price breakdown changed how I shop for vegetables."','— Ananya S., Kolkata'], quoteHi:['"मूल्य विवरण ने मेरी सब्ज़ी खरीदने की आदत बदल दी।"','— अनन्या एस., कोलकाता'] },
+  logistics:{ title:'Move produce on the smartest route.', titleHi:'सबसे स्मार्ट मार्ग पर उपज पहुंचाएं।', body:'Sign in to manage inventory, plan routes and track deliveries live.', bodyHi:'इन्वेंटरी प्रबंधित करने, मार्ग योजना बनाने और डिलीवरी लाइव ट्रैक करने के लिए साइन इन करें।', fact:['AI route optimisation','Choose fastest, safest or most cost-effective for every run.'], factHi:['एआई मार्ग अनुकूलन','हर यात्रा के लिए सबसे तेज़, सबसे सुरक्षित या सबसे किफायती चुनें।'], quote:['"Route re-planning alone has cut our fuel cost noticeably."','— Suresh Transport Co.'], quoteHi:['"सिर्फ मार्ग पुनर्योजना से हमारी ईंधन लागत काफी कम हो गई है।"','— सुरेश ट्रांसपोर्ट कंपनी'] },
+  associate:{ title:'Run the operations behind Smart Forum.', titleHi:'Smart Forum के पीछे का संचालन चलाएं।', body:'Sign in for quality control, warehouse, cold storage and team tools.', bodyHi:'गुणवत्ता नियंत्रण, वेयरहाउस, कोल्ड स्टोरेज और टीम टूल्स के लिए साइन इन करें।', fact:['One workspace, ten functions','From quality inspection to local delivery rosters.'], factHi:['एक वर्कस्पेस, दस कार्य','गुणवत्ता निरीक्षण से लेकर लोकल डिलीवरी रोस्टर तक।'], quote:['"Everything from QC to cold storage sits in one screen now."','— Priya D., Nashik Hub'], quoteHi:['"QC से लेकर कोल्ड स्टोरेज तक सब कुछ अब एक ही स्क्रीन पर है।"','— प्रिया डी., नासिक हब'] },
+};
+function authPage(){
+  const role = S.authRole;
+  const brand = ROLE_BRAND[role];
+  const isLogin = S.authView==='login';
+  return `
+  <div class="auth-wrap">
+    <div class="auth-brand">
+      <div class="auth-brand-top">
+        <h2>${L(brand.title,brand.titleHi)}</h2>
+        <p>${L(brand.body,brand.bodyHi)}</p>
+        <div class="auth-role-facts">
+          <div class="auth-role-fact"><span>🌱</span><span><b>${L(brand.fact[0],brand.factHi[0])}</b><span>${L(brand.fact[1],brand.factHi[1])}</span></span></div>
+        </div>
+      </div>
+      <div class="auth-quote">${L(brand.quote[0],brand.quoteHi[0])}<span>${L(brand.quote[1],brand.quoteHi[1])}</span></div>
+    </div>
+    <div class="auth-panel">
+      <div class="auth-card">
+        <div class="auth-tabs">
+          <button class="${isLogin?'active':''}" data-authtab="login">${tr('nav_login')}</button>
+          <button class="${!isLogin?'active':''}" data-authtab="register">${tr('nav_register')}</button>
+        </div>
+        <div class="role-pills">
+          ${Object.keys(ROLE_LABEL).map(r=>`<div class="role-pill ${role===r?'active':''}" data-authrole="${r}">${roleLabel(r)}</div>`).join('')}
+        </div>
+        ${S.authError ? `<div class="auth-error">${S.authError}</div>` : ''}
+        ${isLogin ? loginForm(role) : registerForm(role)}
+        <div class="auth-switch">
+          ${isLogin ? `${L('New to Smart Forum?','Smart Forum पर नए हैं?')} <button data-authtab="register">${L('Create an account','खाता बनाएं')}</button>` : `${L('Already registered?','पहले से पंजीकृत हैं?')} <button data-authtab="login">${tr('nav_login')}</button>`}
+        </div>
+      </div>
+    </div>
+  </div>`;
+}
+function loginForm(role){
+  const demo = USERS.find(u=>u.role===role);
+  return `
+  <div class="field"><label for="loginIdentifier">${L('Email or phone','ईमेल या फ़ोन')}</label><input type="text" id="loginIdentifier" placeholder="e.g. ${demo.identifier}"></div>
+  <div class="field"><label for="loginPassword">${L('Password','पासवर्ड')}</label><input type="password" id="loginPassword" placeholder="${L('Password','पासवर्ड')}"></div>
+  <button class="btn btn-primary btn-block" id="loginSubmit">${L('Log in as','लॉग इन करें')} ${roleLabel(role)}</button>
+  <div class="auth-hint"><b>${L('Try the demo account','डेमो खाता आज़माएं')}</b>${demo.identifier} / ${demo.password} <button class="linklike" style="display:inline;color:var(--brand-text);font-weight:600;" id="fillDemo">— ${L('autofill','ऑटोफ़िल')}</button></div>`;
+}
+function registerForm(role){
+  const fields = ROLE_FIELDS[role];
+  return `
+  <div id="registerFields">
+    ${fields.map(([key,label,type])=>`<div class="field"><label for="reg_${key}">${L(label,FIELD_LABEL_HI[label]||label)}</label><input type="${type}" id="reg_${key}" data-field="${key}" placeholder="${L(label,FIELD_LABEL_HI[label]||label)}"></div>`).join('')}
+  </div>
+  <button class="btn btn-primary btn-block" id="registerSubmit">${L('Create','बनाएं')} ${roleLabel(role)} ${L('account','खाता')}</button>
+  <p class="small-note">${L("By registering you agree to Smart Forum's Terms &amp; Privacy Policy.",'पंजीकरण करके आप Smart Forum की नियम व शर्तें एवं गोपनीयता नीति से सहमत होते हैं।')}</p>`;
+}
+function accessDeniedPage(){
+  const u = S.currentUser;
+  return `
+  <div class="auth-denied">
+    <h2>${L('This is the','यह')} ${roleLabel(S.role)} ${L('dashboard','डैशबोर्ड है')}</h2>
+    <p>${L(`You're logged in as a ${roleLabel(u.role)} (${u.profile.name}). Log out to sign in with a ${roleLabel(S.role)} account instead.`, `आप ${roleLabel(u.role)} (${u.profile.name}) के रूप में लॉग इन हैं। इसकी बजाय ${roleLabel(S.role)} खाते से लॉग इन करने के लिए लॉग आउट करें।`)}</p>
+    <button class="btn btn-primary" id="deniedLogout">${L('Log out and switch account','लॉग आउट करें और खाता बदलें')}</button>
+    <button class="btn btn-ghost" data-nav="${u.role}" style="margin-left:10px;">${L('Back to my dashboard','मेरे डैशबोर्ड पर वापस जाएं')}</button>
+  </div>`;
+}
+
+/* =====================================================================
+   DASHBOARDS
+===================================================================== */
+function dashPage(){
+  if (S.role==='farmer') return dashShell('Farmer', farmerSidebar(), farmerContent());
+  if (S.role==='consumer') return dashShell('Consumer', consumerSidebar(), consumerContent());
+  if (S.role==='logistics') return dashShell('Logistics partner', logisticsSidebar(), logisticsContent());
+  if (S.role==='associate') return dashShell('Associate', associateSidebar(), associateContent());
+  return '';
+}
+function dashShell(roleLabel, sidebar, content){
+  return `<div class="dash"><div class="dash-sidebar">${sidebar}</div><div class="dash-main">${content}</div></div>`;
+}
+
+/* ---------- FARMER ---------- */
+function farmerSidebar(){
+  const f = S.currentUser.profile;
+  const tabs = [['details','sb_details'],['produces','sb_produces'],['market','sb_mymarket'],['stock','sb_stock'],['payments','sb_payments'],['services','sb_services']];
+  return `
+  <div class="role-head"><div class="who"><span class="avatar">${initials(f.name)}</span><span><h4>${f.name}</h4><span>${f.village||''}${f.district?', '+f.district:''}</span></span></div></div>
+  ${tabs.map(([id,key])=>`<button class="dash-tab-btn ${S.farmerTab===id?'active':''}" data-farmertab="${id}">${tr(key)}</button>`).join('')}
+  `;
+}
+function farmerContent(){
+  const t = S.farmerTab;
+  if (t==='details') return farmerDetails();
+  if (t==='produces') return farmerProduces();
+  if (t==='market') return farmerMarket();
+  if (t==='stock') return farmerStock();
+  if (t==='payments') return farmerPayments();
+  if (t==='services') return farmerServices();
+}
+function farmerDetails(){
+  const f = S.currentUser.profile;
+  return `
+  ${mainHead('farmerDetails')}
+  <div class="card">
+    <h3>${L('Profile','प्रोफ़ाइल')}</h3>
+    <div class="form-grid">
+      <div class="field"><label for="fdName">${L('Full name','पूरा नाम')}</label><input type="text" id="fdName" value="${f.name||''}"></div>
+      <div class="field"><label for="fdPhone">${L('Phone number','फ़ोन नंबर')}</label><input type="tel" id="fdPhone" value="${f.phone||f.identifier||''}"></div>
+      <div class="field"><label for="fdVillage">${L('Village','गांव')}</label><input type="text" id="fdVillage" value="${f.village||''}"></div>
+      <div class="field"><label for="fdDistrict">${L('District','ज़िला')}</label><input type="text" id="fdDistrict" value="${f.district||''}"></div>
+      <div class="field"><label for="fdState">${L('State','राज्य')}</label><input type="text" id="fdState" value="${f.state||''}"></div>
+      <div class="field"><label for="fdLand">${L('Land holding','भूमि')}</label><input type="text" id="fdLand" value="${f.land||''}"></div>
+      <div class="field"><label for="fdCrops">${L('Primary crops','मुख्य फसलें')}</label><input type="text" id="fdCrops" value="${f.crops||''}"></div>
+      <div class="field"><label for="fdBank">${L('Linked bank account','लिंक्ड बैंक खाता')}</label><input type="text" id="fdBank" value="${f.bank||''}"></div>
+    </div>
+    <button class="btn btn-primary btn-sm" id="farmerSaveBtn">${tr('btn_save')}</button>
+  </div>
+  <div class="card">
+    <h3>${L('Account overview','खाता विवरण')}</h3>
+    <div class="kpi-row">
+      <div class="kpi"><b>${f.rating||L('New','नया')}${f.rating?'★':''}</b><span>${L('Buyer rating','खरीदार रेटिंग')}</span></div>
+      <div class="kpi"><b>${f.joined||L('Just now','अभी')}</b><span>${L('Farmer since','किसान बने')}</span></div>
+      <div class="kpi"><b>${DB.produces.length}</b><span>${L('Active listings','सक्रिय लिस्टिंग')}</span></div>
+      <div class="kpi"><b>${DB.payments.history.length}</b><span>${L('Completed payouts','पूर्ण भुगतान')}</span></div>
+    </div>
+  </div>`;
+}
+function farmerProduces(){
+  return `
+  ${mainHead('farmerProduces')}
+  <div class="card">
+    <h3>${L('Add new produce','नई उपज जोड़ें')}</h3>
+    <div class="form-grid">
+      <div class="field"><label for="newCropSelect">${tr('th_crop')}</label><select id="newCropSelect">${CROPS.map(c=>`<option value="${c.name}">${c.name}</option>`).join('')}</select></div>
+      <div class="field"><label for="newQty">${L('Quantity (kg)','मात्रा (किलो)')}</label><input type="number" id="newQty" placeholder="e.g. 250"></div>
+      <div class="field"><label for="newGrade">${L('Quality grade','गुणवत्ता ग्रेड')}</label><select id="newGrade"><option>A</option><option>B</option><option>C</option></select></div>
+      <div class="field"><label for="newHarvest">${tr('th_harvest')}</label><input type="date" id="newHarvest"></div>
+    </div>
+    <button class="btn btn-primary btn-sm" id="addProduceBtn">${tr('btn_add_listing')}</button>
+  </div>
+  <div class="card">
+    <h3>${L('Current listings','मौजूदा लिस्टिंग')}</h3>
+    <table><thead><tr><th></th><th>${tr('th_crop')}</th><th>${tr('th_qty')}</th><th>${tr('th_grade')}</th><th>${tr('th_harvest')}</th><th>${tr('th_status')}</th><th class="th-actions"></th></tr></thead>
+    <tbody>${DB.produces.length ? DB.produces.map((p,i)=>`<tr><td class="td-img">${cropImg(p.crop,'sm')}</td><td>${p.crop}</td><td>${p.qty} ${p.unit}</td><td>${p.grade}</td><td>${p.harvest}</td><td><span class="status-pill ${statusClass(p.status)}">${statusLabel(p.status)}</span></td><td class="td-actions"><button class="remove-btn" data-remove="produces" data-idx="${i}" title="Remove listing">✕</button></td></tr>`).join('') : `<tr><td colspan="7" class="empty-note">${L('No listings yet — add one above.','अभी कोई लिस्टिंग नहीं — ऊपर एक जोड़ें।')}</td></tr>`}</tbody></table>
+  </div>`;
+}
+function farmerMarket(){
+  const f = S.currentUser.profile;
+  const mine = DB.marketplace.map((m,i)=>({...m,_idx:i})).filter(m=>m.farmer===f.name);
+  const checkCropId = S.agmarknetLastFarmerCrop || CROPS[0].id;
+  return `
+  ${mainHead('farmerMarket')}
+  <div class="card">
+    <h3>${L('Post to marketplace','बाज़ार में पोस्ट करें')}</h3>
+    <div class="form-grid">
+      <div class="field"><label for="mkCropSelect">${tr('th_crop')}</label><select id="mkCropSelect">${CROPS.map(c=>`<option value="${c.name}" data-cropid="${c.id}" ${c.id===checkCropId?'selected':''}>${c.name}</option>`).join('')}</select></div>
+      <div class="field"><label for="mkQty">${L('Quantity (kg)','मात्रा (किलो)')}</label><input type="number" id="mkQty" placeholder="e.g. 200"></div>
+      <div class="field"><label for="mkPrice">${L('Price per kg (₹)','कीमत प्रति किलो (₹)')}</label><input type="number" id="mkPrice" placeholder="e.g. 28" value="${S.mkPriceOverride||''}"></div>
+      <div class="field"><label for="mkGrade">${L('Quality grade','गुणवत्ता ग्रेड')}</label><select id="mkGrade"><option>A</option><option>B</option><option>C</option></select></div>
+      <div class="field" style="grid-column:1/-1;"><label for="mkDesc">${L('Short description','संक्षिप्त विवरण')}</label><input type="text" id="mkDesc" placeholder="e.g. Freshly harvested, hand-sorted"></div>
+    </div>
+    <button class="btn btn-primary btn-sm" id="addMarketBtn">${tr('btn_post_listing')}</button>
+    ${agmarknetPanel(checkCropId, 'mkPrice', 'mkCropSelect')}
+  </div>
+  <div class="card">
+    <h3>${L('My live listings','मेरी लाइव लिस्टिंग')}</h3>
+    <table><thead><tr><th></th><th>${tr('th_crop')}</th><th>${tr('th_qty')}</th><th>${tr('th_price_kg')}</th><th>${tr('th_grade')}</th><th>${tr('th_description')}</th><th class="th-actions"></th></tr></thead>
+    <tbody>${mine.length ? mine.map(m=>`<tr><td class="td-img">${cropImg(m.crop,'sm')}</td><td>${m.crop}</td><td>${m.qty} ${m.unit}</td><td>${inr0(m.price)}</td><td>${m.grade}</td><td>${m.desc}</td><td class="td-actions"><button class="remove-btn" data-remove="marketplace" data-idx="${m._idx}" title="Remove listing">✕</button></td></tr>`).join('') : `<tr><td colspan="7" class="empty-note">${L("You haven't posted anything to the marketplace yet.",'आपने अभी तक बाज़ार में कुछ भी पोस्ट नहीं किया है।')}</td></tr>`}</tbody></table>
+  </div>`;
+}
+function farmerStock(){
+  return `
+  ${mainHead('farmerStock')}
+  <div class="card">
+    <table><thead><tr><th></th><th>${tr('th_crop')}</th><th>${L('Stock','स्टॉक')}</th><th>${L('AGMARKNET price','AGMARKNET कीमत')}</th><th>${L('Expected consumer price','अपेक्षित उपभोक्ता मूल्य')}</th><th>${L('Your expected payout','आपका अपेक्षित भुगतान')}</th></tr></thead>
+    <tbody>${DB.produces.map(p=>{
+      const crop = CROPS.find(c=>c.name===p.crop) || CROPS[0];
+      const base = crop.modal/100; const bd = calcBreakdown(base,false);
+      const payout = base*p.qty;
+      return `<tr><td class="td-img">${cropImg(p.crop,'sm')}</td><td>${p.crop}</td><td>${p.qty} ${p.unit}</td><td>${inr(base.toFixed(2))}/kg</td><td>${inr(bd.total.toFixed(2))}/kg</td><td>${inr0(payout)}</td></tr>`;
+    }).join('')}</tbody></table>
+  </div>
+  <div class="card">
+    <h3>${L('Price calculator','मूल्य कैलकुलेटर')}</h3>
+    <div class="field" style="max-width:260px;"><label for="stockCropSelect">${L('Choose crop','फसल चुनें')}</label>
+      <select id="stockCropSelect">${CROPS.map(c=>`<option value="${c.id}" ${c.id===S.selectedCrop?'selected':''}>${c.name}</option>`).join('')}</select>
+    </div>
+    ${priceBreakdownBlock(S.selectedCrop, false)}
+    ${agmarknetPanel(S.selectedCrop, null)}
+  </div>`;
+}
+function priceBreakdownBlock(cropId, expedited){
+  const crop = CROPS.find(c=>c.id===cropId) || CROPS[0];
+  const base = crop.modal/100;
+  const bd = calcBreakdown(base, expedited);
+  return `
+  <div class="breakdown">
+    ${bd.rows.map(r=>`<div class="bd-row"><span>${L(r.label,r.labelHi||r.label)}</span><span>${inr(r.value.toFixed(2))}/kg</span></div>`).join('')}
+    <div class="bd-row total"><span>${L('Consumer pays','उपभोक्ता चुकाता है')}</span><span>${inr(bd.total.toFixed(2))}/kg</span></div>
+  </div>
+  <p class="small-note">${L(`Based on today's AGMARKNET modal price of ${inr(crop.modal)}/quintal for ${crop.name} (min ${inr(crop.min)} · max ${inr(crop.max)}).`, `${crop.name} के लिए आज के AGMARKNET मोडल मूल्य ${inr(crop.modal)}/क्विंटल (न्यूनतम ${inr(crop.min)} · अधिकतम ${inr(crop.max)}) के आधार पर।`)}</p>`;
+}
+function farmerPayments(){
+  return `
+  ${mainHead('farmerPayments')}
+  <div class="card">
+    <h3>${L('Payment due','बकाया भुगतान')}</h3>
+    <div class="kpi-row" style="grid-template-columns:1fr 1fr;">
+      <div class="kpi"><b>${inr0(DB.payments.dueAmount)}</b><span>${L('Pending settlement','लंबित निपटान')}</span></div>
+      <div class="kpi"><span style="display:block;font-size:.85rem;color:var(--ink);">${DB.payments.dueFor}</span></div>
+    </div>
+  </div>
+  <div class="card">
+    <h3>${L('Payment history','भुगतान इतिहास')}</h3>
+    <table><thead><tr><th>${L('Date','तारीख')}</th><th>${L('Order ref','ऑर्डर संदर्भ')}</th><th>${tr('th_crop')}</th><th>${tr('th_qty')}</th><th>${L('Amount','राशि')}</th><th>${tr('th_status')}</th><th class="th-actions"></th></tr></thead>
+    <tbody>${DB.payments.history.length ? DB.payments.history.map((h,i)=>`<tr><td>${h.date}</td><td>${h.ref}</td><td>${h.crop}</td><td>${h.qty}</td><td>${inr0(h.amount)}</td><td><span class="status-pill ok">${statusLabel(h.status)}</span></td><td class="td-actions"><button class="remove-btn" data-remove="payments.history" data-idx="${i}" title="Remove record">✕</button></td></tr>`).join('') : `<tr><td colspan="7" class="empty-note">${L('No payment history.','कोई भुगतान इतिहास नहीं।')}</td></tr>`}</tbody></table>
+  </div>`;
+}
+function farmerServices(){
+  const services = [
+    [L('Soil testing & advisory','मिट्टी परीक्षण व सलाह'), L('Book a visit from our agronomy team before the next sowing cycle.','अगली बुवाई से पहले हमारी कृषि टीम की विज़िट बुक करें।')],
+    [L('Cold storage slot','कोल्ड स्टोरेज स्लॉट'), L('Reserve space at the nearest cold-storage hub for surplus produce.','अतिरिक्त उपज के लिए नज़दीकी कोल्ड-स्टोरेज हब में जगह आरक्षित करें।')],
+    [L('Logistics pickup','लॉजिस्टिक्स पिकअप'), L('Schedule a pickup once your produce lot is ready for aggregation.','जब आपका उपज लॉट एकत्रीकरण के लिए तैयार हो, पिकअप शेड्यूल करें।')],
+    [L('Farmer helpline','किसान हेल्पलाइन'), L('Multilingual, voice-first support — call anytime for help with listings or payments.','बहुभाषी, आवाज़-आधारित सहायता — लिस्टिंग या भुगतान में मदद के लिए कभी भी कॉल करें।')],
+  ];
+  return `
+  ${mainHead('farmerServices')}
+  <div class="two-col">${services.map(([t,d])=>`<div class="card"><h3>${t}</h3><p>${d}</p><button class="btn btn-ghost btn-sm" style="margin-top:14px;" data-farmreqtype="${t}">${tr('btn_request')}</button></div>`).join('')}</div>`;
+}
+
+/* ---------- CONSUMER ---------- */
+function consumerSidebar(){
+  const c = S.currentUser.profile;
+  const tabs = [['details','sb_details'],['market','sb_market'],['orders','sb_orders'],['tracking','sb_tracking'],['feedback','sb_feedback'],['services','sb_services']];
+  return `
+  <div class="role-head"><div class="who"><span class="avatar">${initials(c.name)}</span><span><h4>${c.name}</h4><span>${L('Consumer since','उपभोक्ता बने')} ${c.since||L('today','आज')}</span></span></div></div>
+  ${tabs.map(([id,key])=>`<button class="dash-tab-btn ${S.consumerTab===id?'active':''}" data-consumertab="${id}">${tr(key)}</button>`).join('')}`;
+}
+function consumerContent(){
+  const t = S.consumerTab;
+  if (t==='details') return consumerDetails();
+  if (t==='market') return consumerMarket();
+  if (t==='orders') return consumerOrders();
+  if (t==='tracking') return consumerTracking();
+  if (t==='feedback') return consumerFeedback();
+  if (t==='services') return consumerServices();
+}
+function consumerDetails(){
+  const c = S.currentUser.profile;
+  return `
+  ${mainHead('consumerDetails')}
+  <div class="card">
+    <h3>${L('Profile','प्रोफ़ाइल')}</h3>
+    <div class="form-grid">
+      <div class="field"><label for="cdName">${L('Full name','पूरा नाम')}</label><input type="text" id="cdName" value="${c.name||''}"></div>
+      <div class="field"><label for="cdPhone">${L('Phone / email','फ़ोन / ईमेल')}</label><input type="text" id="cdPhone" value="${c.phone||c.identifier||''}"></div>
+      <div class="field" style="grid-column:1/-1;"><label for="cdAddress">${L('Delivery address','डिलीवरी पता')}</label><input type="text" id="cdAddress" value="${c.address||''}"></div>
+      <div class="field"><label for="cdPreferred">${L('Preference','प्राथमिकता')}</label><input type="text" id="cdPreferred" value="${c.preferred||''}"></div>
+    </div>
+    <button class="btn btn-primary btn-sm" id="consumerSaveBtn">${tr('btn_save')}</button>
+  </div>`;
+}
+function consumerMarket(){
+  return `
+  ${mainHead('consumerMarket')}
+  <div class="market-grid">
+    ${DB.marketplace.length ? DB.marketplace.map((m,i)=>`
+      <div class="market-card">
+        <div class="market-card-top">
+          ${cropImg(m.crop,'lg')}
+          <div class="market-card-head"><h4>${m.crop} <span style="font-size:.78rem;color:var(--ink-soft);font-weight:400;">Grade ${m.grade}</span></h4><span class="market-price">${inr0(m.price)}<span style="font-size:.7rem;color:var(--ink-soft);font-weight:400;">/kg</span></span></div>
+        </div>
+        <div class="meta">${m.qty} ${m.unit} ${L('available · sourced directly from a Smart Forum partner farm','उपलब्ध · सीधे Smart Forum पार्टनर फार्म से प्राप्त')}</div>
+        <div class="desc">${m.desc}</div>
+        ${agmarknetBadge(m.crop)}
+        <button class="btn btn-primary btn-sm" style="margin-top:8px;" data-buy="${i}">${tr('btn_buy_now')}</button>
+      </div>`).join('') : `<p class="empty-note">${L('No listings from farmers right now — check back soon.','अभी किसानों की कोई लिस्टिंग नहीं — बाद में देखें।')}</p>`}
+  </div>`;
+}
+function consumerOrders(){
+  return `
+  ${mainHead('consumerOrders')}
+  ${DB.orders.map(o=>{
+    const crop = CROPS[0]; const bd = calcBreakdown(crop.modal/100, o.status!=='Delivered');
+    return `<div class="card">
+      <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;">
+        <div><h3 style="margin-bottom:4px;">${o.id}</h3><p style="font-size:.85rem;">${o.items} · ${L('placed','ऑर्डर की तारीख')} ${o.placed}</p></div>
+        <div style="text-align:right;display:flex;align-items:flex-start;gap:10px;">
+          <div><span class="status-pill ${statusClass(o.status)}">${statusLabel(o.status)}</span><div style="font-weight:700;margin-top:6px;">${inr0(o.total)}</div></div>
+          <button class="remove-btn" data-remove="orders" data-idx="${DB.orders.indexOf(o)}" title="Remove order">✕</button>
+        </div>
+      </div>
+      <hr class="hr">
+      <p style="font-size:.8rem;font-weight:600;color:var(--ink-soft);margin-bottom:10px;">${L('Sample price processing (per kg, primary item)','नमूना मूल्य प्रोसेसिंग (प्रति किलो, मुख्य वस्तु)')}</p>
+      ${bd.rows.map(r=>`<div class="bd-row"><span>${L(r.label,r.labelHi||r.label)}</span><span>${inr(r.value.toFixed(2))}</span></div>`).join('')}
+      <div class="bd-row total"><span>${L('Total per kg','कुल प्रति किलो')}</span><span>${inr(bd.total.toFixed(2))}</span></div>
+    </div>`;
+  }).join('')}
+  ${!DB.orders.length ? `<p class="empty-note">${L('No orders yet — visit the Marketplace to place one.','अभी कोई ऑर्डर नहीं — एक ऑर्डर देने के लिए बाज़ार पर जाएं।')}</p>` : ''}`;
+}
+function consumerTracking(){
+  const order = S.activeOrder;
+  const statusIndex = orderStatusIndex(order);
+  const isDone = order.status==='Delivered';
+  const cps = orderCheckpoints(order);
+  return `
+  ${mainHead('consumerTracking')}
+  <div class="card">
+    <div class="field" style="max-width:280px;"><label for="trackOrderSelect">${L('Select order','ऑर्डर चुनें')}</label>
+      <select id="trackOrderSelect">${DB.orders.map(o=>`<option value="${o.id}" ${o.id===order.id?'selected':''}>${o.id} — ${o.items}</option>`).join('')}</select>
+    </div>
+    <div class="track-header" style="margin-top:14px;">
+      <div>
+        <div class="track-id">${order.id}</div>
+        <div class="track-meta">${order.items}</div>
+      </div>
+      <div class="track-right">
+        <span class="status-pill ${statusClass(order.status)}">${statusLabel(order.status)}</span>
+        <div class="track-eta">${isDone ? L('Delivered','डिलीवर हो गया') : L('Expected delivery: ','अपेक्षित डिलीवरी: ')+order.eta}</div>
+      </div>
+    </div>
+    <div class="stepper">
+      ${ORDER_STAGES.map((s,i)=>`<div class="step ${i<statusIndex?'done':(i===statusIndex?'current':'')}"><span class="dot">${i<statusIndex?'✓':i+1}</span><span>${L(s.title,s.titleHi)}</span></div>`).join('')}
+    </div>
+    <button class="btn btn-ghost btn-sm" id="advanceTrackBtn" ${statusIndex>=ORDER_STAGES.length-1?'disabled':''}>${tr('btn_simulate')}</button>
+    <p class="small-note">${L("In production this stage updates automatically from our logistics partners' live location feed.",'प्रोडक्शन में यह चरण हमारे लॉजिस्टिक्स पार्टनरों के लाइव लोकेशन फ़ीड से अपने आप अपडेट होता है।')}</p>
+    <hr class="track-divider">
+    <h3 style="margin-bottom:6px;">${L('Checkpoint history','चेकपॉइंट इतिहास')}</h3>
+    ${trackingTimelineHtml(cps)}
+  </div>`;
+}
+function consumerFeedback(){
+  return `
+  ${mainHead('consumerFeedback')}
+  <div class="card">
+    <h3>${L('Leave feedback','प्रतिक्रिया दें')}</h3>
+    <div class="field"><label for="fbOrder">${L('Order','ऑर्डर')}</label><select id="fbOrder">${DB.orders.map(o=>`<option>${o.id}</option>`).join('')}</select></div>
+    <div class="field"><label for="fbRating">${L('Rating','रेटिंग')}</label><select id="fbRating"><option>5</option><option>4</option><option>3</option><option>2</option><option>1</option></select></div>
+    <div class="field"><label for="fbText">${L('Comments','टिप्पणियां')}</label><textarea id="fbText" rows="3" placeholder="${L('How was the quality and delivery?','गुणवत्ता और डिलीवरी कैसी थी?')}"></textarea></div>
+    <button class="btn btn-primary btn-sm" id="fbSubmit">${tr('btn_submit_feedback')}</button>
+  </div>
+  <div class="card">
+    <h3>${L('Your past feedback','आपकी पिछली प्रतिक्रिया')}</h3>
+    <table><thead><tr><th>${L('Order','ऑर्डर')}</th><th>${L('Rating','रेटिंग')}</th><th>${L('Comment','टिप्पणी')}</th><th class="th-actions"></th></tr></thead>
+    <tbody id="fbList">${DB.feedback.length ? DB.feedback.map((f,i)=>`<tr><td>${f.order}</td><td>${f.rating}★</td><td>${f.text}</td><td class="td-actions"><button class="remove-btn" data-remove="feedback" data-idx="${i}" title="Remove feedback">✕</button></td></tr>`).join('') : `<tr><td colspan="4" class="empty-note">${L('No feedback submitted yet.','अभी तक कोई प्रतिक्रिया सबमिट नहीं की गई है।')}</td></tr>`}</tbody></table>
+  </div>`;
+}
+function consumerServices(){
+  const services = [
+    [L('Bulk & subscription orders','थोक और सब्सक्रिप्शन ऑर्डर'), L('Set up a recurring weekly box of produce, delivered automatically.','उपज का साप्ताहिक बॉक्स सेट करें, स्वचालित रूप से डिलीवर होता है।'), 'modal', 'svcBulk', L('Learn more','और जानें')],
+    [L('Festival produce box','त्योहार उपज बॉक्स'), L('Curated seasonal boxes for festivals and celebrations.','त्योहारों और उत्सवों के लिए चुनिंदा मौसमी बॉक्स।'), 'modal', 'svcFestival', L('Learn more','और जानें')],
+    [L('Request a specific farmer','किसी खास किसान से अनुरोध करें'), L("Order directly from a farmer profile you've liked before.",'किसी पसंदीदा किसान प्रोफ़ाइल से सीधे ऑर्डर करें।'), 'consumertab', 'market', L('Browse marketplace','बाज़ार देखें')],
+    [L('Customer support chat','ग्राहक सहायता चैट'), L('Reach our support team for order or delivery issues.','ऑर्डर या डिलीवरी संबंधी समस्याओं के लिए हमारी सहायता टीम से संपर्क करें।'), 'chat', '', L('Start chat','चैट शुरू करें')],
+  ];
+  return `
+  ${mainHead('consumerServices')}
+  <div class="two-col">${services.map(([t,d,kind,val,cta])=>{
+    const attr = kind==='modal' ? `data-modal="${val}"` : kind==='consumertab' ? `data-consumertab="${val}"` : `data-openchat="1"`;
+    return `<div class="card"><h3>${t}</h3><p>${d}</p><button class="btn btn-ghost btn-sm" style="margin-top:14px;" ${attr}>${cta}</button></div>`;
+  }).join('')}</div>`;
+}
+
+/* ---------- LOGISTICS PARTNER ---------- */
+function logisticsSidebar(){
+  const p = S.currentUser.profile;
+  const tabs = [['inventory','sb_inventory'],['details','sb_details'],['route','sb_route'],['tracking','sb_realtime'],['contacts','sb_assoccontact']];
+  return `
+  <div class="role-head"><div class="who"><span class="avatar">${initials(p.name)}</span><span><h4>${p.name}</h4><span>${p.area||''}</span></span></div></div>
+  ${tabs.map(([id,key])=>`<button class="dash-tab-btn ${S.logisticsTab===id?'active':''}" data-logitab="${id}">${tr(key)}</button>`).join('')}`;
+}
+function logisticsContent(){
+  const t = S.logisticsTab;
+  if (t==='inventory') return logiInventory();
+  if (t==='details') return logiDetails();
+  if (t==='route') return logiRoute();
+  if (t==='tracking') return logiTracking();
+  if (t==='contacts') return logiContacts();
+}
+function logiInventory(){
+  return `
+  ${mainHead('logiInventory')}
+  <div class="card"><table><thead><tr><th></th><th>${tr('th_crop')}</th><th>${tr('th_qty')}</th><th>${tr('th_vehicle')}</th><th>${tr('th_destination')}</th><th class="th-actions"></th></tr></thead>
+  <tbody>${DB.inventory.length ? DB.inventory.map((i,idx)=>`<tr><td class="td-img">${cropImg(i.crop,'sm')}</td><td>${i.crop}</td><td>${i.qty}</td><td>${i.vehicle}</td><td>${i.dest}</td><td class="td-actions"><button class="remove-btn" data-remove="inventory" data-idx="${idx}" title="Remove item">✕</button></td></tr>`).join('') : `<tr><td colspan="6" class="empty-note">No inventory currently loaded.</td></tr>`}</tbody></table></div>`;
+}
+function logiDetails(){
+  const p = S.currentUser.profile;
+  return `
+  ${mainHead('logiDetails')}
+  <div class="card">
+    <div class="form-grid">
+      <div class="field"><label for="ldName">${L('Company name','कंपनी का नाम')}</label><input type="text" id="ldName" value="${p.name||''}"></div>
+      <div class="field"><label for="ldContact">${L('Primary contact','मुख्य संपर्क')}</label><input type="text" id="ldContact" value="${p.contact||''}"></div>
+      <div class="field"><label for="ldPhone">${L('Phone','फ़ोन')}</label><input type="tel" id="ldPhone" value="${p.phone||p.identifier||''}"></div>
+      <div class="field"><label for="ldVehicles">${L('Fleet size (vehicles)','फ्लीट आकार (वाहन)')}</label><input type="number" id="ldVehicles" value="${p.vehicles||0}"></div>
+      <div class="field"><label for="ldArea">${L('Service corridor','सेवा क्षेत्र')}</label><input type="text" id="ldArea" value="${p.area||''}"></div>
+      <div class="field"><label>${L('Partner rating','पार्टनर रेटिंग')}</label><input type="text" value="${p.rating?p.rating+'★':L('New partner','नया पार्टनर')}" disabled></div>
+    </div>
+    <button class="btn btn-primary btn-sm" id="logiSaveBtn">${tr('btn_save')}</button>
+  </div>`;
+}
+function logiRoute(){
+  const modes = {
+    fastest:{ label:L('Fastest','सबसे तेज़'), dist:'182 km', time:'3h 40m', cost:'₹2,940', risk:L('Moderate','मध्यम'), desc:L('Prioritises highways, may include toll roads.','हाईवे को प्राथमिकता, टोल रोड शामिल हो सकते हैं।') },
+    safest:{ label:L('Safest','सबसे सुरक्षित'), dist:'196 km', time:'4h 20m', cost:'₹3,180', risk:L('Low','कम'), desc:L('Avoids high-accident stretches and night driving where possible.','जहां संभव हो, दुर्घटना-प्रवण क्षेत्रों और रात की ड्राइविंग से बचता है।') },
+    cost:{ label:L('Cost-effective','किफायती'), dist:'188 km', time:'4h 55m', cost:'₹2,410', risk:L('Moderate','मध्यम'), desc:L('Minimises toll and fuel cost, may take longer.','टोल और ईंधन लागत को कम करता है, अधिक समय लग सकता है।') },
+  };
+  const m = modes[S.routeMode];
+  const isConfirmed = S.routeConfirmed === S.routeMode;
+  return `
+  ${mainHead('logiRoute')}
+  <div class="card">
+    <div class="form-grid">
+      <div class="field"><label>${L('From','कहां से')}</label><input type="text" value="Nashik Aggregation Hub" disabled></div>
+      <div class="field"><label>${L('To','कहां तक')}</label><input type="text" value="Kalyan Cold Storage" disabled></div>
+    </div>
+    <div class="route-modes">
+      ${Object.entries(modes).map(([id,mm])=>`<div class="mode-btn ${S.routeMode===id?'active':''}" data-route="${id}"><b>${mm.label}</b><span>${mm.desc}</span></div>`).join('')}
+    </div>
+    <div class="kpi-row">
+      <div class="kpi"><b>${m.dist}</b><span>${L('Distance','दूरी')}</span></div>
+      <div class="kpi"><b>${m.time}</b><span>${L('Estimated time','अनुमानित समय')}</span></div>
+      <div class="kpi"><b>${m.cost}</b><span>${L('Estimated cost','अनुमानित लागत')}</span></div>
+      <div class="kpi"><b>${m.risk}</b><span>${L('Risk level','जोखिम स्तर')}</span></div>
+    </div>
+    <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+      <button class="btn btn-primary btn-sm" id="confirmRouteBtn">${tr('btn_confirm_route')}</button>
+      ${isConfirmed ? `<span class="status-pill ok">✓ ${L('Confirmed','पुष्टि हो गई')} — ${m.label} (${m.dist})</span>` : ''}
+    </div>
+  </div>`;
+}
+const LOGI_STOPS = [
+  { name:'Nashik Aggregation Hub', nameHi:'नासिक एकत्रीकरण हब', time:'07:10', desc:'Shipment picked up and loaded onto MH-15 AT 4021.', descHi:'शिपमेंट उठाया गया और MH-15 AT 4021 पर लोड किया गया।' },
+  { name:'Sinnar checkpoint', nameHi:'सिन्नर चेकपॉइंट', time:'08:05', desc:'Arrived on schedule — checkpoint scan recorded.', descHi:'समय पर पहुंचा — चेकपॉइंट स्कैन दर्ज किया गया।' },
+  { name:'Ghoti toll plaza', nameHi:'घोटी टोल प्लाज़ा', time:'09:20', desc:'Brief halt for toll clearance, back on route.', descHi:'टोल भुगतान के लिए संक्षिप्त रुकावट, वापस मार्ग पर।' },
+  { name:'Kalyan Cold Storage', nameHi:'कल्याण कोल्ड स्टोरेज', time:'10:50', desc:'Expected arrival at destination cold-storage hub.', descHi:'गंतव्य कोल्ड-स्टोरेज हब पर अपेक्षित आगमन।' },
+];
+/* ---------- Shared checkpoint-timeline UI (Delhivery-style detailed tracking) ---------- */
+function fmtCheckpointTime(d){
+  const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  let h = d.getHours(); const m = d.getMinutes();
+  const ampm = h>=12 ? 'PM' : 'AM';
+  h = h%12; if (h===0) h = 12;
+  const mm = m<10 ? '0'+m : ''+m;
+  return `${d.getDate()} ${months[d.getMonth()]} · ${h}:${mm} ${ampm}`;
+}
+function trackingTimelineHtml(checkpoints){
+  return `<div class="track-timeline">${checkpoints.map(c=>`
+    <div class="tl-item ${c.state}">
+      <div class="tl-time">${c.state==='upcoming' ? L('Expected · ','अपेक्षित · ') : ''}${c.time}</div>
+      <div class="tl-title">${c.title}</div>
+      ${c.desc ? `<div class="tl-desc">${c.desc}</div>` : ''}
+    </div>`).join('')}</div>`;
+}
+const ORDER_STAGES = [
+  { key:'Order placed', hOffset:0, title:'Order placed', titleHi:'ऑर्डर दिया गया', desc:'Order confirmed and routed to the nearest aggregation hub.', descHi:'ऑर्डर की पुष्टि हुई और निकटतम एकत्रीकरण हब को भेजा गया।' },
+  { key:'Aggregated', hOffset:3, title:'Aggregated', titleHi:'एकत्रित', desc:'Produce collected and consolidated at the Nashik hub.', descHi:'नासिक हब पर उपज एकत्र और संगठित की गई।' },
+  { key:'Quality checked', hOffset:6, title:'Quality checked', titleHi:'गुणवत्ता जांची गई', desc:'Passed freshness and grading inspection by our QC team.', descHi:'हमारी क्यूसी टीम द्वारा ताज़गी व ग्रेडिंग निरीक्षण पास किया।' },
+  { key:'Dispatched', hOffset:9, title:'Dispatched', titleHi:'भेजा गया', desc:'Handed to the delivery partner and left the hub.', descHi:'डिलीवरी पार्टनर को सौंपा गया और हब से रवाना हुआ।' },
+  { key:'Out for delivery', hOffset:20, title:'Out for delivery', titleHi:'डिलीवरी के लिए निकला', desc:'On the vehicle, on its way to your address.', descHi:'वाहन में, आपके पते की ओर जा रहा है।' },
+  { key:'Delivered', hOffset:26, title:'Delivered', titleHi:'डिलीवर हो गया', desc:'Handed over at your delivery address.', descHi:'आपके डिलीवरी पते पर सौंप दिया गया।' },
+];
+function orderStatusIndex(order){
+  const i = ORDER_STAGES.findIndex(s=>s.key===order.status);
+  return i>=0 ? i : (order.status==='Delivered' ? ORDER_STAGES.length-1 : ORDER_STAGES.length-2);
+}
+function orderCheckpoints(order){
+  const idx = orderStatusIndex(order);
+  const base = new Date((order.placed||'2026-01-01')+'T08:00:00');
+  return ORDER_STAGES.map((s,i)=>{
+    const t = new Date(base.getTime() + s.hOffset*3600*1000);
+    const state = i<idx ? 'done' : (i===idx ? 'current' : 'upcoming');
+    return { time: fmtCheckpointTime(t), title:L(s.title,s.titleHi), desc:L(s.desc,s.descHi), state };
+  });
+}
+function logiCheckpoints(){
+  return LOGI_STOPS.map((s,i)=>{
+    const state = i<S.logiStopIndex ? 'done' : (i===S.logiStopIndex ? 'current' : 'upcoming');
+    return { time:s.time, title:L(s.name,s.nameHi), desc:L(s.desc,s.descHi), state };
+  });
+}
+function logiTracking(){
+  const idx = S.logiStopIndex;
+  const isDone = idx >= LOGI_STOPS.length-1;
+  return `
+  ${mainHead('logiTracking')}
+  <div class="card">
+    <div class="track-header">
+      <div>
+        <div class="track-id">SF-LOG-48213</div>
+        <div class="track-meta">${L('Nashik Aggregation Hub → Kalyan Cold Storage','नासिक एकत्रीकरण हब → कल्याण कोल्ड स्टोरेज')} · MH-15 AT 4021</div>
+      </div>
+      <div class="track-right">
+        <span class="status-pill ${isDone?'ok':'info'}">${isDone?L('Delivered','डिलीवर हो गया'):L(LOGI_STOPS[idx].name,LOGI_STOPS[idx].nameHi)}</span>
+        <div class="track-eta">${L('Last update: ','आखिरी अपडेट: ')}${LOGI_STOPS[idx].time} · ${L(LOGI_STOPS[idx].desc,LOGI_STOPS[idx].descHi)}</div>
+      </div>
+    </div>
+    <div class="stepper">${LOGI_STOPS.map((s,i)=>`<div class="step ${i<idx?'done':(i===idx?'current':'')}"><span class="dot">${i<idx?'✓':i+1}</span><span>${L(s.name,s.nameHi)}</span></div>`).join('')}</div>
+    <button class="btn btn-ghost btn-sm" id="logiAdvanceBtn" ${isDone?'disabled':''}>${tr('btn_update_location')}</button>
+    <hr class="track-divider">
+    <h3 style="margin-bottom:6px;">${L('Checkpoint history','चेकपॉइंट इतिहास')}</h3>
+    ${trackingTimelineHtml(logiCheckpoints())}
+  </div>`;
+}
+function logiContacts(){
+  const contacts = [
+    [L('Food Safety Officer','खाद्य सुरक्षा अधिकारी'), 'Dr. Meera Kulkarni', '+91 97022 xxxxx', L('For quality-hold or spoilage concerns en route.','मार्ग में गुणवत्ता-रोक या खराबी संबंधी चिंताओं के लिए।')],
+    [L('Delivery Manager','डिलीवरी मैनेजर'), 'Arjun Nair', '+91 90211 xxxxx', L('For route changes, delays or vehicle issues.','मार्ग परिवर्तन, देरी या वाहन समस्याओं के लिए।')],
+  ];
+  return `
+  ${mainHead('logiContacts')}
+  <div class="two-col">${contacts.map(([role,name,phone,note])=>`
+    <div class="card"><span class="tag">${role}</span><h3 style="margin-top:10px;">${name}</h3><p>${phone}</p><p style="margin-top:8px;">${note}</p><button class="btn btn-ghost btn-sm" style="margin-top:14px;" data-raiseissue="${name}">${tr('btn_raise_issue')}</button></div>`).join('')}</div>`;
+}
+
+/* ---------- ASSOCIATE ---------- */
+const ASSOC_TABS = [
+  ['details','at_details'],['quality','at_quality'],['ai','at_ai'],['warehouse','at_warehouse'],
+  ['calc','at_calc'],['team','at_team'],['custserv','at_custserv'],['farmserv','at_farmserv'],
+  ['cold','at_cold'],['localexec','at_localexec'],
+];
+function associateSidebar(){
+  const a = S.currentUser.profile;
+  return `<div class="role-head"><div class="who"><span class="avatar">${initials(a.name)}</span><span><h4>${a.name}</h4><span>${a.role||''}</span></span></div></div>
+  <p style="color:#9fb59f;font-size:.76rem;padding:0 12px;">${L('Use the panel on the right to move between operations sections.','संचालन अनुभागों के बीच जाने के लिए दाईं ओर के पैनल का उपयोग करें।')}</p>`;
+}
+function associateContent(){
+  const a = S.currentUser.profile;
+  return `
+  <div class="dash-main-head" style="padding-top:6px;"><h2>${tr('dh_associateOps_h')}</h2><p>${a.name} · ${a.hub||'—'} · ID ${a.id||'—'}</p></div>
+  <div class="assoc-grid card" style="padding:0;overflow:hidden;">
+    <div class="assoc-side">${ASSOC_TABS.map(([id,key])=>`<button class="${S.assocTab===id?'active':''}" data-assoctab="${id}">${tr(key)}</button>`).join('')}</div>
+    <div class="assoc-content">${associateTabContent()}</div>
+  </div>`;
+}
+function aiDecisionSnapshot(){
+  const listings = DB.marketplace;
+  if (!listings.length) return null;
+  // Rank live listings the way the pitch describes: quality grade first, then batch size.
+  const ranked = [...listings].sort((a,b)=> a.grade!==b.grade ? a.grade.localeCompare(b.grade) : b.qty-a.qty);
+  const top = ranked[0];
+  const crop = CROPS.find(c=>c.name===top.crop) || CROPS[0];
+  const live = S.agmarknetCache[crop.id];
+  const isLive = S.agmarknetStatus[crop.id]==='live' && live;
+  const basePerKg = isLive ? live.modal/100 : crop.modal/100;
+  const bd = calcBreakdown(basePerKg, false);
+  const marginRow = bd.rows.find(r=>r.key==='cm');
+  const margin = (marginRow ? marginRow.value : 0) * top.qty;
+  const passes = top.price >= basePerKg * 0.85; // flags listings priced well below the AGMARKNET fair-price floor
+  const routeLabel = ({fastest:'Fastest', safest:'Safest', cost:'Cost-effective'})[S.routeMode] || 'Fastest';
+  const demandLevel = top.qty>=300 ? 'High' : (top.qty>=120 ? 'Moderate' : 'Low');
+  return { top, rankedCount: ranked.length, margin, passes, routeLabel, demandLevel, basePerKg, cropId: crop.id, isLive };
+}
+function associateTabContent(){
+  const t = S.assocTab;
+  if (t==='details'){
+    const a = S.currentUser.profile;
+    return `<h3>${L('My details','मेरी जानकारी')}</h3><div class="form-grid">
+      <div class="field"><label for="adName">${L('Name','नाम')}</label><input type="text" id="adName" value="${a.name||''}"></div>
+      <div class="field"><label for="adRole">${L('Role','भूमिका')}</label><input type="text" id="adRole" value="${a.role||''}"></div>
+      <div class="field"><label for="adHub">${L('Hub','हब')}</label><input type="text" id="adHub" value="${a.hub||''}"></div>
+      <div class="field"><label for="adId">${L('Associate ID','एसोसिएट आईडी')}</label><input type="text" id="adId" value="${a.id||''}"></div>
+      <div class="field"><label>${L('Joined','शामिल हुए')}</label><input type="text" value="${a.joined||L('Just now','अभी')}" disabled></div>
+    </div><button class="btn btn-primary btn-sm" id="associateSaveBtn">${tr('btn_save')}</button>`;
+  }
+  if (t==='quality'){
+    return `<h3>${L('Quality inspector queue','गुणवत्ता निरीक्षक कतार')}</h3><table><thead><tr><th></th><th>${L('Lot','लॉट')}</th><th>${tr('th_crop')}</th><th>${L('Farmer','किसान')}</th><th>${tr('th_qty')}</th><th>${tr('th_grade')}</th><th>${L('Action','कार्रवाई')}</th><th class="th-actions"></th></tr></thead>
+    <tbody>${DB.qcQueue.length ? DB.qcQueue.map((q,i)=>`<tr><td class="td-img">${cropImg(q.crop,'sm')}</td><td>${q.lot}</td><td>${q.crop}</td><td>${q.farmer}</td><td>${q.qty}</td><td><span class="status-pill ${q.grade==='Pending'?'pending':'ok'}">${statusLabel(q.grade)}</span></td><td><button class="btn btn-ghost btn-sm" data-qcpass="${i}">${L('Mark Grade A','ग्रेड A अंकित करें')}</button></td><td class="td-actions"><button class="remove-btn" data-remove="qcQueue" data-idx="${i}" title="Remove from queue">✕</button></td></tr>`).join('') : `<tr><td colspan="8" class="empty-note">${L('Queue is empty.','कतार खाली है।')}</td></tr>`}</tbody></table>`;
+  }
+  if (t==='ai'){
+    const flow = [
+      [L('Market data + orders','बाज़ार डेटा + ऑर्डर'), L('AGMARKNET price feed combined with live customer orders.','AGMARKNET मूल्य फ़ीड को लाइव ग्राहक ऑर्डर के साथ जोड़ा गया।')],
+      [L('AI decision engine','एआई निर्णय इंजन'), L('Demand · price · farmer ranking · route optimiser, run together.','मांग · कीमत · किसान रैंकिंग · मार्ग अनुकूलक, एक साथ चलते हैं।')],
+      [L('Decision system','निर्णय प्रणाली'), L('Profitability check — only proceeds if the batch clears margin.','लाभप्रदता जांच — केवल तभी आगे बढ़ता है जब लॉट मार्जिन पूरा करे।')],
+      [L('Procurement + logistics','खरीद + लॉजिस्टिक्स'), L('Farmer selection, aggregation and route confirmed.','किसान चयन, एकत्रीकरण और मार्ग की पुष्टि हुई।')],
+      [L('Customer','ग्राहक'), L('Order fulfilled at the transparent price shown at checkout.','चेकआउट पर दिखाई गई पारदर्शी कीमत पर ऑर्डर पूरा हुआ।')],
+    ];
+    const snap = aiDecisionSnapshot();
+    const kpis = snap ? `
+    <div class="kpi-row">
+      <div class="kpi"><b>${L(snap.demandLevel,{High:'उच्च',Moderate:'मध्यम',Low:'कम'}[snap.demandLevel]||snap.demandLevel)}</b><span>${L('Demand signal','मांग संकेत')} — ${snap.top.crop}</span></div>
+      <div class="kpi"><b>${L('Rank #1','रैंक #1')}</b><span>${L('Top-matched farmer','सर्वश्रेष्ठ-मिलान किसान')}: ${snap.top.farmer} (${L('of','में से')} ${snap.rankedCount} ${L('live listing','लाइव लिस्टिंग')}${snap.rankedCount===1?'':'s'})</span></div>
+      <div class="kpi"><b>${snap.routeLabel}</b><span>${L('Route optimizer recommendation','मार्ग अनुकूलक सिफारिश')}</span></div>
+      <div class="kpi"><b>${inr0(snap.margin)}</b><span>${L('Projected contribution margin','अनुमानित योगदान मार्जिन')}</span></div>
+    </div>
+    <p style="margin-top:6px;">${L('The decision layer only triggers procurement and logistics once a batch clears the profitability check below. AI works as a decision-support layer, not blanket automation. This reflects the current top-ranked marketplace listing — post or remove listings in the Farmer marketplace, or change the delivery route in Optimal route, and this panel updates.','निर्णय परत तभी खरीद और लॉजिस्टिक्स को ट्रिगर करती है जब कोई लॉट नीचे दी गई लाभप्रदता जांच पास करे। एआई एक निर्णय-सहायता परत के रूप में काम करता है, संपूर्ण स्वचालन के रूप में नहीं। यह मौजूदा शीर्ष-रैंक बाज़ार लिस्टिंग को दर्शाता है — किसान बाज़ार में लिस्टिंग पोस्ट या हटाएं, या सर्वोत्तम मार्ग में डिलीवरी मार्ग बदलें, और यह पैनल अपडेट होगा।')}</p>
+    <div class="field" style="margin-top:14px;"><label>${L('Profitability check','लाभप्रदता जांच')} — ${snap.top.crop} ${L('lot from','लॉट, से')} ${snap.top.farmer} (₹${snap.top.price}/kg vs. ₹${snap.basePerKg.toFixed(2)}/kg ${snap.isLive?L('live AGMARKNET','लाइव AGMARKNET'):L('AGMARKNET demo','AGMARKNET डेमो')} floor)</label>
+      <span class="status-pill ${snap.passes?'ok':'pending'}">${snap.passes?L('Passed — proceed with procurement','पास — खरीद के लिए आगे बढ़ें'):L('Flagged — price below AGMARKNET fair-price floor, review before procurement','फ़्लैग किया गया — कीमत AGMARKNET उचित-मूल्य सीमा से कम, खरीद से पहले समीक्षा करें')}</span>
+    </div>
+    ${agmarknetPanel(snap.cropId, null)}` : `
+    <p class="empty-note" style="margin-top:6px;">${L("No active batch in the marketplace right now — post a listing from the Farmer dashboard's marketplace tab to see the decision engine evaluate it live.",'अभी बाज़ार में कोई सक्रिय लॉट नहीं है — निर्णय इंजन को लाइव देखने के लिए किसान डैशबोर्ड के बाज़ार टैब से एक लिस्टिंग पोस्ट करें।')}</p>`;
+    return `<h3>${L('AI decision engine','एआई निर्णय इंजन')}</h3>
+    <div class="hero-flow" style="margin-bottom:24px;">
+      ${flow.map((s,i)=>`<div class="flow-step" style="border-bottom-color:var(--line);"><span class="flow-num" style="background:var(--green-100); color:var(--brand-text);">${i+1}</span><span class="flow-text"><b style="color:var(--heading);">${s[0]}</b><span style="color:var(--ink-soft);">${s[1]}</span></span></div>`).join('')}
+    </div>
+    ${kpis}`;
+  }
+  if (t==='warehouse'){
+    return `<h3>${L('Warehouse handling','वेयरहाउस हैंडलिंग')}</h3><table><thead><tr><th>${L('Hub','हब')}</th><th>${L('Capacity','क्षमता')}</th><th>${L('Utilised','उपयोग किया गया')}</th><th>${tr('th_status')}</th><th class="th-actions"></th></tr></thead>
+    <tbody>${DB.warehouse.length ? DB.warehouse.map((w,i)=>`<tr><td>${w.hub}</td><td>${w.capacity}</td><td>${w.occupied}</td><td><span class="status-pill ${w.status==='Normal'?'ok':'pending'}">${statusLabel(w.status)}</span></td><td class="td-actions"><button class="remove-btn" data-remove="warehouse" data-idx="${i}" title="Remove hub">✕</button></td></tr>`).join('') : `<tr><td colspan="5" class="empty-note">${L('No hubs listed.','कोई हब सूचीबद्ध नहीं।')}</td></tr>`}</tbody></table>`;
+  }
+  if (t==='calc'){
+    return `<h3>${L('Calculation charts — future storage cost','गणना चार्ट — भविष्य की भंडारण लागत')}</h3>
+    <p>${L('Estimate cold-storage cost for a batch before deciding to store or sell immediately.','तुरंत भंडारण या बिक्री तय करने से पहले किसी लॉट की कोल्ड-स्टोरेज लागत का अनुमान लगाएं।')}</p>
+    <div class="form-grid" style="margin-top:10px;">
+      <div class="field"><label for="calcQty">${L('Quantity (tonnes)','मात्रा (टन)')}</label><input type="number" id="calcQty" value="10"></div>
+      <div class="field"><label for="calcDays">${L('Days in storage','भंडारण के दिन')}</label><input type="number" id="calcDays" value="7"></div>
+    </div>
+    <button class="btn btn-primary btn-sm" id="calcRunBtn">${L('Estimate cost','लागत का अनुमान लगाएं')}</button>
+    <div id="calcResult" class="small-note" style="margin-top:12px;">${L('Rate used: ₹42/tonne/day cold-storage charge.','उपयोग की गई दर: ₹42/टन/दिन कोल्ड-स्टोरेज शुल्क।')}</div>`;
+  }
+  if (t==='team'){
+    return `<h3>${L('Logistics &amp; team','लॉजिस्टिक्स और टीम')}</h3><table><thead><tr><th>${L('Partner','पार्टनर')}</th><th>${L('Corridor','कॉरिडोर')}</th><th>${L('Vehicles','वाहन')}</th><th>${L('Rating','रेटिंग')}</th><th class="th-actions"></th></tr></thead>
+    <tbody>${DB.team.length ? DB.team.map((tm,i)=>`<tr><td>${tm.partner}</td><td>${tm.corridor}</td><td>${tm.vehicles}</td><td>${tm.rating}★</td><td class="td-actions"><button class="remove-btn" data-remove="team" data-idx="${i}" title="Remove partner">✕</button></td></tr>`).join('') : `<tr><td colspan="5" class="empty-note">${L('No partners listed.','कोई पार्टनर सूचीबद्ध नहीं।')}</td></tr>`}</tbody></table>`;
+  }
+  if (t==='custserv'){
+    return `<h3>${L('Customer services','ग्राहक सेवाएं')}</h3><table><thead><tr><th>${L('Ticket','टिकट')}</th><th>${L('Consumer','उपभोक्ता')}</th><th>${L('Issue','समस्या')}</th><th>${tr('th_status')}</th><th class="th-actions"></th></tr></thead>
+    <tbody>${DB.custServiceTickets.length ? DB.custServiceTickets.map((c,i)=>`<tr><td>${c.ticket}</td><td>${c.consumer}</td><td>${c.issue}</td><td><span class="status-pill ${c.status==='Resolved'?'ok':'pending'}">${statusLabel(c.status)}</span></td><td class="td-actions"><button class="remove-btn" data-remove="custServiceTickets" data-idx="${i}" title="Remove ticket">✕</button></td></tr>`).join('') : `<tr><td colspan="5" class="empty-note">${L('No open tickets.','कोई खुला टिकट नहीं।')}</td></tr>`}</tbody></table>`;
+  }
+  if (t==='farmserv'){
+    return `<h3>${L('Farmer services','किसान सेवाएं')}</h3><table><thead><tr><th>${L('Request','अनुरोध')}</th><th>${L('Farmer','किसान')}</th><th>${L('Type','प्रकार')}</th><th>${tr('th_status')}</th><th class="th-actions"></th></tr></thead>
+    <tbody>${DB.farmServiceRequests.length ? DB.farmServiceRequests.map((r,i)=>`<tr><td>${r.request}</td><td>${r.farmer}</td><td>${r.type}</td><td><span class="status-pill ${r.status==='Scheduled'?'ok':'pending'}">${statusLabel(r.status)}</span></td><td class="td-actions"><button class="remove-btn" data-remove="farmServiceRequests" data-idx="${i}" title="Remove request">✕</button></td></tr>`).join('') : `<tr><td colspan="5" class="empty-note">${L('No requests.','कोई अनुरोध नहीं।')}</td></tr>`}</tbody></table>`;
+  }
+  if (t==='cold'){
+    return `<h3>${L('Cold storage management','कोल्ड स्टोरेज प्रबंधन')}</h3><table><thead><tr><th>${L('Unit','यूनिट')}</th><th>${L('Temperature','तापमान')}</th><th>${L('Capacity','क्षमता')}</th><th>${L('Occupied','भरा हुआ')}</th><th>${tr('th_status')}</th><th class="th-actions"></th></tr></thead>
+    <tbody>${DB.coldStorage.length ? DB.coldStorage.map((c,i)=>`<tr><td>${c.unit}</td><td>${c.temp}</td><td>${c.capacity}</td><td>${c.occupied}</td><td><span class="status-pill ${c.status==='Normal'?'ok':'pending'}">${statusLabel(c.status)}</span></td><td class="td-actions"><button class="remove-btn" data-remove="coldStorage" data-idx="${i}" title="Remove unit">✕</button></td></tr>`).join('') : `<tr><td colspan="6" class="empty-note">${L('No cold storage units.','कोई कोल्ड स्टोरेज यूनिट नहीं।')}</td></tr>`}</tbody></table>`;
+  }
+  if (t==='localexec'){
+    return `<h3>${L('Local delivery executives','लोकल डिलीवरी एक्ज़िक्यूटिव')}</h3><table><thead><tr><th>${L('Name','नाम')}</th><th>${L('Zone','ज़ोन')}</th><th>${L('Orders today','आज के ऑर्डर')}</th><th>${tr('th_status')}</th><th class="th-actions"></th></tr></thead>
+    <tbody>${DB.localExecs.length ? DB.localExecs.map((e,i)=>`<tr><td>${e.name}</td><td>${e.zone}</td><td>${e.orders}</td><td><span class="status-pill ${e.status==='On route'?'info':'pending'}">${statusLabel(e.status)}</span></td><td class="td-actions"><button class="remove-btn" data-remove="localExecs" data-idx="${i}" title="Remove executive">✕</button></td></tr>`).join('') : `<tr><td colspan="5" class="empty-note">${L('No executives assigned.','कोई एक्ज़िक्यूटिव नियुक्त नहीं।')}</td></tr>`}</tbody></table>`;
+  }
+  return '';
+}
+
+function statusClass(s){
+  if (['Listed','On route','Out for delivery','Dispatched'].includes(s)) return 'info';
+  if (['Delivered','Paid','Aggregated','Scheduled'].includes(s)) return 'ok';
+  if (['Pending QC','Pending','Open'].includes(s)) return 'pending';
+  return 'info';
+}
+const STATUS_HI = {
+  'Listed':'सूचीबद्ध', 'Aggregated':'एकत्रित', 'Pending QC':'क्यूसी लंबित', 'Paid':'भुगतान हो गया',
+  'Order placed':'ऑर्डर दिया गया', 'Quality checked':'गुणवत्ता जांची गई', 'Dispatched':'भेजा गया',
+  'Out for delivery':'डिलीवरी के लिए निकला', 'Delivered':'डिलीवर हो गया',
+  'Normal':'सामान्य', 'Near full':'लगभग भरा', 'On route':'मार्ग पर', 'Idle':'खाली',
+  'Open':'खुला', 'Resolved':'हल हो गया', 'Pending':'लंबित', 'Scheduled':'निर्धारित',
+};
+function statusLabel(s){ return L(s, STATUS_HI[s]||s); }
+
+/* =====================================================================
+   EVENTS
+===================================================================== */
+function bindEvents(){
+  document.querySelectorAll('[data-nav]').forEach(el=>el.addEventListener('click', ()=>{ S.role = el.dataset.nav; render(); }));
+
+  // Auth: open login/register from nav
+  document.querySelectorAll('[data-authopen]').forEach(el=>el.addEventListener('click', ()=>{
+    S.role='auth'; S.authView = el.dataset.authopen; S.authError=''; render();
+  }));
+  const logoutBtn = document.getElementById('logoutBtn');
+  if (logoutBtn) logoutBtn.addEventListener('click', ()=>{ S.currentUser=null; S.role='home'; render(); });
+  const deniedLogout = document.getElementById('deniedLogout');
+  if (deniedLogout) deniedLogout.addEventListener('click', ()=>{ S.currentUser=null; S.authError=''; render(); });
+
+  // Auth: tabs / role pills
+  document.querySelectorAll('[data-authtab]').forEach(el=>el.addEventListener('click', ()=>{ S.authView = el.dataset.authtab; S.authError=''; render(); }));
+  document.querySelectorAll('[data-authrole]').forEach(el=>el.addEventListener('click', ()=>{ S.authRole = el.dataset.authrole; S.authError=''; render(); }));
+
+  // Auth: login
+  const loginSubmit = document.getElementById('loginSubmit');
+  if (loginSubmit) loginSubmit.addEventListener('click', ()=>{
+    const idVal = (document.getElementById('loginIdentifier').value||'').trim();
+    const pwVal = document.getElementById('loginPassword').value||'';
+    const match = USERS.find(u=>u.role===S.authRole && u.identifier.toLowerCase()===idVal.toLowerCase() && u.password===pwVal);
+    if (!match){ S.authError = 'No matching account found. Check your details, or try the demo account below.'; render(); return; }
+    S.currentUser = match; S.role = match.role; S.authError=''; render();
+  });
+  const fillDemo = document.getElementById('fillDemo');
+  if (fillDemo) fillDemo.addEventListener('click', (e)=>{
+    e.preventDefault();
+    const demo = USERS.find(u=>u.role===S.authRole);
+    document.getElementById('loginIdentifier').value = demo.identifier;
+    document.getElementById('loginPassword').value = demo.password;
+  });
+
+  // Auth: register
+  const registerSubmit = document.getElementById('registerSubmit');
+  if (registerSubmit) registerSubmit.addEventListener('click', ()=>{
+    const role = S.authRole;
+    const profile = {};
+    document.querySelectorAll('#registerFields [data-field]').forEach(inp=>{
+      const key = inp.dataset.field, val = inp.value.trim();
+      profile[key] = key==='password' ? val : esc(val);
+    });
+    if (!profile.name || !profile.identifier || !profile.password){
+      S.authError = 'Please fill in your name, email/phone and a password.'; render(); return;
+    }
+    if (USERS.some(u=>u.role===role && u.identifier.toLowerCase()===profile.identifier.toLowerCase())){
+      S.authError = 'An account with these details already exists — try logging in instead.'; render(); return;
+    }
+    const newUser = { role, identifier: profile.identifier, password: profile.password, profile };
+    USERS.push(newUser);
+    S.currentUser = newUser; S.role = role; S.authError=''; render();
+  });
+  document.querySelectorAll('[data-scroll]').forEach(el=>el.addEventListener('click', ()=>{
+    S.role='home'; render(); setTimeout(()=>{ const t=document.getElementById(el.dataset.scroll); if(t) t.scrollIntoView({behavior:'smooth'}); }, 30);
+  }));
+  document.querySelectorAll('[data-modal]').forEach(el=>el.addEventListener('click', ()=>{ S.modal = el.dataset.modal; render(); }));
+  const overlay = document.getElementById('modalOverlay');
+  if (overlay){
+    overlay.addEventListener('click', (e)=>{ if(e.target===overlay){ S.modal=null; render(); }});
+    const mc = document.getElementById('modalClose'); if(mc) mc.addEventListener('click', ()=>{ S.modal=null; render(); });
+  }
+  const cookieBtn = document.getElementById('cookieAccept');
+  if (cookieBtn) cookieBtn.addEventListener('click', ()=>{ S._cookieDismissed = true; render(); });
+
+  // Theme toggle
+  const themeToggle = document.getElementById('themeToggle');
+  if (themeToggle) themeToggle.addEventListener('click', ()=>{ S.theme = S.theme==='dark' ? 'light' : 'dark'; render(); });
+  const langSwitchBtn = document.getElementById('langSwitchBtn');
+  if (langSwitchBtn) langSwitchBtn.addEventListener('click', (e)=>{ e.stopPropagation(); S.langMenuOpen = !S.langMenuOpen; render(); });
+  document.querySelectorAll('[data-setlang]').forEach(el=>el.addEventListener('click', (e)=>{
+    e.stopPropagation();
+    S.language = el.dataset.setlang; S.langMenuOpen = false; render();
+  }));
+  if (S.langMenuOpen){
+    document.addEventListener('click', ()=>{ S.langMenuOpen = false; render(); }, { once:true });
+  }
+
+  // Marketplace nav (consumers only — reuses the existing role auth-gate)
+  const marketplaceNav = document.getElementById('marketplaceNav');
+  if (marketplaceNav) marketplaceNav.addEventListener('click', ()=>{
+    S.consumerTab = 'market';
+    S.role = 'consumer';
+    render();
+  });
+
+  // Generic remove-item system (farmer / consumer / logistics / associate dashboards)
+  document.querySelectorAll('[data-remove]').forEach(el=>el.addEventListener('click', ()=>{
+    const path = el.dataset.remove.split('.');
+    const idx = Number(el.dataset.idx);
+    let arr = DB;
+    for (let i=0; i<path.length; i++) arr = arr[path[i]];
+    arr.splice(idx,1);
+    render();
+  }));
+
+  // Marketplace: farmer posts a listing
+  const addMarketBtn = document.getElementById('addMarketBtn');
+  if (addMarketBtn) addMarketBtn.addEventListener('click', ()=>{
+    const crop = document.getElementById('mkCropSelect').value;
+    const qty = Number(document.getElementById('mkQty').value) || 100;
+    const price = Number(document.getElementById('mkPrice').value) || 25;
+    const grade = document.getElementById('mkGrade').value;
+    const desc = esc(document.getElementById('mkDesc').value || 'Fresh produce, ready for pickup.');
+    DB.marketplace.unshift({ id:'MK-'+Math.floor(Math.random()*9000+1000), farmer:S.currentUser.profile.name, crop, qty, unit:'kg', price, grade, desc });
+    S.mkPriceOverride = null;
+    S.farmerTab = 'market'; render();
+  });
+
+  // Marketplace: consumer buys a listing
+  document.querySelectorAll('[data-buy]').forEach(el=>el.addEventListener('click', ()=>{
+    const i = Number(el.dataset.buy);
+    const m = DB.marketplace[i];
+    if (!m) return;
+    const newOrder = { id:'SF-'+Math.floor(Math.random()*90000+10000), items:`${m.crop} ${m.qty>5?5:m.qty}kg`, placed:new Date().toISOString().slice(0,10), status:'Order placed', eta:'Pending dispatch', total: m.price * (m.qty>5?5:m.qty) };
+    DB.orders.unshift(newOrder);
+    S.activeOrder = newOrder;
+    DB.marketplace.splice(i,1);
+    S.consumerTab = 'orders'; render();
+  }));
+
+  // AI chatbot
+  const chatFab = document.getElementById('chatFab');
+  if (chatFab) chatFab.addEventListener('click', ()=>{ S.chatOpen = !S.chatOpen; render(); });
+  const chatClose = document.getElementById('chatClose');
+  if (chatClose) chatClose.addEventListener('click', ()=>{ S.chatOpen = false; render(); });
+  function sendChat(text){
+    const t = (text||'').trim();
+    if (!t) return;
+    S.chatMessages.push({ from:'user', text:esc(t) });
+    S.chatMessages.push({ from:'bot', text: botReply(t) });
+    render();
+    setTimeout(()=>{ const body=document.getElementById('chatBody'); if(body) body.scrollTop = body.scrollHeight; }, 0);
+  }
+  const chatSend = document.getElementById('chatSend');
+  if (chatSend) chatSend.addEventListener('click', ()=>{ sendChat(document.getElementById('chatInput').value); });
+  const chatInput = document.getElementById('chatInput');
+  if (chatInput){
+    chatInput.addEventListener('keydown', (e)=>{ if (e.key==='Enter'){ sendChat(chatInput.value); } });
+    chatInput.focus();
+  }
+  document.querySelectorAll('[data-chatquick]').forEach(el=>el.addEventListener('click', ()=>{ sendChat(el.dataset.chatquick); }));
+  const chatBodyEl = document.getElementById('chatBody');
+  if (chatBodyEl) chatBodyEl.scrollTop = chatBodyEl.scrollHeight;
+
+  const areaSelect = document.getElementById('areaSelect');
+  if (areaSelect) areaSelect.addEventListener('change', (e)=>{ S.areaFilter = e.target.value; render(); });
+
+  // Farmer
+  document.querySelectorAll('[data-farmertab]').forEach(el=>el.addEventListener('click', ()=>{ S.farmerTab = el.dataset.farmertab; render(); }));
+  const addProduceBtn = document.getElementById('addProduceBtn');
+  if (addProduceBtn) addProduceBtn.addEventListener('click', ()=>{
+    const crop = document.getElementById('newCropSelect').value;
+    const qty = document.getElementById('newQty').value || '100';
+    const grade = document.getElementById('newGrade').value;
+    const harvest = document.getElementById('newHarvest').value || new Date().toISOString().slice(0,10);
+    DB.produces.unshift({ crop, qty:Number(qty), unit:'kg', grade, harvest, status:'Listed' });
+    render(); S.farmerTab='produces';
+  });
+  const stockCropSelect = document.getElementById('stockCropSelect');
+  if (stockCropSelect) stockCropSelect.addEventListener('change',(e)=>{ S.selectedCrop = e.target.value; render(); });
+
+  // Consumer
+  document.querySelectorAll('[data-consumertab]').forEach(el=>el.addEventListener('click', ()=>{ S.consumerTab = el.dataset.consumertab; render(); }));
+  const trackOrderSelect = document.getElementById('trackOrderSelect');
+  if (trackOrderSelect) trackOrderSelect.addEventListener('change',(e)=>{ S.activeOrder = DB.orders.find(o=>o.id===e.target.value); render(); });
+  const advanceTrackBtn = document.getElementById('advanceTrackBtn');
+  if (advanceTrackBtn) advanceTrackBtn.addEventListener('click', ()=>{
+    const idx = orderStatusIndex(S.activeOrder);
+    if (idx < ORDER_STAGES.length-1){ S.activeOrder.status = ORDER_STAGES[idx+1].key; }
+    render();
+  });
+  const fbSubmit = document.getElementById('fbSubmit');
+  if (fbSubmit) fbSubmit.addEventListener('click', ()=>{
+    const order = document.getElementById('fbOrder').value;
+    const rating = Number(document.getElementById('fbRating').value);
+    const text = esc(document.getElementById('fbText').value || '(no comment)');
+    DB.feedback.unshift({ order, rating, text });
+    S.consumerTab='feedback'; render();
+  });
+
+  // Profile "Save changes" buttons — Farmer, Consumer, Logistics, Associate
+  const farmerSaveBtn = document.getElementById('farmerSaveBtn');
+  if (farmerSaveBtn) farmerSaveBtn.addEventListener('click', ()=>{
+    const p = S.currentUser.profile;
+    p.name = esc(document.getElementById('fdName').value.trim()) || p.name;
+    p.phone = esc(document.getElementById('fdPhone').value.trim());
+    p.village = esc(document.getElementById('fdVillage').value.trim());
+    p.district = esc(document.getElementById('fdDistrict').value.trim());
+    p.state = esc(document.getElementById('fdState').value.trim());
+    p.land = esc(document.getElementById('fdLand').value.trim());
+    p.crops = esc(document.getElementById('fdCrops').value.trim());
+    p.bank = esc(document.getElementById('fdBank').value.trim());
+    showToast(L('Profile updated','प्रोफ़ाइल अपडेट हुई'));
+  });
+  const consumerSaveBtn = document.getElementById('consumerSaveBtn');
+  if (consumerSaveBtn) consumerSaveBtn.addEventListener('click', ()=>{
+    const p = S.currentUser.profile;
+    p.name = esc(document.getElementById('cdName').value.trim()) || p.name;
+    p.phone = esc(document.getElementById('cdPhone').value.trim());
+    p.address = esc(document.getElementById('cdAddress').value.trim());
+    p.preferred = esc(document.getElementById('cdPreferred').value.trim());
+    showToast(L('Profile updated','प्रोफ़ाइल अपडेट हुई'));
+  });
+
+  // Farmer services — Request buttons create a real request the Associate team can see and action
+  document.querySelectorAll('[data-farmreqtype]').forEach(el=>el.addEventListener('click', ()=>{
+    const type = el.dataset.farmreqtype;
+    DB.farmServiceRequests.unshift({ request:'FS-'+Math.floor(Math.random()*9000+1000), farmer:S.currentUser.profile.name, type, status:'Pending' });
+    showToast(L(`Request sent — ${type}`, `अनुरोध भेजा गया — ${type}`));
+  }));
+  // Any "open chat" CTA (e.g. Consumer services → Customer support chat)
+  document.querySelectorAll('[data-openchat]').forEach(el=>el.addEventListener('click', ()=>{ S.chatOpen = true; S.modal = null; render(); }));
+
+  // Live AGMARKNET price checks
+  document.querySelectorAll('[data-agmfetch]').forEach(el=>el.addEventListener('click', ()=>{
+    let cropId = el.dataset.agmfetch;
+    const selId = el.dataset.agmselectsrc;
+    if (selId){
+      const sel = document.getElementById(selId);
+      if (sel){
+        const opt = sel.selectedOptions && sel.selectedOptions[0];
+        cropId = (opt && opt.dataset.cropid) || sel.value || cropId;
+      }
+      S.agmarknetLastFarmerCrop = cropId;
+    }
+    fetchAgmarknetPrice(cropId);
+  }));
+  document.querySelectorAll('[data-agmapply]').forEach(el=>el.addEventListener('click', ()=>{
+    const cropId = el.dataset.agmapply, targetId = el.dataset.agmtarget;
+    const cached = S.agmarknetCache[cropId];
+    if (cached){
+      if (targetId==='mkPrice') S.mkPriceOverride = (cached.modal/100).toFixed(2);
+      const target = document.getElementById(targetId);
+      if (target) target.value = (cached.modal/100).toFixed(2);
+      showToast(L('Live AGMARKNET price applied','लाइव AGMARKNET कीमत लागू की गई'));
+    }
+  }));
+  document.querySelectorAll('[data-agmsavekey]').forEach(el=>el.addEventListener('click', ()=>{
+    const cropId = el.dataset.agmsavekey;
+    const input = document.getElementById('agmApiKey_'+cropId);
+    const val = input ? input.value.trim() : '';
+    S.agmarknetApiKey = val || null;
+    delete S.agmarknetCache[cropId]; S.agmarknetStatus[cropId] = null;
+    showToast(val ? 'Personal API key saved' : 'Reverted to the shared demo key');
+  }));
+
+  // Logistics
+  document.querySelectorAll('[data-logitab]').forEach(el=>el.addEventListener('click', ()=>{ S.logisticsTab = el.dataset.logitab; render(); }));
+  document.querySelectorAll('[data-route]').forEach(el=>el.addEventListener('click', ()=>{ S.routeConfirmed = null; S.routeMode = el.dataset.route; render(); }));
+  const logiAdvanceBtn = document.getElementById('logiAdvanceBtn');
+  if (logiAdvanceBtn) logiAdvanceBtn.addEventListener('click', ()=>{
+    if (S.logiStopIndex < LOGI_STOPS.length-1) S.logiStopIndex++;
+    showToast(L(`Location updated — ${LOGI_STOPS[S.logiStopIndex].name}`, `लोकेशन अपडेट हुई — ${L(LOGI_STOPS[S.logiStopIndex].name,LOGI_STOPS[S.logiStopIndex].nameHi)}`));
+  });
+  const logiSaveBtn = document.getElementById('logiSaveBtn');
+  if (logiSaveBtn) logiSaveBtn.addEventListener('click', ()=>{
+    const p = S.currentUser.profile;
+    p.name = esc(document.getElementById('ldName').value.trim()) || p.name;
+    p.contact = esc(document.getElementById('ldContact').value.trim());
+    p.phone = esc(document.getElementById('ldPhone').value.trim());
+    p.vehicles = Number(document.getElementById('ldVehicles').value) || 0;
+    p.area = esc(document.getElementById('ldArea').value.trim());
+    showToast(L('Profile updated','प्रोफ़ाइल अपडेट हुई'));
+  });
+  const confirmRouteBtn = document.getElementById('confirmRouteBtn');
+  if (confirmRouteBtn) confirmRouteBtn.addEventListener('click', ()=>{
+    S.routeConfirmed = S.routeMode;
+    showToast(L('Route confirmed','मार्ग की पुष्टि हुई'));
+  });
+  document.querySelectorAll('[data-raiseissue]').forEach(el=>el.addEventListener('click', ()=>{
+    showToast(L(`Issue raised with ${el.dataset.raiseissue} — they'll be in touch shortly.`, `${el.dataset.raiseissue} के साथ शिकायत दर्ज की गई — वे जल्द संपर्क करेंगे।`));
+  }));
+
+  // Associate
+  document.querySelectorAll('[data-assoctab]').forEach(el=>el.addEventListener('click', ()=>{ S.assocTab = el.dataset.assoctab; render(); }));
+  document.querySelectorAll('[data-qcpass]').forEach(el=>el.addEventListener('click', ()=>{
+    DB.qcQueue[Number(el.dataset.qcpass)].grade = 'A'; S.assocTab='quality'; render();
+  }));
+  const associateSaveBtn = document.getElementById('associateSaveBtn');
+  if (associateSaveBtn) associateSaveBtn.addEventListener('click', ()=>{
+    const p = S.currentUser.profile;
+    p.name = esc(document.getElementById('adName').value.trim()) || p.name;
+    p.role = esc(document.getElementById('adRole').value.trim());
+    p.hub = esc(document.getElementById('adHub').value.trim());
+    p.id = esc(document.getElementById('adId').value.trim());
+    showToast(L('Profile updated','प्रोफ़ाइल अपडेट हुई'));
+  });
+  const calcRunBtn = document.getElementById('calcRunBtn');
+  if (calcRunBtn) calcRunBtn.addEventListener('click', ()=>{
+    const qty = Number(document.getElementById('calcQty').value)||0;
+    const days = Number(document.getElementById('calcDays').value)||0;
+    const cost = qty*days*42;
+    document.getElementById('calcResult').textContent = `Estimated cold-storage cost: ${inr0(cost)} for ${qty} tonnes over ${days} days (₹42/tonne/day).`;
+  });
+
+  const resetDemoBtn = document.getElementById('resetDemoBtn');
+  if (resetDemoBtn) resetDemoBtn.addEventListener('click', ()=>{
+    if (confirm(L('This clears any accounts, listings and orders created in this demo session and reloads fresh sample data. Continue?','यह इस डेमो सत्र में बनाए गए किसी भी खाते, लिस्टिंग और ऑर्डर को हटा देगा और नया नमूना डेटा लोड करेगा। जारी रखें?'))) resetDemoData();
+  });
+
+  animateCounters();
+}
+
+function animateCounters(){
+  document.querySelectorAll('[data-count]').forEach(el=>{
+    const target = Number(el.dataset.count);
+    const prefix = el.dataset.prefix || '';
+    const suffix = el.dataset.suffix || '';
+    let cur = 0;
+    const step = Math.max(1, Math.round(target/60));
+    const timer = setInterval(()=>{
+      cur += step;
+      if (cur >= target){ cur = target; clearInterval(timer); }
+      el.textContent = prefix + cur.toLocaleString('en-IN') + suffix;
+    }, 16);
+  });
+}
+
+loadPersistedState();
+render();
+</script>
+</body>
+</html>
